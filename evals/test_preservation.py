@@ -43,6 +43,15 @@ class PreservationTest(unittest.TestCase):
             self.assertFalse(rows['P03']['preserved'])
             self.assertTrue(rows['P03']['removed'])
 
+    def test_validation_obligation_cannot_be_weakened(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out / 'P09.with.out.md').write_text(
+                'Some inputs should be validated. Secrets must never appear in logs.')
+            rows = {row['id']: row for row in self.report(out)['with']['cases']}
+            self.assertFalse(rows['P09']['preserved'])
+            self.assertTrue(rows['P09']['removed'])
+
     def test_annotations_never_enter_generation_prompts(self):
         case = dict(run.CASES[-1], protected_spans=['SECRET_GOLD_MARKER'])
         for with_skill in (True, False):

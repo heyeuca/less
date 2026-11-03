@@ -1207,17 +1207,18 @@
       "pair_id": "obligation",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
-      "before": "For completeness, all inputs must be validated. Secrets must never appear in logs.",
+      "before": "For completeness: All inputs must be validated. Secrets must never appear in logs.",
       "after": "All inputs must be validated. Secrets must never appear in logs.",
       "must_keep": [
         "Secrets must never appear in logs.",
         "all inputs must be validated: preserve universal scope and obligation"
       ],
       "protected_spans": [
+        "All inputs must be validated.",
         "Secrets must never appear in logs."
       ],
       "must_remove_spans": [
-        "For completeness, "
+        "For completeness: "
       ],
       "exact_noop": false
     },
