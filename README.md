@@ -21,7 +21,7 @@ claude plugin install less@heyeuca
 
 Manual: copy `skills/less` into your agent's skills folder, for example `~/.claude/skills/less` or `~/.agents/skills/less`.
 
-less runs when you ask for it (`/less`, or "cut", "trim", "simplify", "tighten", "shorten", "too long", "clean up AI-written output"). To keep it always on, add this line to your `AGENTS.md`:
+less runs when you ask for it (`/less`, or "cut", "trim", "remove", "strip", "simplify", "tighten", "shorten", "declutter", "too long", "too busy", "looks cluttered", "clean up AI-written output"), on writing, code, and UI code. To keep it always on, add this line to your `AGENTS.md`:
 
 ```md
 Apply the less skill to everything you write: keep only what has a reason to exist.

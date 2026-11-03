@@ -56,6 +56,8 @@ Code:
 Documents: apply the test section by section. Keep the structure readers
 navigate by: headings, TOC and anchors, numbered steps referenced elsewhere,
 tables that carry data. Remove a whole section only when it fails the test.
+Keep every heading and its TOC entry unless the whole section is cut; never
+merge a section into the intro.
 
 Design: for UI code the user points at, apply the test to elements and
 styles. Remove only after checking [references/design.md](references/design.md)
@@ -74,7 +76,9 @@ aesthetic. Not for building new UI, screenshots, or Figma files.
 - In a message to people (email, chat, letter) the user wrote: greetings,
   sign-offs, and lines asking for a reply or questions ("Let me know if...").
   E.g. "Do reach out anytime if anything is still unclear." stays; you may trim
-  "anytime" and "still".
+  "anytime" and "still". Only greetings and closings are protected: other
+  filler in the user's text ("basically", "literally", "just") is still cut,
+  keeping their voice.
 - Politeness register: 존댓말/敬語 forms, 様, greetings, sign-offs. Stacked
   softeners and intensifiers inside it (정말, 혹시, 大変, 誠に, 何卒) are filler.
 - Code: behavior (output, side effects, errors); error handling at real
