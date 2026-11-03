@@ -1,4 +1,4 @@
-// Design checker for less D cases (spec-v0.3 §5, K-G1..K-G6).
+// Design checker for less D cases (spec-v0.3 §5, K-G1..K-G6, plus G7 overlay legibility).
 //   node check.mjs self      checks each case's before, after and bad_after against before
 //   node check.mjs OUT [ID] [--suffix without]  checks OUT/<id>.<suffix>.out.md (default with; HTML, fences allowed)
 //   against before and writes OUT/design-<suffix>.json, which run.py sheet shows in the pass columns
@@ -59,19 +59,41 @@ async function measure(page, src, c) {
     focus.push({ key, ring, target: Math.min(box.width, box.height) >= 24 });
   }
   const reflow = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
+  // G7: scroll so content sits under each fixed/sticky element with text; its text stays legible only if
+  // its own fill is opaque or a backdrop-filter is set (computed style, not pixels, so it isn't flaky).
+  const overlays = await page.evaluate(() => {
+    const out = [];
+    for (const e of document.querySelectorAll('body *')) {
+      const s = getComputedStyle(e);
+      if (!['fixed', 'sticky'].includes(s.position) || !e.innerText.trim()) continue;
+      // Scroll each text block in turn to the element's middle; it overlaps if any block ends up under it.
+      const texts = [...document.querySelectorAll('body *')].filter(u => !e.contains(u) && !u.contains(e)
+        && [...u.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())).slice(0, 50);
+      const overlaps = texts.some(u => {
+        window.scrollTo(0, u.getBoundingClientRect().top + scrollY - e.offsetHeight / 2);
+        const r = e.getBoundingClientRect(), t = u.getBoundingClientRect();
+        return t.top < r.bottom && t.bottom > r.top && t.left < r.right && t.right > r.left;
+      });
+      const alpha = (s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)/) || [, 1])[1];
+      out.push({ key: e.tagName + ' ' + e.innerText.replace(/\s+/g, ' ').trim().slice(0, 40), overlaps, legible: +alpha >= 0.99 || s.backdropFilter !== 'none' });
+      window.scrollTo(0, 0);
+    }
+    return out;
+  });
   const info = await page.evaluate(() => ({ elements: document.querySelectorAll('body *').length, decls: [...document.styleSheets].flatMap(s => [...s.cssRules]).reduce((n, r) => n + (r.style ? r.style.length : 0), 0) }));
-  return { roles, sels, axe, nodes, focus, reflow, info };
+  return { roles, sels, axe, nodes, focus, reflow, overlays, info };
 }
 
 function gates(b, a, c, width) {
   const hints = (c.must_remove_hint || []).join(' ').toLowerCase();
   const missingNodes = b.nodes.filter(n => !a.nodes.includes(n) && !hints.includes(n.split('"')[1].toLowerCase() || '\0'));
   const worse = b.focus.filter(f => { const g = a.focus.find(x => x.key === f.key); return g && ((f.ring && !g.ring) || (f.target && !g.target)); });
+  const unreadable = b.overlays.filter(o => o.legible && a.overlays.some(x => x.key === o.key && x.overlaps && !x.legible));
   return {
     G1: a.roles.every(Boolean), G2: a.sels.every(Boolean),
     G3: a.axe.every(v => b.axe.includes(v)), G4: missingNodes.length === 0,
-    G5: worse.length === 0, G6: width !== 320 || !b.reflow || a.reflow,
-    why: [...a.axe.filter(v => !b.axe.includes(v)), ...missingNodes.map(n => 'lost ' + n), ...worse.map(f => 'worse ' + f.key)],
+    G5: worse.length === 0, G6: width !== 320 || !b.reflow || a.reflow, G7: unreadable.length === 0,
+    why: [...a.axe.filter(v => !b.axe.includes(v)), ...missingNodes.map(n => 'lost ' + n), ...worse.map(f => 'worse ' + f.key), ...unreadable.map(o => 'see-through ' + o.key)],
   };
 }
 
@@ -95,7 +117,7 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       const ctx = await browser.newContext({ viewport: vp }), page = await ctx.newPage();
       const b = await measure(page, c.before, c), a = await measure(page, html, c);
       const g = gates(b, a, c, vp.width);
-      for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6']) res[k] = (res[k] ?? true) && g[k];
+      for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7']) res[k] = (res[k] ?? true) && g[k];
       why.push(...g.why.map(w => `${vp.width}: ${w}`));
       if (!a.roles.every(Boolean)) why.push(`${vp.width}: roles ${JSON.stringify(c.must_keep_roles.filter((_, i) => !a.roles[i]))}`);
       if (!a.sels.every(Boolean)) why.push(`${vp.width}: selectors ${JSON.stringify(c.must_keep_selectors.filter((_, i) => !a.sels[i]))}`);

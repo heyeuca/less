@@ -4,7 +4,9 @@ Checks D cases in `../evals.json` (spec-v0.3 §5) at 1280×800 and 320×640.
 Gates (all must pass): G1 roles kept, G2 selectors/CSS text kept, G3 no new axe
 violations (wcag2a/2aa/21aa/22aa), G4 interactive nodes kept unless
 `must_remove_hint` names them, G5 focus indicator and ≥24px target no worse,
-G6 reflow at 320px holds if it held before. Element and CSS declaration counts
+G6 reflow at 320px holds if it held before, G7 a fixed/sticky element with
+text that content scrolls under keeps an opaque fill or a `backdrop-filter` if
+it had one before (computed style, not pixels). Element and CSS declaration counts
 print as info only.
 
     npm ci && npx playwright install chromium
