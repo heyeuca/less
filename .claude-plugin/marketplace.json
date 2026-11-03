@@ -1,0 +1,14 @@
+{
+  "name": "heyeuca",
+  "description": "Agent skills from euca.",
+  "owner": {
+    "name": "euca"
+  },
+  "plugins": [
+    {
+      "name": "less",
+      "source": "./",
+      "description": "An agent skill to keep only what has a reason to exist."
+    }
+  ]
+}
