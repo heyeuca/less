@@ -1,0 +1,16 @@
+{
+  "should_trigger": [
+    "Simplify this UI, it's too busy. <html>…</html>",
+    "This landing page looks cluttered. Can you clean it up?",
+    "Declutter this settings screen (attached JSX).",
+    "This component looks AI-generated. Strip it down.",
+    "Remove the extra shadows and borders from this card."
+  ],
+  "should_not_trigger": [
+    "Build me a new UI for a todo app.",
+    "Make this page more colorful and add an animation.",
+    "Add a dark mode toggle to this component.",
+    "Here's a screenshot of our dashboard. What do you think?",
+    "Audit this page for accessibility issues and list them."
+  ]
+}

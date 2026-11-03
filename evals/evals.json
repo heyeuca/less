@@ -476,6 +476,327 @@
         "total(values) name and signature",
         "same results incl. empty list -> 0"
       ]
+    },
+    {
+      "id": "D01",
+      "category": "design · cards in cards",
+      "format": "html",
+      "prompt": "Clean up this pricing card; it looks AI-generated.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>.card{border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:16px}</style></head><body><main><div class=\"card\"><div class=\"card\"><h2>Pro</h2><p data-testid=\"price\">$12/mo</p><button>Start trial</button></div></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>.card{border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:16px}</style></head><body><main><div class=\"card\"><h2>Pro</h2><p data-testid=\"price\">$12/mo</p><button>Start trial</button></div></main></body></html>",
+      "must_keep": [
+        "plan name 'Pro'",
+        "price '$12/mo'",
+        "'Start trial' button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Pro"
+        ],
+        [
+          "button",
+          "Start trial"
+        ]
+      ],
+      "must_keep_selectors": [
+        "[data-testid=price]"
+      ],
+      "must_remove_hint": [
+        "nested .card"
+      ]
+    },
+    {
+      "id": "D02",
+      "category": "design · gradient and glow hero",
+      "format": "html",
+      "prompt": "This hero is too busy. Simplify it.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Home</title><style>body{margin:0;color:#111}.hero{padding:48px 16px;background:linear-gradient(135deg,#f5f0ff,#e0f2ff)}.orb{position:absolute;width:300px;height:300px;border-radius:50%;background:#c4b5fd;filter:blur(64px);opacity:.5}h1{font-size:40px}@media (max-width:600px){h1{font-size:28px}}</style></head><body><main><section class=\"hero\"><div class=\"orb\" aria-hidden=\"true\"></div><h1>Track every shipment</h1><a href=\"/signup\">Get started</a></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Home</title><style>body{margin:0;color:#111}.hero{padding:48px 16px}h1{font-size:40px}@media (max-width:600px){h1{font-size:28px}}</style></head><body><main><section class=\"hero\"><h1>Track every shipment</h1><a href=\"/signup\">Get started</a></section></main></body></html>",
+      "must_keep": [
+        "headline",
+        "'Get started' link to /signup",
+        "mobile font-size breakpoint"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Track every shipment"
+        ],
+        [
+          "link",
+          "Get started"
+        ]
+      ],
+      "must_keep_selectors": [
+        "a[href='/signup']",
+        "@media (max-width:600px)"
+      ],
+      "must_remove_hint": [
+        "linear-gradient",
+        ".orb"
+      ]
+    },
+    {
+      "id": "D03",
+      "category": "design · eyebrows + emoji icons",
+      "format": "html",
+      "prompt": "Declutter this features section.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:#555}</style></head><body><main><section><span class=\"eyebrow\">Features</span><h2>Features</h2><ul><li>🚀 Fast sync across devices</li><li>🔒 End-to-end encryption</li><li>✨ Offline mode</li></ul></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:#555}</style></head><body><main><section><h2>Features</h2><ul><li>Fast sync across devices</li><li>End-to-end encryption</li><li>Offline mode</li></ul></section></main></body></html>",
+      "must_keep": [
+        "heading 'Features'",
+        "all three features as a list"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Features"
+        ],
+        [
+          "list",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "ul > li:nth-child(3)"
+      ],
+      "must_remove_hint": [
+        "eyebrow span",
+        "emoji"
+      ]
+    },
+    {
+      "id": "D04",
+      "category": "design · unrequested logo strip and testimonials",
+      "format": "html",
+      "prompt": "I only asked for a signup form. Clean this up.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sign up</title><style></style></head><body><main><h1>Sign up</h1><form><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required><button type=\"submit\">Sign up</button></form><section><h2>Trusted by</h2><img src=\"data:,\" alt=\"Logo\"><img src=\"data:,\" alt=\"Logo\"></section><section><blockquote>\"Best tool ever!\" — Happy Customer</blockquote></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sign up</title><style></style></head><body><main><h1>Sign up</h1><form><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required><button type=\"submit\">Sign up</button></form></main></body></html>",
+      "must_keep": [
+        "Email label and input",
+        "required email field",
+        "'Sign up' submit button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Sign up"
+        ],
+        [
+          "textbox",
+          "Email"
+        ],
+        [
+          "button",
+          "Sign up"
+        ]
+      ],
+      "must_keep_selectors": [
+        "input[name=email][type=email][required]",
+        "button[type=submit]"
+      ],
+      "must_remove_hint": [
+        "Trusted by section",
+        "testimonial"
+      ]
+    },
+    {
+      "id": "D05",
+      "category": "design · filler copy in a form",
+      "format": "html",
+      "prompt": "Trim this contact page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Contact</title><style></style></head><body><main><h1>Contact us</h1><p>Empower your team to connect, collaborate, and create. We're here for you, every step of the way.</p><form><label for=\"msg\">Message</label><textarea id=\"msg\" name=\"message\"></textarea><p>We reply within 2 business days.</p><button type=\"submit\">Send</button></form></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Contact</title><style></style></head><body><main><h1>Contact us</h1><form><label for=\"msg\">Message</label><textarea id=\"msg\" name=\"message\"></textarea><p>We reply within 2 business days.</p><button type=\"submit\">Send</button></form></main></body></html>",
+      "must_keep": [
+        "Message label and textarea",
+        "'We reply within 2 business days.'",
+        "'Send' button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Contact us"
+        ],
+        [
+          "textbox",
+          "Message"
+        ],
+        [
+          "button",
+          "Send"
+        ]
+      ],
+      "must_keep_selectors": [
+        "textarea[name=message]"
+      ],
+      "must_remove_hint": [
+        "slogan paragraph"
+      ]
+    },
+    {
+      "id": "D06",
+      "category": "design · animation everywhere, reduced-motion present",
+      "format": "html",
+      "prompt": "There's too much motion here. Simplify.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1}}section{animation:up .6s}.card{transition:all .3s}.card:hover{transform:scale(1.03)}button{transition:background-color .15s}button:hover{background:#1e40af;color:#fff}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}</style></head><body><main><section><h2>Plans</h2><div class=\"card\"><h3>Basic</h3><button>Choose Basic</button></div></section><section><h2>FAQ</h2><p>Cancel anytime.</p></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>button{transition:background-color .15s}button:hover{background:#1e40af;color:#fff}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}</style></head><body><main><section><h2>Plans</h2><div class=\"card\"><h3>Basic</h3><button>Choose Basic</button></div></section><section><h2>FAQ</h2><p>Cancel anytime.</p></section></main></body></html>",
+      "must_keep": [
+        "button hover feedback",
+        "prefers-reduced-motion block",
+        "both sections"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Plans"
+        ],
+        [
+          "heading",
+          "FAQ"
+        ],
+        [
+          "button",
+          "Choose Basic"
+        ]
+      ],
+      "must_keep_selectors": [
+        "@media (prefers-reduced-motion: reduce)",
+        "button:hover"
+      ],
+      "must_remove_hint": [
+        "@keyframes up",
+        "transition:all",
+        ".card:hover"
+      ]
+    },
+    {
+      "id": "D07",
+      "category": "design · over-cut · only boundary",
+      "format": "html",
+      "prompt": "Remove the extra borders and shadows.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}input{background:#fff;border:1px solid #767676;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px}input{background:#fff;border:1px solid #767676;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px}input{background:#fff;border:none;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
+      "why_bad": "The input's border is its only boundary on a white page; removing it fails WCAG 1.4.11 (research-design.md §3). axe does not test 1.4.11, so the selector check on the border declaration catches it.",
+      "must_keep": [
+        "input border 1px solid #767676",
+        "Search orders label",
+        "Search button"
+      ],
+      "must_keep_roles": [
+        [
+          "searchbox",
+          "Search orders"
+        ],
+        [
+          "button",
+          "Search"
+        ]
+      ],
+      "must_keep_selectors": [
+        "input{background:#fff;border:1px solid #767676"
+      ],
+      "must_remove_hint": [
+        ".panel box-shadow",
+        ".panel border"
+      ]
+    },
+    {
+      "id": "D08",
+      "category": "design · over-cut · requested element",
+      "format": "html",
+      "prompt": "Simplify this hero. Keep the brand gradient.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Brightside</title><style>body{margin:0}.hero{padding:48px 16px;color:#111;background:linear-gradient(90deg,#ffd6a5,#fdffb6)}</style></head><body><main><section class=\"hero\"><h1>Brightside Café</h1><a href=\"/menu\">See the menu</a></section></main></body></html>",
+      "after": "unchanged",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Brightside</title><style>body{margin:0}.hero{padding:48px 16px;color:#111}</style></head><body><main><section class=\"hero\"><h1>Brightside Café</h1><a href=\"/menu\">See the menu</a></section></main></body></html>",
+      "why_bad": "The user asked to keep the gradient; nothing else fails the test, so the correct output is unchanged.",
+      "must_keep": [
+        "unchanged",
+        "brand gradient"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Brightside Café"
+        ],
+        [
+          "link",
+          "See the menu"
+        ]
+      ],
+      "must_keep_selectors": [
+        "linear-gradient(90deg,#ffd6a5,#fdffb6)"
+      ]
+    },
+    {
+      "id": "D09",
+      "category": "design · over-cut · accessible name and focus",
+      "format": "html",
+      "prompt": "Declutter this dialog.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>button:focus-visible{outline:2px solid #1a56db;outline-offset:2px}.icon{width:32px;height:32px}.eyebrow{text-transform:uppercase;font-size:12px}</style></head><body><main><div role=\"dialog\" aria-labelledby=\"t\"><span class=\"eyebrow\">✨ Heads up</span><h2 id=\"t\">Delete project?</h2><p>This can't be undone.</p><button class=\"icon\" aria-label=\"Close dialog\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>button:focus-visible{outline:2px solid #1a56db;outline-offset:2px}.icon{width:32px;height:32px}</style></head><body><main><div role=\"dialog\" aria-labelledby=\"t\"><h2 id=\"t\">Delete project?</h2><p>This can't be undone.</p><button class=\"icon\" aria-label=\"Close dialog\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>.icon{width:32px;height:32px}</style></head><body><main><div role=\"dialog\"><h2>Delete project?</h2><button class=\"icon\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
+      "why_bad": "Drops aria-label (new axe button-name violation), the focus-visible style (K5), the dialog's name, and the irreversibility warning.",
+      "must_keep": [
+        "'This can't be undone.'",
+        "Close button's accessible name",
+        "focus-visible outline",
+        "dialog labelled by heading"
+      ],
+      "must_keep_roles": [
+        [
+          "dialog",
+          "Delete project?"
+        ],
+        [
+          "button",
+          "Close dialog"
+        ],
+        [
+          "button",
+          "Delete"
+        ]
+      ],
+      "must_keep_selectors": [
+        "button:focus-visible",
+        "[aria-label='Close dialog']"
+      ],
+      "must_remove_hint": [
+        "eyebrow span"
+      ]
+    },
+    {
+      "id": "D10",
+      "category": "design · over-cut · state branches",
+      "format": "html",
+      "prompt": "Remove anything unused from this orders panel.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>.badge{background:#eef;border-radius:999px;padding:2px 8px;font-size:12px}</style></head><body><main><section><span class=\"badge\">New</span><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul><p id=\"loading\" role=\"status\" hidden>Loading orders…</p><p id=\"empty\" hidden>No orders yet.</p><p id=\"error\" role=\"alert\" hidden>Couldn't load orders. Try again.</p></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style></style></head><body><main><section><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul><p id=\"loading\" role=\"status\" hidden>Loading orders…</p><p id=\"empty\" hidden>No orders yet.</p><p id=\"error\" role=\"alert\" hidden>Couldn't load orders. Try again.</p></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style></style></head><body><main><section><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul></section></main></body></html>",
+      "why_bad": "Hidden loading, empty and error states look unused in static markup but are shown by app code; deleting them removes state handling (research-design.md §3, WCAG 3.3.1, 4.1.3).",
+      "must_keep": [
+        "loading, empty and error states",
+        "error text 'Couldn't load orders. Try again.'"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Orders"
+        ],
+        [
+          "list",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "#loading[role=status]",
+        "#empty",
+        "#error[role=alert]"
+      ],
+      "must_remove_hint": [
+        "'New' badge"
+      ]
     }
   ]
 }
