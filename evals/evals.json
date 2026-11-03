@@ -705,7 +705,7 @@
       ],
       "must_have_styles": [
         {
-          "selector": "section",
+          "selector": "body *",
           "properties": {
             "animation-name": "none"
           }

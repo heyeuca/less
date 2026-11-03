@@ -105,7 +105,7 @@ async function measure(page, src, c) {
   if (c.must_remove_computed_background) {
     removed.push(await page.evaluate(() => ![...document.querySelectorAll('*')].some(el =>
       [null, '::before', '::after'].some(pseudo =>
-        /linear-gradient/i.test(getComputedStyle(el, pseudo).backgroundImage)))));
+        /(linear|radial|conic)-gradient/i.test(getComputedStyle(el, pseudo).backgroundImage)))));
   }
   for (const { selector, properties, hover } of c.must_have_styles || []) {
     const matches = page.locator(selector);

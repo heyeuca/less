@@ -51,8 +51,8 @@ assertions. Content checks avoid requiring a particular tag or wrapper layout.
 element and requires at least one match. A `hover: true` assertion checks each
 matching element while hovered. D12 protects the focus ring separately while
 requiring no decorative shadow, transition, or scale at rest and on hover.
-`must_remove_computed_background` rejects computed linear gradients (including
-pseudo-elements), regardless of function case or CSS escapes. D07 requires the form's four border
+`must_remove_computed_background` rejects computed linear, radial, and conic gradients, repeating ones included
+(also on pseudo-elements), regardless of function case or CSS escapes. D07 requires the form's four border
 widths to be zero and its box-shadow to be none, independent of declaration
 spelling. D11 uses `must_remove_nested_surfaces` to reject styled div, section, article, aside, or main containers nested
 inside another such container; unstyled layout wrappers and
