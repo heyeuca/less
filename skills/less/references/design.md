@@ -71,6 +71,10 @@ one line: "less edits code or text it can return."
 - **K10 Brand:** logo, brand tokens, required legal text.
 - **K11 The user's ask:** anything requested, including sections, fields, and
   buttons.
+- **K12 Overlay legibility:** on elements that sit over content (sticky or
+  fixed headers, overlays, modals, drawers), a blur, shadow, or scrim that
+  keeps their text readable is not decoration. If you remove it, make the
+  element's background opaque (1.4.3).
 
-K1–K11 protect the named items only, not everything near them. When unsure
+K1–K12 protect the named items only, not everything near them. When unsure
 whether a removal breaks one, keep it.
