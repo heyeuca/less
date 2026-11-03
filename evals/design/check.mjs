@@ -6,7 +6,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { AxeBuilder } from '@axe-core/playwright';
 
-const cases = JSON.parse(readFileSync(new URL('../evals.json', import.meta.url))).evals.filter(c => c.format === 'html');
+const cases = JSON.parse(readFileSync(process.env.LESS_CASES || new URL('../evals.json', import.meta.url))).evals.filter(c => c.format === 'html');
 const VIEWPORTS = [{ width: 1280, height: 800 }, { width: 320, height: 640 }];
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const INTERACTIVE = /^(button|link|textbox|searchbox|checkbox|radio|combobox|slider|spinbutton|switch|tab|menuitem|option|listbox)$/;
