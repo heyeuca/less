@@ -1,6 +1,6 @@
 ---
 name: less
-description: Removes elements without a clear reason to exist from writing and code, keeping correctness, needed context, safety, and everything the user asked for. Use when the user asks to cut, trim, simplify, tighten, or shorten something, says it is "too long", or asks to clean up AI-written output.
+description: Removes elements without a clear reason to exist from writing, code, and UI code (HTML/CSS, JSX, Tailwind), keeping correctness, needed context, safety, accessibility, and everything the user asked for. Use when the user asks to cut, trim, simplify, tighten, shorten, or declutter something, says it is "too long", "too busy", or "looks cluttered", or asks to clean up AI-written output. Not for building new UI.
 license: MIT
 ---
 
@@ -55,6 +55,12 @@ Code:
 Documents: apply the test section by section. Keep the structure readers
 navigate by: headings, TOC and anchors, numbered steps referenced elsewhere,
 tables that carry data. Remove a whole section only when it fails the test.
+
+Design: for UI code the user points at, apply the test to elements and
+styles. Remove only after checking [references/design.md](references/design.md)
+(removal order and never-remove list). Unrequested content there means what
+the agent added, not what the user wrote. Change markup and styles only; no new
+aesthetic. Not for building new UI, screenshots, or Figma files.
 
 ## Never remove
 
