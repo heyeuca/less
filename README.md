@@ -71,6 +71,14 @@ Measured on the 49 cases in [`evals/`](evals/), 2 runs with grok-4.7, against th
 
 A separate grading agent checks each case against its `must_keep` list; code is run and compared, and UI is checked with Playwright and axe. We tuned the skill on these evals, so read them as a regression test, not a benchmark, and only one model was tested.
 
+These numbers predate the current evaluation protocol. The baseline arm was
+asked to "Make this less verbose." while the skill arm got `/less`; the runner
+now gives both arms the same task instruction, so only the skill context
+differs. UI checks now also require fixture-specific removals (G8). The numbers
+above have not been remeasured with these changes. Future reports should retain
+model/version settings, raw outputs, grading decisions, and behavior-check
+commands so results can be reproduced.
+
 ## License
 
 [MIT](LICENSE)

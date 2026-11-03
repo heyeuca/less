@@ -28,7 +28,7 @@ def task(case, with_skill):
         parts.append("Use this skill:\n\n<skill>\n" + skill + "</skill>\n")
     if case.get("prompt"):
         parts.append("The user's original request:\n\n" + case["prompt"] + "\n")
-    command = "/less" if with_skill else "Make this less verbose."
+    command = "Remove unnecessary material while preserving meaning, behavior, and requested constraints."
     parts.append(command + "\n\n" + case["before"] + "\n")
     return "\n".join(parts)
 

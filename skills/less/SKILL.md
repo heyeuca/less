@@ -17,9 +17,10 @@ If not, remove it. Clarity beats brevity. When unsure, keep it.
 ## When
 
 Only on request or a clear cue, not when merely writing a draft or new code.
-Removal only: no style or voice rewrites, translation, fixed-length summaries,
-or fact-checking; in code, no refactors beyond removal, performance work, or
-style rewrites.
+Remove unnecessary material; allow only the local edits needed to keep the
+result grammatical or executable (such as inlining a redundant helper). No
+independent style or voice rewrites, translation, fixed-length summaries,
+fact-checking, algorithm substitutions, or performance work.
 
 ## Don't apply
 
@@ -44,14 +45,21 @@ Writing:
 5. Unrequested caveats and alternatives that don't change what the reader does.
 6. Decoration on answers under ~5 sentences: headers, bold, bullets.
 7. Merge and shorten the rest, keeping complete sentences. When editing the
-   user's text, remove only; don't merge or reword.
+   user's text, do not merge or rephrase sentences; only repair grammar
+   directly affected by a deletion.
 
 Code:
 1. Comments that restate the code.
-2. Unrequested abstractions: single-use helpers, wrappers, interfaces, factories.
+2. Unnecessary abstractions: helpers, wrappers, interfaces, factories.
+   Single use alone is not evidence that an abstraction is unnecessary.
 3. Unrequested options, flags, config.
 4. Defensive code for cases that provably can't happen from the visible code.
    Otherwise keep it.
+
+Before removing code or options, inspect available callers, exports, and
+relevant tests. Preserve externally used signatures and behavior unless the
+user explicitly requests that change. Run relevant existing checks after code
+edits; if usage or behavior cannot be established, keep the candidate.
 
 Documents: apply the test section by section. Keep the structure readers
 navigate by: headings, TOC and anchors, numbered steps referenced elsewhere,
@@ -80,7 +88,8 @@ aesthetic. Not for building new UI, screenshots, or Figma files.
   filler in the user's text ("basically", "literally", "just") is still cut,
   keeping their voice.
 - Politeness register: 존댓말/敬語 forms, 様, greetings, sign-offs. Stacked
-  softeners and intensifiers inside it (정말, 혹시, 大変, 誠に, 何卒) are filler.
+  softeners and intensifiers inside it (정말, 혹시, 大変, 誠に, 何卒) are
+  candidates only: keep them when they carry uncertainty or social intent.
 - Code: behavior (output, side effects, errors); error handling at real
   boundaries (I/O, network, user input); "why" comments, constraints, safety
   notes; public API and signatures unless asked; type annotations that affect
