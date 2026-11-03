@@ -1,0 +1,22 @@
+{
+ "evals": [
+  {
+   "id": "T01",
+   "category": "checker self-test \u00b7 G5 focus",
+   "format": "html",
+   "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>button:focus-visible{outline:2px solid #1a56db}</style></head><body><main><button>Save</button></main></body></html>",
+   "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style></style></head><body><main><button>Save</button></main></body></html>",
+   "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>button:focus{outline:none}</style></head><body><main><button>Save</button></main></body></html>",
+   "must_keep": [
+    "Save button"
+   ],
+   "must_keep_roles": [
+    [
+     "button",
+     "Save"
+    ]
+   ],
+   "must_keep_selectors": []
+  }
+ ]
+}

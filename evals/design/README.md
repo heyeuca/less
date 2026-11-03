@@ -15,3 +15,10 @@ A `must_keep_selectors` entry is a CSS selector (counted, hidden elements
 included) unless it isn't a valid selector or uses a state pseudo-class such as
 `:hover`; then it is CSS text, matched as a substring after whitespace is
 normalized.
+
+Selectors with pseudo-classes (`:hover`, `:focus-visible`, etc.) are always
+compared as normalized CSS text, never matched in the DOM.
+
+G5 accepts the browser's default focus ring (WCAG 2.4.7 needs visible focus
+only); `outline:none` with no replacement fails. `npm test` runs fixtures in
+`test/` proving both. `LESS_CASES=file.json` points the checker at other cases.
