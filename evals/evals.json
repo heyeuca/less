@@ -1,6 +1,6 @@
 {
   "skill_name": "less",
-  "invocation": "Every case is invoked with `/less` on `before`; a `prompt` is the user's original request or cue, given as context. `after` is the reference; grade against `must_keep`, not exact match.",
+  "invocation": "Both arms receive the same removal request and original prompt; only skill context differs. Grade meaning against must_keep. protected_spans must remain verbatim; must_remove_spans must disappear. exact_noop requires byte-for-byte equality with before. after is otherwise illustrative.",
   "evals": [
     {
       "id": "E01",
@@ -993,6 +993,207 @@
           }
         }
       ]
+    },
+    {
+      "id": "P01",
+      "category": "paired preservation · certainty",
+      "pair_id": "certainty",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "분명히 말하자면, 배포는 금요일입니다.",
+      "after": "배포는 금요일입니다.",
+      "must_keep": [
+        "배포는 금요일입니다."
+      ],
+      "protected_spans": [
+        "배포는 금요일입니다."
+      ],
+      "must_remove_spans": [
+        "분명히 말하자면, "
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P02",
+      "category": "paired preservation · certainty",
+      "pair_id": "certainty",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "배포는 아마 금요일일 것입니다.",
+      "after": "배포는 아마 금요일일 것입니다.",
+      "must_keep": [
+        "배포는 아마 금요일일 것입니다."
+      ],
+      "protected_spans": [
+        "배포는 아마 금요일일 것입니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "배포는 금요일입니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P03",
+      "category": "paired preservation · scope",
+      "pair_id": "scope",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "참고로 말씀드리면, 일부 환경에서 약 50%의 요청이 실패할 수 있습니다.",
+      "after": "일부 환경에서 약 50%의 요청이 실패할 수 있습니다.",
+      "must_keep": [
+        "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
+      ],
+      "protected_spans": [
+        "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
+      ],
+      "must_remove_spans": [
+        "참고로 말씀드리면, "
+      ],
+      "exact_noop": false,
+      "bad_after": "50%의 요청이 실패합니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P04",
+      "category": "paired preservation · scope",
+      "pair_id": "scope",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "이 결과는 시험 환경에만 해당합니다. 약 50%의 요청이 실패했습니다. 재시도는 최대 3회 허용됩니다.",
+      "after": "이 결과는 시험 환경에만 해당합니다. 약 50%의 요청이 실패했습니다. 재시도는 최대 3회 허용됩니다.",
+      "must_keep": [
+        "이 결과는 시험 환경에만 해당합니다.",
+        "약 50%의 요청이 실패했습니다.",
+        "재시도는 최대 3회 허용됩니다."
+      ],
+      "protected_spans": [
+        "이 결과는 시험 환경에만 해당합니다.",
+        "약 50%의 요청이 실패했습니다.",
+        "재시도는 최대 3회 허용됩니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "50%의 요청이 실패했습니다. 재시도는 3회 허용됩니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P05",
+      "category": "paired preservation · ending",
+      "pair_id": "ending",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "캐시는 60초 후 만료됩니다. 여기까지 읽으셨다면 이제 캐시가 60초 후 만료된다는 점을 이해하셨을 것입니다.",
+      "after": "캐시는 60초 후 만료됩니다.",
+      "must_keep": [
+        "캐시는 60초 후 만료됩니다."
+      ],
+      "protected_spans": [
+        "캐시는 60초 후 만료됩니다."
+      ],
+      "must_remove_spans": [
+        "여기까지 읽으셨다면 이제 캐시가 60초 후 만료된다는 점을 이해하셨을 것입니다."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P06",
+      "category": "paired preservation · ending",
+      "pair_id": "ending",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "캐시는 60초 후 만료됩니다. 따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요.",
+      "after": "캐시는 60초 후 만료됩니다. 따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요.",
+      "must_keep": [
+        "캐시는 60초 후 만료됩니다.",
+        "따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요."
+      ],
+      "protected_spans": [
+        "캐시는 60초 후 만료됩니다.",
+        "따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "캐시는 60초 후 만료됩니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P07",
+      "category": "paired preservation · causality",
+      "pair_id": "causality",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "이 대목에서 잠시 시야를 넓혀 볼 필요가 있습니다. 지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "after": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "must_keep": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "protected_spans": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "must_remove_spans": [
+        "이 대목에서 잠시 시야를 넓혀 볼 필요가 있습니다."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P08",
+      "category": "paired preservation · causality",
+      "pair_id": "causality",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "after": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "must_keep": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "protected_spans": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "지연 증가가 재시도 증가의 원인입니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P09",
+      "category": "paired preservation · obligation",
+      "pair_id": "obligation",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "For completeness, all inputs must be validated. Secrets must never appear in logs.",
+      "after": "All inputs must be validated. Secrets must never appear in logs.",
+      "must_keep": [
+        "Secrets must never appear in logs.",
+        "all inputs must be validated: preserve universal scope and obligation"
+      ],
+      "protected_spans": [
+        "Secrets must never appear in logs."
+      ],
+      "must_remove_spans": [
+        "For completeness, "
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P10",
+      "category": "paired preservation · obligation",
+      "pair_id": "obligation",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "All inputs must be validated. Secrets must never appear in logs.",
+      "after": "All inputs must be validated. Secrets must never appear in logs.",
+      "must_keep": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "protected_spans": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Inputs should be validated. Secrets should not appear in logs.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
     }
   ]
 }

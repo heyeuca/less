@@ -13,6 +13,10 @@ Less, but better. Keep only what has a reason to exist.
 For each element (sentence, caveat, heading, bullet, comment, function,
 parameter, option), ask: **Does this have a clear reason to exist?**
 If not, remove it. Clarity beats brevity. When unsure, keep it.
+Judge what a passage does in context, not whether it matches a stock phrase.
+Read the surrounding text: a qualifier may govern later sentences.
+Leave sentences and code regions outside confirmed removal targets unchanged;
+allow only the local repairs needed by those removals.
 
 ## When
 
@@ -76,6 +80,9 @@ aesthetic. Not for building new UI, screenshots, or Figma files.
 ## Never remove
 
 - Correctness: numbers, units, dates, conditions, exceptions, negations.
+- Claim strength: uncertainty, approximation, scope, causal relationships, and
+  obligation. Keep meaning-bearing qualifiers such as "about", "some", "at
+  most", "may", and "must"; shortening must not strengthen or weaken a claim.
 - Needed context: what the reader needs to act (prerequisites, steps, versions).
 - Safety: data-loss, security, money, legal, irreversible-action warnings.
 - The user's ask: requested content, format, length, constraints.
@@ -99,7 +106,9 @@ aesthetic. Not for building new UI, screenshots, or Figma files.
 ## Stop
 
 Stop when every element passes the test, or when the next cut would cost
-meaning or require guessing. Never cut to hit a length. If the user asked to
+meaning or require guessing. Compare the result with the source for changed
+claim strength and unintended edits to good surrounding material.
+Never cut to hit a length. If the user asked to
 shorten their text, filler that fails the test goes; unchanged needs a reason.
 
 ## Output
