@@ -7,8 +7,8 @@ violations (wcag2a/2aa/21aa/22aa), G4 interactive nodes kept unless
 G6 reflow at 320px holds if it held before, G7 every fixed/sticky element with
 text on the returned page that content scrolls under has an opaque fill or a
 `backdrop-filter` (computed style, not pixels; one already see-through before,
-same tag and about the same place, prints a pre-existing note instead). Element and CSS declaration counts
-print as info only.
+same tag and about the same place, prints a pre-existing note instead), G8
+required removals hold. Element and CSS declaration counts print as info only.
 
     npm ci && npx playwright install chromium
     node check.mjs self        # before, after, bad_after vs before
@@ -36,3 +36,10 @@ include `references/design.md`), save replies as `OUT/<id>.with.out.md` and
 tree to HTML (`className`→`class`, `htmlFor`→`for`, `{…}` props dropped) with
 `fixtures/tailwind.css`, which was precompiled once with `@tailwindcss/cli`
 (no Tailwind at check time). CSS-text entries match the JSX source.
+
+G8 checks explicit `must_remove_selectors` (absent from the rendered DOM) and
+`must_remove_text` (absent from whitespace-normalized source). Unlike the
+preservation gates, it rejects unchanged output on reduction cases. These are
+fixture-specific assertions, not a general visual quality score. In `self`
+mode, `before` checks preservation only; `after` must pass all gates and
+`bad_after` must fail at least one gate, otherwise the command exits nonzero.

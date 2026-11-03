@@ -1,4 +1,4 @@
-// Design checker for less D cases (spec-v0.3 §5, K-G1..K-G6, plus G7 overlay legibility).
+// Design checker for less D cases (spec-v0.3 §5, K-G1..K-G6, plus G7 overlay legibility and G8 required removals).
 //   node check.mjs self      checks each case's before, after and bad_after against before
 //   node check.mjs OUT [ID] [--suffix without]  checks OUT/<id>.<suffix>.out.md (default with; HTML, fences allowed)
 //   against before and writes OUT/design-<suffix>.json, which run.py sheet shows in the pass columns
@@ -93,7 +93,12 @@ async function measure(page, src, c) {
     return out;
   });
   const info = await page.evaluate(() => ({ elements: document.querySelectorAll('body *').length, decls: [...document.styleSheets].flatMap(s => [...s.cssRules]).reduce((n, r) => n + (r.style ? r.style.length : 0), 0) }));
-  return { roles, sels, axe, nodes, focus, reflow, overlays, info };
+  const removed = [];
+  for (const selector of c.must_remove_selectors || [])
+    removed.push(await page.locator(selector).count() === 0);
+  for (const snippet of c.must_remove_text || [])
+    removed.push(!norm(src).includes(norm(snippet)));
+  return { roles, sels, axe, nodes, focus, reflow, overlays, info, removed };
 }
 
 function gates(b, a, c, width) {
@@ -113,7 +118,8 @@ function gates(b, a, c, width) {
     G1: a.roles.every(Boolean), G2: a.sels.every(Boolean),
     G3: a.axe.every(v => b.axe.includes(v)), G4: missingNodes.length === 0,
     G5: worse.length === 0, G6: width !== 320 || !b.reflow || a.reflow, G7: unreadable.length === 0,
-    why: [...a.axe.filter(v => !b.axe.includes(v)), ...missingNodes.map(n => 'lost ' + n), ...worse.map(f => 'worse ' + f.key), ...unreadable.map(o => 'see-through ' + o.key), ...already.map(o => 'note: pre-existing see-through ' + o.key)],
+    G8: a.removed.every(Boolean),
+    why: [...(a.removed.every(Boolean) ? [] : ['required removal remains']), ...a.axe.filter(v => !b.axe.includes(v)), ...missingNodes.map(n => 'lost ' + n), ...worse.map(f => 'worse ' + f.key), ...unreadable.map(o => 'see-through ' + o.key), ...already.map(o => 'note: pre-existing see-through ' + o.key)],
   };
 }
 
@@ -137,7 +143,12 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       const ctx = await browser.newContext({ viewport: vp }), page = await ctx.newPage();
       const b = await measure(page, c.before, c), a = await measure(page, html, c);
       const g = gates(b, a, c, vp.width);
-      for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7']) res[k] = (res[k] ?? true) && g[k];
+      // The original is a preservation control, not a reduced candidate.
+      if (label === 'before') {
+        g.G8 = true;
+        g.why = g.why.filter(w => w !== 'required removal remains');
+      }
+      for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8']) res[k] = (res[k] ?? true) && g[k];
       why.push(...g.why.map(w => `${vp.width}: ${w}`));
       if (!a.roles.every(Boolean)) why.push(`${vp.width}: roles ${JSON.stringify(c.must_keep_roles.filter((_, i) => !a.roles[i]))}`);
       if (!a.sels.every(Boolean)) why.push(`${vp.width}: selectors ${JSON.stringify(c.must_keep_selectors.filter((_, i) => !a.sels[i]))}`);
@@ -145,7 +156,7 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       await ctx.close();
     }
     const pass = Object.values(res).every(Boolean);
-    if (!pass && label !== 'bad_after') failed++;
+    if ((!pass && label !== 'bad_after') || (pass && label === 'bad_after')) failed++;
     if (label === 'output') results[c.id] = `${pass ? 'PASS' : 'FAIL'} ${Object.entries(res).map(([k, v]) => k + (v ? '✓' : '✗')).join(' ')}`;
     console.log(`${c.id} ${label.padEnd(9)} ${pass ? 'PASS' : 'FAIL'} ${Object.entries(res).map(([k, v]) => k + (v ? '✓' : '✗')).join(' ')}${why.length ? '  ' + [...new Set(why)].join('; ') : ''}`);
     console.log(`    info: ${info.join(' | ')}`);

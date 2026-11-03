@@ -200,9 +200,9 @@
     {
       "id": "E17",
       "category": "code · unrequested options + impossible defense",
-      "prompt": "Simplify this. It only needs to read config.json and return the parsed data.",
+      "prompt": "Simplify this. Remove the path, encoding, and verbose options; it only needs to read config.json as UTF-8 and return the parsed data.",
       "before": "def load_config(path=\"config.json\", encoding=\"utf-8\", verbose=False):\n    if verbose:\n        print(\"loading\", path)\n    with open(path, encoding=encoding) as f:\n        text = f.read()\n    if text is None:  # f.read() never returns None\n        return {}\n    return json.loads(text)\n",
-      "after": "def load_config(path=\"config.json\"):\n    with open(path, encoding=\"utf-8\") as f:\n        return json.load(f)\n",
+      "after": "def load_config():\n    with open(\"config.json\", encoding=\"utf-8\") as f:\n        text = f.read()\n    return json.loads(text)\n",
       "must_keep": [
         "reads config.json by default (dropping the `path` parameter is fine: the user said it only reads config.json; behavior and errors must match `before`)",
         "the file read and parse",
@@ -278,7 +278,7 @@
       "category": "ja prose · over-cut · keigo",
       "prompt": "もっと短くして",
       "before": "山田様、いつも大変お世話になっております。誠に恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。何卒よろしくお願い申し上げます。",
-      "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までに請求書をお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。よろしくお願い申し上げます。",
       "bad_after": "山田さん、11月10日までに請求書を送ってください。",
       "why_bad": "drops 様, the opening greeting, and keigo; to a client this reads as rude, which changes meaning.",
       "must_keep": [
@@ -471,7 +471,7 @@
       "category": "code · positive · AI bloat",
       "prompt": "this AI-written code is bloated, cut it down",
       "before": "from typing import List\n\nclass SumStrategy:\n    def apply(self, values: List[int]) -> int:\n        # sum the values\n        total = 0\n        for v in values:\n            total += v\n        return total\n\ndef total(values: List[int]) -> int:\n    return SumStrategy().apply(values)\n",
-      "after": "def total(values: list[int]) -> int:\n    return sum(values)\n",
+      "after": "from typing import List\n\ndef total(values: List[int]) -> int:\n    total = 0\n    for v in values:\n        total += v\n    return total\n",
       "must_keep": [
         "total(values) name and signature",
         "same results incl. empty list -> 0"
@@ -504,6 +504,9 @@
       ],
       "must_remove_hint": [
         "nested .card"
+      ],
+      "must_remove_selectors": [
+        ".card .card"
       ]
     },
     {
@@ -535,6 +538,12 @@
       "must_remove_hint": [
         "linear-gradient",
         ".orb"
+      ],
+      "must_remove_selectors": [
+        ".orb"
+      ],
+      "must_remove_text": [
+        "linear-gradient"
       ]
     },
     {
@@ -564,6 +573,14 @@
       "must_remove_hint": [
         "eyebrow span",
         "emoji"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow"
+      ],
+      "must_remove_text": [
+        "🚀",
+        "🔒",
+        "✨"
       ]
     },
     {
@@ -599,6 +616,10 @@
       "must_remove_hint": [
         "Trusted by section",
         "testimonial"
+      ],
+      "must_remove_selectors": [
+        "blockquote",
+        "main > section"
       ]
     },
     {
@@ -632,6 +653,9 @@
       ],
       "must_remove_hint": [
         "slogan paragraph"
+      ],
+      "must_remove_selectors": [
+        "main > p"
       ]
     },
     {
@@ -668,6 +692,11 @@
         "@keyframes up",
         "transition:all",
         ".card:hover"
+      ],
+      "must_remove_text": [
+        "@keyframes up",
+        "transition:all",
+        ".card:hover"
       ]
     },
     {
@@ -700,6 +729,10 @@
       "must_remove_hint": [
         ".panel box-shadow",
         ".panel border"
+      ],
+      "must_remove_text": [
+        "border:1px solid #e5e7eb",
+        "box-shadow:0 10px 30px"
       ]
     },
     {
@@ -764,6 +797,9 @@
       ],
       "must_remove_hint": [
         "eyebrow span"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow"
       ]
     },
     {
@@ -796,6 +832,9 @@
       ],
       "must_remove_hint": [
         "'New' badge"
+      ],
+      "must_remove_selectors": [
+        ".badge"
       ]
     },
     {
@@ -836,6 +875,10 @@
       "must_remove_hint": [
         "nested card div",
         "eyebrow span"
+      ],
+      "must_remove_selectors": [
+        "div div",
+        "span"
       ]
     },
     {
@@ -870,6 +913,12 @@
         "focus-visible:ring-2"
       ],
       "must_remove_hint": [
+        "shadow-lg",
+        "transition-all",
+        "hover:scale-105",
+        "bg-gradient-to-r"
+      ],
+      "must_remove_text": [
         "shadow-lg",
         "transition-all",
         "hover:scale-105",

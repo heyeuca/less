@@ -15,9 +15,23 @@ writeFileSync(`${out}/T01.without.out.md`, c.bad_after);
 const w = run([out, 'T01'], env), wo = run([out, 'T01', '--suffix', 'without'], env);
 console.log([self, w, wo].join('').split('\n').filter(l => !l.includes('info:')).join('\n').trim());
 const json = s => JSON.parse(readFileSync(`${out}/design-${s}.json`, 'utf8')).T01;
-const ok = /T01 after\s+PASS/.test(self) && /T01 bad_after FAIL.*G5✗/.test(self)
+let ok = /T01 after\s+PASS/.test(self) && /T01 bad_after FAIL.*G5✗/.test(self)
   && /T02 after\s+PASS.*note: pre-existing see-through/.test(self)
   && /T03 after\s+PASS/.test(self) && /T03 bad_after FAIL.*G7✗.*see-through HEADER Acme Docs/.test(self)
   && json('with').startsWith('PASS') && /^FAIL.*G5✗/.test(json('without'));
+// An unchanged candidate must fail a required removal; an accepted negative
+// fixture must make self mode exit nonzero.
+const fixture = `${out}/cases.json`;
+writeFileSync(fixture, JSON.stringify({ evals: [{ ...c,
+  must_remove_selectors: ['main'], bad_after: c.after }] }));
+writeFileSync(`${out}/T01.with.out.md`, c.before);
+run([out], { LESS_CASES: fixture });
+ok &&= /FAIL.*G8✗/.test(json('with'));
+writeFileSync(fixture, JSON.stringify({ evals: [{ ...c, bad_after: c.after }] }));
+let rejected = false;
+try { execFileSync('node', ['check.mjs', 'self'], {
+  env: { ...process.env, LESS_CASES: fixture }, stdio: 'pipe' }); }
+catch (e) { rejected = e.status === 1; }
+ok &&= rejected;
 console.log(ok ? 'self-test PASS' : 'self-test FAIL');
 process.exit(ok ? 0 : 1);
