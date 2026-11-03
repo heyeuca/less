@@ -507,7 +507,8 @@
       ],
       "must_remove_selectors": [
         ".card .card"
-      ]
+      ],
+      "must_remove_nested_surfaces": true
     },
     {
       "id": "D02",
@@ -544,7 +545,8 @@
       ],
       "must_remove_text": [
         "linear-gradient"
-      ]
+      ],
+      "must_remove_computed_background": true
     },
     {
       "id": "D03",
@@ -620,6 +622,9 @@
       "must_remove_rendered_text": [
         "Trusted by",
         "\"Best tool ever!\" — Happy Customer"
+      ],
+      "must_remove_selectors": [
+        "img[alt=\"Logo\"]"
       ]
     },
     {
@@ -697,6 +702,14 @@
         "@keyframes up",
         "transition:all",
         ".card:hover"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "section",
+          "properties": {
+            "animation-name": "none"
+          }
+        }
       ]
     },
     {
@@ -808,6 +821,9 @@
       ],
       "must_remove_selectors": [
         ".eyebrow"
+      ],
+      "must_remove_rendered_text": [
+        "Heads up"
       ]
     },
     {
@@ -843,6 +859,9 @@
       ],
       "must_remove_selectors": [
         ".badge"
+      ],
+      "must_remove_rendered_text": [
+        "New"
       ]
     },
     {
@@ -931,6 +950,34 @@
         "transition-all",
         "hover:scale-105",
         "bg-gradient-to-r"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "nav",
+          "properties": {
+            "background-image": "none"
+          }
+        },
+        {
+          "selector": "button",
+          "properties": {
+            "box-shadow": "none",
+            "transition-duration": "0s",
+            "transform": "none",
+            "scale": "none"
+          },
+          "hover": false
+        },
+        {
+          "selector": "button",
+          "properties": {
+            "box-shadow": "none",
+            "transition-duration": "0s",
+            "transform": "none",
+            "scale": "none"
+          },
+          "hover": true
+        }
       ]
     },
     {
