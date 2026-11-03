@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>less — cut what has no reason to exist</title>
+  <meta name="description" content="less is an open-source agent skill that makes AI coding agents cut what has no reason to exist from their writing, code, and UI.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10100f;
+      --bg-raise: #1a1a17;
+      --text: #f6f3eb;
+      --muted: #ccc7bb;
+      --line: rgba(246, 243, 235, 0.14);
+      --accent: #d6ff4a;
+      --accent-ink: #17170f;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      --sans: system-ui, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    * {
+      margin: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(246, 243, 235, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(246, 243, 235, 0.045) 1px, transparent 1px);
+      background-size: 48px 48px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 18%, #000 15%, transparent 72%);
+      mask-image: radial-gradient(ellipse at 50% 18%, #000 15%, transparent 72%);
+    }
+
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--text);
+      outline-offset: 3px;
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 0.16em;
+      overflow-wrap: anywhere;
+    }
+
+    a:hover {
+      color: var(--text);
+    }
+
+    .skip {
+      position: absolute;
+      left: 16px;
+      top: -48px;
+      z-index: 10;
+      background: var(--accent);
+      color: var(--accent-ink);
+      padding: 8px 12px;
+      text-decoration: none;
+    }
+
+    .skip:focus {
+      top: 12px;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(16, 16, 15, 0.88);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 24px;
+      min-height: 64px;
+      padding: 10px 0;
+    }
+
+    .brand {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 56px 0 28px;
+    }
+
+    .glow {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      filter: blur(70px);
+      pointer-events: none;
+    }
+
+    .glow-a {
+      background: var(--accent);
+      opacity: 0.18;
+      top: -90px;
+      left: -40px;
+    }
+
+    .glow-b {
+      background: #ff6a3d;
+      opacity: 0.16;
+      top: 20px;
+      right: -80px;
+    }
+
+    .watermark {
+      position: absolute;
+      left: -0.04em;
+      bottom: -0.22em;
+      z-index: 0;
+      color: rgba(246, 243, 235, 0.045);
+      font-family: var(--serif);
+      font-size: 30vw;
+      line-height: 0.8;
+      letter-spacing: -0.06em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+      gap: 40px;
+      align-items: end;
+    }
+
+    .hero-copy,
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 5.15rem);
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      font-size: 1.45rem;
+    }
+
+    .lead {
+      max-width: 40rem;
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+
+    .note {
+      color: var(--muted);
+    }
+
+    .terminal {
+      background: var(--bg-raise);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .chrome {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot:nth-child(1) { background: #ff5f57; }
+    .dot:nth-child(2) { background: #febc2e; }
+    .dot:nth-child(3) { background: #28c840; }
+
+    .chrome-title {
+      margin-left: 8px;
+    }
+
+    .terminal-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .cmd {
+      flex: 1 1 180px;
+      min-width: 0;
+      font-family: var(--mono);
+      font-size: 0.95rem;
+    }
+
+    code,
+    pre {
+      font-family: var(--mono);
+    }
+
+    code {
+      overflow-wrap: anywhere;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e7ff86;
+    }
+
+    .copy-status {
+      min-height: 1.25em;
+      padding: 0 16px 14px;
+      color: var(--accent);
+      font-size: 0.92rem;
+    }
+
+    .hero-note {
+      position: relative;
+      z-index: 1;
+      padding-top: 12px;
+    }
+
+    .block {
+      padding: 64px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .cards,
+    .pair {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card,
+    .panel {
+      min-width: 0;
+      background: rgba(26, 26, 23, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card svg {
+      color: var(--accent);
+    }
+
+    .index {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    pre {
+      max-width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      background: var(--bg);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .qa {
+      border-bottom: 1px solid var(--line);
+    }
+
+    summary {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 0;
+      cursor: pointer;
+      font-weight: 650;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::before {
+      content: "+";
+      width: 1em;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+
+    details[open] summary::before {
+      content: "–";
+    }
+
+    .qa p {
+      max-width: 65ch;
+      padding-bottom: 16px;
+    }
+
+    .footer {
+      padding: 40px 0 56px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .cards,
+      .pair {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 36px;
+      }
+
+      .block {
+        padding: 48px 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .glow-a,
+      .glow-b {
+        animation: drift 14s ease-in-out infinite alternate;
+      }
+
+      .glow-b {
+        animation-duration: 18s;
+      }
+
+      .hero-copy,
+      .terminal,
+      .card {
+        animation: rise 0.7s ease both;
+      }
+
+      .card:nth-child(2) { animation-delay: 0.08s; }
+      .card:nth-child(3) { animation-delay: 0.16s; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(16px, -24px, 0) scale(1.06); }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">less</a>
+      <nav aria-label="Primary">
+        <ul class="nav-links">
+          <li><a href="#surfaces">Where it applies</a></li>
+          <li><a href="#install">Install</a></li>
+          <li><a href="https://github.com/heyeuca/less">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="glow glow-a" aria-hidden="true"></div>
+      <div class="glow glow-b" aria-hidden="true"></div>
+      <p class="watermark" aria-hidden="true">less</p>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="kicker">Open-source agent skill</p>
+          <h1 id="hero-title">Cut what has no reason to exist.</h1>
+          <p class="lead">less makes AI coding agents cut what has no reason to exist from their writing, their code, and their UI.</p>
+          <p><a href="https://github.com/heyeuca/less">github.com/heyeuca/less</a></p>
+        </div>
+        <div class="terminal">
+          <div class="chrome" aria-hidden="true">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="chrome-title">install</span>
+          </div>
+          <div class="terminal-row">
+            <p class="cmd"><span aria-hidden="true">$ </span><code>npx skills add heyeuca/less</code></p>
+            <button type="button" data-copy="npx skills add heyeuca/less">Copy</button>
+          </div>
+          <p class="copy-status" role="status"></p>
+        </div>
+      </div>
+      <div class="wrap hero-note">
+        <noscript><p class="note">Copy uses JavaScript. The command is still selectable.</p></noscript>
+      </div>
+    </section>
+
+    <section id="surfaces" class="block">
+      <div class="wrap stack">
+        <p class="kicker">01</p>
+        <h2>Where it applies</h2>
+        <p class="lead">One standard, in writing, code, and UI.</p>
+        <div class="cards">
+          <article class="card">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6h16M4 12h12M4 18h8"></path>
+            </svg>
+            <p class="index">01</p>
+            <h3>Writing</h3>
+            <p>Keep the sentence that makes the point. Cut the warm-up and the ending that repeats it.</p>
+          </article>
+          <article class="card">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M8 8 4 12l4 4M16 8l4 4-4 4"></path>
+            </svg>
+            <p class="index">02</p>
+            <h3>Code</h3>
+            <p>Keep the code that does the job. Cut the wrapper that nothing calls and the comment that repeats the line.</p>
+          </article>
+          <article class="card">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <path d="M3 9h18"></path>
+            </svg>
+            <p class="index">03</p>
+            <h3>UI</h3>
+            <p>Keep the control the task needs. Cut decoration and a second control that does not change the outcome.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="examples" class="block">
+      <div class="wrap stack">
+        <p class="kicker">02</p>
+        <h2>What the extra looks like</h2>
+        <p>Each pair is a made-up illustration of something extra beside something that carries the point. Not a quote. Not a measured result.</p>
+        <div class="pair">
+          <article class="panel">
+            <h3>Example of extra wording</h3>
+            <p>We're excited to announce a powerful new skill that will seamlessly help your agents be more concise and ship cleaner work across writing, code, and interfaces, so your team can focus on what truly matters and take things to the next level.</p>
+          </article>
+          <article class="panel">
+            <h3>The point</h3>
+            <p>less makes AI coding agents cut what has no reason to exist from their writing, their code, and their UI.</p>
+          </article>
+        </div>
+        <div class="pair">
+          <article class="panel">
+            <h3>Example of an extra function</h3>
+            <pre><code>function nameOf(user) {
+  // Get the name from the user
+  const name = user.name;
+  return name;
+}</code></pre>
+          </article>
+          <article class="panel">
+            <h3>The line that was already there</h3>
+            <pre><code>user.name</code></pre>
+          </article>
+        </div>
+        <div class="pair">
+          <article class="panel">
+            <h3>Example of extra UI</h3>
+            <p>A welcome banner, a search box for a handful of links, an upgrade pill, a tips carousel, and a learn-more button.</p>
+          </article>
+          <article class="panel">
+            <h3>The controls this product needs</h3>
+            <p>The install command and the link to the repository.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="questions" class="block">
+      <div class="wrap stack">
+        <p class="kicker">03</p>
+        <h2>Questions</h2>
+        <div>
+          <details class="qa">
+            <summary>What is less?</summary>
+            <p>An open-source agent skill. It makes AI coding agents cut what has no reason to exist from their writing, their code, and their UI.</p>
+          </details>
+          <details class="qa">
+            <summary>How do I install it?</summary>
+            <p>Run <code>npx skills add heyeuca/less</code>.</p>
+          </details>
+          <details class="qa">
+            <summary>Where is the code?</summary>
+            <p><a href="https://github.com/heyeuca/less">github.com/heyeuca/less</a></p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="block">
+      <div class="wrap stack">
+        <p class="kicker">04</p>
+        <h2>Install</h2>
+        <p class="lead">Add the skill with this command.</p>
+        <div class="terminal">
+          <div class="chrome" aria-hidden="true">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="chrome-title">install</span>
+          </div>
+          <div class="terminal-row">
+            <p class="cmd"><span aria-hidden="true">$ </span><code>npx skills add heyeuca/less</code></p>
+            <button type="button" data-copy="npx skills add heyeuca/less">Copy</button>
+          </div>
+          <p class="copy-status" role="status"></p>
+        </div>
+        <p>Repository: <a href="https://github.com/heyeuca/less">https://github.com/heyeuca/less</a></p>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <p class="brand">less</p>
+      <p>An open-source agent skill that makes AI coding agents cut what has no reason to exist from their writing, code, and UI.</p>
+      <p><a href="https://github.com/heyeuca/less">github.com/heyeuca/less</a></p>
+      <p><a href="#top">Back to top</a></p>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll("[data-copy]");
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var command = button.getAttribute("data-copy");
+          var terminal = button.closest(".terminal");
+          var status = terminal ? terminal.querySelector(".copy-status") : null;
+          function report(message) {
+            if (!status) return;
+            status.textContent = message;
+            window.setTimeout(function () {
+              if (status.textContent === message) status.textContent = "";
+            }, 2200);
+          }
+          if (!navigator.clipboard || !navigator.clipboard.writeText) {
+            report("Could not copy. Select the command and copy it.");
+            return;
+          }
+          navigator.clipboard.writeText(command).then(function () {
+            report("Copied the install command.");
+          }, function () {
+            report("Could not copy. Select the command and copy it.");
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
