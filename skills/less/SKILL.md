@@ -4,7 +4,7 @@ description: Removes elements without a clear reason to exist from writing and c
 license: MIT
 ---
 
-# Less
+# less
 
 Less, but better. Keep only what has a reason to exist.
 

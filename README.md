@@ -1,4 +1,4 @@
-# Less
+# less
 
 **Less, but better.**
 
@@ -21,10 +21,10 @@ claude plugin install less@heyeuca
 
 Manual: copy `skills/less` into your agent's skills folder, for example `~/.claude/skills/less` or `~/.agents/skills/less`.
 
-Less runs when you ask for it (`/less`, or "cut", "trim", "simplify", "too long"). To keep it always on, add this line to your `AGENTS.md`:
+less runs when you ask for it (`/less`, or "cut", "trim", "simplify", "too long"). To keep it always on, add this line to your `AGENTS.md`:
 
 ```md
-Apply the Less skill to everything you write: keep only what has a reason to exist.
+Apply the less skill to everything you write: keep only what has a reason to exist.
 ```
 
 ## License

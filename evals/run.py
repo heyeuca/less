@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Less eval runner (Python 3 stdlib only, no model calls).
+"""less eval runner (Python 3 stdlib only, no model calls).
 
   python3 evals/run.py prompts OUT
       Writes OUT/<id>.with.md (SKILL.md included) and OUT/<id>.without.md.
