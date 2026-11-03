@@ -42,7 +42,7 @@ The four App Store links that remain are "Get the app", "Download on the App Sto
 
 The gate applies. Both pages have a sticky header with text. Its fill is opaque `rgb(243, 238, 230)` (alpha 1). There is no `backdrop-filter`. G7 passes at 1280 and at 320: the after page does not take a legible overlay and make it see-through.
 
-`check.mjs` decides overlap by calling `window.scrollTo` and reading geometry immediately. These pages set `scroll-behavior: smooth`, so that scroll often has not finished when the probe reads. The probe reported overlap only for the before page at 320px. With instant scrolling, content does pass under the header on both pages. The fill is opaque, and frames from the scroll videos show the header text sitting on the paper color, not on the type underneath.
+`check.mjs` decides overlap by scrolling each text block under the header. It now forces instant scrolling (`scroll-behavior: auto`, `behavior: 'instant'`) and confirms `scrollY` reached the target before it reads, so these pages' `scroll-behavior: smooth` no longer matters. Content passes under the header on both pages at 1280 and 320, the same over 5 runs. The fill is opaque, and frames from the scroll videos show the header text sitting on the paper color, not on the type underneath.
 
 ## What was cut
 
