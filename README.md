@@ -79,6 +79,10 @@ above have not been remeasured with these changes. Future reports should retain
 model/version settings, raw outputs, grading decisions, and behavior-check
 commands so results can be reproduced.
 
+The current suite adds 10 paired preservation cases (60 total). See the
+[evaluation guide](evals/README.md) for separate removal, preservation, damage,
+and exact no-op checks. No updated model performance result is claimed.
+
 ## License
 
 [MIT](LICENSE)
