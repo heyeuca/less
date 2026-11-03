@@ -21,7 +21,8 @@ one line: "less edits code or text it can return."
 3. **R3 Chrome:** eyebrow labels, badge pills, all-caps tracked labels (C4);
    fake 01/02/03 markers on non-sequential content (C5); icons and emoji that
    carry no meaning (C6); duplicate labels (C10); appended arrows and
-   middle-dot meta strings (C11).
+   middle-dot meta strings (C11). Fixed badges or labels not tied to data or
+   state (e.g. a hardcoded "New") may go; hidden state elements may not (K8).
 4. **R4 Unrequested content:** sections and buttons nobody asked for (logo
    strips, testimonials, a second CTA) (C7); filler and slogan copy (C8).
    Only content the agent added; what the user wrote is theirs.
