@@ -63,7 +63,7 @@ Apply the less skill to everything you write: keep only what has a reason to exi
 
 ## Results
 
-Historical results (before the current prompt and gate revisions): measured on the 49 cases in [`evals/`](evals/), 2 runs with grok-4.7, against the same model without the skill.
+Measured on the 49 cases in [`evals/`](evals/), 2 runs with grok-4.7, against the same model without the skill.
 
 - All cases: 49/49 in both runs (100%), with 0 must-keep misses in 98 outputs. Without the skill: 38/49 (78%), 11 misses in 49.
 - Writing and code: 27–29% fewer words on 37 cases, with 0 must-keep misses and identical code behavior. Without the skill: 39% fewer, but must-keep content lost in 7 cases.
@@ -71,11 +71,13 @@ Historical results (before the current prompt and gate revisions): measured on t
 
 A separate grading agent checks each case against its `must_keep` list; code is run and compared, and UI is checked with Playwright and axe. We tuned the skill on these evals, so read them as a regression test, not a benchmark, and only one model was tested.
 
-The current runner gives both arms the same task instruction; only the skill
-context differs. UI checks now also require fixture-specific removals. The
-historical percentages have not been remeasured with these changes. Future
-reports should retain model/version settings, raw outputs, grading decisions,
-and behavior-check commands so results can be reproduced.
+These numbers predate the current evaluation protocol. The baseline arm was
+asked to "Make this less verbose." while the skill arm got `/less`; the runner
+now gives both arms the same task instruction, so only the skill context
+differs. UI checks now also require fixture-specific removals (G8). The numbers
+above have not been remeasured with these changes. Future reports should retain
+model/version settings, raw outputs, grading decisions, and behavior-check
+commands so results can be reproduced.
 
 ## License
 

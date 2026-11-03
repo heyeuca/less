@@ -978,6 +978,20 @@
         ".pill",
         "box-shadow:0 10px 30px",
         "emoji in headings"
+      ],
+      "must_remove_rendered_text": [
+        "✨",
+        "🚀",
+        "New"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "main *",
+          "properties": {
+            "filter": "none",
+            "box-shadow": "none"
+          }
+        }
       ]
     }
   ]

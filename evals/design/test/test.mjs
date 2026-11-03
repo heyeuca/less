@@ -36,7 +36,7 @@ ok &&= rejected;
 // Exercise rendered-content and computed-style checks against equivalent markup.
 const design = JSON.parse(readFileSync('../evals.json', 'utf8')).evals;
 const get = id => design.find(row => row.id === id);
-const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11');
+const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11'), d13 = get('D13');
 const regressions = [
   [d03, 'entity-emoji', d03.after.replace('Fast sync', '&#x1F680; Fast sync'), false],
   [d04, 'retag-testimonial', d04.after.replace('</main>', '<div>"Best tool ever!" — Happy Customer</div></main>'), false],
@@ -46,6 +46,8 @@ const regressions = [
   [d07, 'equivalent-effects', d07.before.replace('#e5e7eb', 'rgb(229,231,235)').replace('0 10px 30px', '0px 10px 30px'), false],
   [d11, 'useful-wrapper', d11.after.replace('<form', '<div><span aria-hidden="true"> / </span><form').replace('</form>', '</form></div>'), true],
   [d11, 'renamed-surfaces', d11.before.replace('✨ Profile', '').replaceAll('rounded-xl', 'rounded-lg'), false],
+  [d13, 'renamed-blob', d13.after.replace('</style>', '.orb{position:absolute;width:320px;height:320px;filter:blur(60px);z-index:-1}</style>').replace('<main>', '<main><div class="orb"></div>'), false],
+  [d13, 'opaque-header', d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {
   const row = { ...base, id: name };
