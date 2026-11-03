@@ -1,8 +1,9 @@
 // Design checker for less D cases (spec-v0.3 §5, K-G1..K-G6).
 //   node check.mjs self      checks each case's before, after and bad_after against before
-//   node check.mjs OUT [ID]  checks OUT/<id>.with.out.md (HTML, fences allowed) against before
+//   node check.mjs OUT [ID] [--suffix without]  checks OUT/<id>.<suffix>.out.md (default with; HTML, fences allowed)
+//   against before and writes OUT/design-<suffix>.json, which run.py sheet shows in the pass columns
 // Gates decide PASS/FAIL; element and CSS declaration counts are printed for reference only.
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { AxeBuilder } from '@axe-core/playwright';
 
@@ -64,16 +65,20 @@ function gates(b, a, c, width) {
 }
 
 const strip = s => s.replace(/^[\s\S]*?```(?:html)?\n/, '').replace(/\n```[\s\S]*$/, '');
-const [mode, ...ids] = process.argv.slice(2);
+const argv = process.argv.slice(2);
+const si = argv.indexOf('--suffix');
+const suffix = si >= 0 ? argv.splice(si, 2)[1] : 'with';
+const [mode, ...ids] = argv;
+const results = {};
 if (!mode) { console.log('usage: node check.mjs self | OUT [ID...]'); process.exit(2); }
 const browser = await chromium.launch();
 let failed = 0;
 for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
   const cand = mode === 'self'
     ? [['before', c.before], ['after', c.after === 'unchanged' ? c.before : c.after], ...(c.bad_after ? [['bad_after', c.bad_after]] : [])]
-    : [['output', existsSync(`${mode}/${c.id}.with.out.md`) ? strip(readFileSync(`${mode}/${c.id}.with.out.md`, 'utf8')) : null]];
+    : [['output', existsSync(`${mode}/${c.id}.${suffix}.out.md`) ? strip(readFileSync(`${mode}/${c.id}.${suffix}.out.md`, 'utf8')) : null]];
   for (const [label, html] of cand) {
-    if (html === null) { console.log(`${c.id} ${label} missing`); failed++; continue; }
+    if (html === null) { console.log(`${c.id} ${label} missing`); results[c.id] = 'missing'; failed++; continue; }
     const res = {}; const why = []; const info = [];
     for (const vp of VIEWPORTS) {
       const ctx = await browser.newContext({ viewport: vp }), page = await ctx.newPage();
@@ -88,9 +93,11 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
     }
     const pass = Object.values(res).every(Boolean);
     if (!pass && label !== 'bad_after') failed++;
+    if (label === 'output') results[c.id] = `${pass ? 'PASS' : 'FAIL'} ${Object.entries(res).map(([k, v]) => k + (v ? '✓' : '✗')).join(' ')}`;
     console.log(`${c.id} ${label.padEnd(9)} ${pass ? 'PASS' : 'FAIL'} ${Object.entries(res).map(([k, v]) => k + (v ? '✓' : '✗')).join(' ')}${why.length ? '  ' + [...new Set(why)].join('; ') : ''}`);
     console.log(`    info: ${info.join(' | ')}`);
   }
 }
 await browser.close();
+if (mode !== 'self') writeFileSync(`${mode}/design-${suffix}.json`, JSON.stringify(results, null, 1) + '\n');
 process.exit(failed ? 1 : 0);
