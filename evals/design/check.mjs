@@ -62,6 +62,14 @@ async function measure(page, src, c) {
   // G7: scroll so content sits under each fixed/sticky element with text; its text stays legible only if
   // its own fill is opaque or a backdrop-filter is set (computed style, not pixels, so it isn't flaky).
   const overlays = await page.evaluate(() => {
+    // Force instant scrolling so a page's `scroll-behavior: smooth` can't leave the probe mid-scroll.
+    const root = document.documentElement, saved = [root.style.scrollBehavior, document.body.style.scrollBehavior];
+    root.style.scrollBehavior = document.body.style.scrollBehavior = 'auto';
+    const jump = y => {
+      const top = Math.max(0, Math.min(y, root.scrollHeight - root.clientHeight));
+      window.scrollTo({ top, behavior: 'instant' });
+      if (Math.abs(scrollY - top) > 1) throw new Error(`G7 scroll stuck at ${scrollY}, wanted ${top}`);
+    };
     const out = [];
     for (const e of document.querySelectorAll('body *')) {
       const s = getComputedStyle(e);
@@ -70,14 +78,15 @@ async function measure(page, src, c) {
       const texts = [...document.querySelectorAll('body *')].filter(u => !e.contains(u) && !u.contains(e)
         && [...u.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())).slice(0, 50);
       const overlaps = texts.some(u => {
-        window.scrollTo(0, u.getBoundingClientRect().top + scrollY - e.offsetHeight / 2);
+        jump(u.getBoundingClientRect().top + scrollY - e.offsetHeight / 2);
         const r = e.getBoundingClientRect(), t = u.getBoundingClientRect();
         return t.top < r.bottom && t.bottom > r.top && t.left < r.right && t.right > r.left;
       });
       const alpha = (s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)/) || [, 1])[1];
       out.push({ key: e.tagName + ' ' + e.innerText.replace(/\s+/g, ' ').trim().slice(0, 40), overlaps, legible: +alpha >= 0.99 || s.backdropFilter !== 'none' });
-      window.scrollTo(0, 0);
+      jump(0);
     }
+    [root.style.scrollBehavior, document.body.style.scrollBehavior] = saved;
     return out;
   });
   const info = await page.evaluate(() => ({ elements: document.querySelectorAll('body *').length, decls: [...document.styleSheets].flatMap(s => [...s.cssRules]).reduce((n, r) => n + (r.style ? r.style.length : 0), 0) }));
