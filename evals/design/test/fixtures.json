@@ -17,6 +17,21 @@
     ]
    ],
    "must_keep_selectors": []
+  },
+  {
+   "id": "T02",
+   "category": "checker self-test \u00b7 G7 pre-existing see-through header is a note, not FAIL",
+   "format": "html",
+   "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:rgba(255,255,255,.6)}section{min-height:120vh}</style></head><body><header>Acme Docs Blog</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
+   "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:rgba(255,255,255,.6)}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>"
+  },
+  {
+   "id": "T03",
+   "category": "checker self-test \u00b7 G7 judges the after header alone, even when its text changed",
+   "format": "html",
+   "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:#fff}section{min-height:120vh}</style></head><body><header>Acme Docs Blog</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
+   "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:#fff}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
+   "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:rgba(255,255,255,.6)}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>"
   }
  ]
 }

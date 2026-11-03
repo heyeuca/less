@@ -77,13 +77,16 @@ async function measure(page, src, c) {
       // Scroll each text block in turn to the element's middle; it overlaps if any block ends up under it.
       const texts = [...document.querySelectorAll('body *')].filter(u => !e.contains(u) && !u.contains(e)
         && [...u.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())).slice(0, 50);
+      let rect = e.getBoundingClientRect();
       const overlaps = texts.some(u => {
         jump(u.getBoundingClientRect().top + scrollY - e.offsetHeight / 2);
         const r = e.getBoundingClientRect(), t = u.getBoundingClientRect();
+        rect = r;
         return t.top < r.bottom && t.bottom > r.top && t.left < r.right && t.right > r.left;
       });
       const alpha = (s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)/) || [, 1])[1];
-      out.push({ key: e.tagName + ' ' + e.innerText.replace(/\s+/g, ' ').trim().slice(0, 40), overlaps, legible: +alpha >= 0.99 || s.backdropFilter !== 'none' });
+      out.push({ key: e.tagName + ' ' + e.innerText.replace(/\s+/g, ' ').trim().slice(0, 40), tag: e.tagName,
+        top: rect.top, bottom: rect.bottom, width: rect.width, overlaps, legible: +alpha >= 0.99 || s.backdropFilter !== 'none' });
       jump(0);
     }
     [root.style.scrollBehavior, document.body.style.scrollBehavior] = saved;
@@ -97,12 +100,20 @@ function gates(b, a, c, width) {
   const hints = (c.must_remove_hint || []).join(' ').toLowerCase();
   const missingNodes = b.nodes.filter(n => !a.nodes.includes(n) && !hints.includes(n.split('"')[1].toLowerCase() || '\0'));
   const worse = b.focus.filter(f => { const g = a.focus.find(x => x.key === f.key); return g && ((f.ring && !g.ring) || (f.target && !g.target)); });
-  const unreadable = b.overlays.filter(o => o.legible && a.overlays.some(x => x.key === o.key && x.overlaps && !x.legible));
+  // G7 judges every after-page overlay on its own. A see-through one fails unless the before page already had
+  // a see-through overlapping one with the same tag at about the same place (top or bottom edge and width
+  // within 16 px); that only labels it pre-existing, it never skips the check.
+  const near = (x, y) => Math.abs(x - y) <= 16;
+  const seeThrough = o => o.overlaps && !o.legible;
+  const preExisting = o => b.overlays.some(p => seeThrough(p) && p.tag === o.tag
+    && (near(p.top, o.top) || near(p.bottom, o.bottom)) && near(p.width, o.width));
+  const unreadable = a.overlays.filter(o => seeThrough(o) && !preExisting(o));
+  const already = a.overlays.filter(o => seeThrough(o) && preExisting(o));
   return {
     G1: a.roles.every(Boolean), G2: a.sels.every(Boolean),
     G3: a.axe.every(v => b.axe.includes(v)), G4: missingNodes.length === 0,
     G5: worse.length === 0, G6: width !== 320 || !b.reflow || a.reflow, G7: unreadable.length === 0,
-    why: [...a.axe.filter(v => !b.axe.includes(v)), ...missingNodes.map(n => 'lost ' + n), ...worse.map(f => 'worse ' + f.key), ...unreadable.map(o => 'see-through ' + o.key)],
+    why: [...a.axe.filter(v => !b.axe.includes(v)), ...missingNodes.map(n => 'lost ' + n), ...worse.map(f => 'worse ' + f.key), ...unreadable.map(o => 'see-through ' + o.key), ...already.map(o => 'note: pre-existing see-through ' + o.key)],
   };
 }
 

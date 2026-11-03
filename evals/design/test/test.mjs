@@ -1,4 +1,6 @@
 // Self-tests. G5: the default focus ring passes (after); outline:none with no replacement fails (bad_after).
+// G7: a header already see-through before is a note, not FAIL (T02); a see-through after header fails even
+// when its text changed (T03 bad_after).
 // --suffix: OUT mode reads <id>.with.out.md by default and <id>.without.out.md with --suffix without.
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
@@ -10,10 +12,12 @@ const [c] = JSON.parse(readFileSync('test/fixtures.json', 'utf8')).evals;
 const out = mkdtempSync(tmpdir() + '/less-');
 writeFileSync(`${out}/T01.with.out.md`, '```html\n' + c.after + '\n```\n');
 writeFileSync(`${out}/T01.without.out.md`, c.bad_after);
-const w = run([out], env), wo = run([out, '--suffix', 'without'], env);
+const w = run([out, 'T01'], env), wo = run([out, 'T01', '--suffix', 'without'], env);
 console.log([self, w, wo].join('').split('\n').filter(l => !l.includes('info:')).join('\n').trim());
 const json = s => JSON.parse(readFileSync(`${out}/design-${s}.json`, 'utf8')).T01;
 const ok = /T01 after\s+PASS/.test(self) && /T01 bad_after FAIL.*G5✗/.test(self)
+  && /T02 after\s+PASS.*note: pre-existing see-through/.test(self)
+  && /T03 after\s+PASS/.test(self) && /T03 bad_after FAIL.*G7✗.*see-through HEADER Acme Docs/.test(self)
   && json('with').startsWith('PASS') && /^FAIL.*G5✗/.test(json('without'));
 console.log(ok ? 'self-test PASS' : 'self-test FAIL');
 process.exit(ok ? 0 : 1);
