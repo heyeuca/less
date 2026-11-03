@@ -1,7 +1,7 @@
 {
   "name": "less",
   "description": "An agent skill to keep only what has a reason to exist.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": {
     "name": "euca"
   },

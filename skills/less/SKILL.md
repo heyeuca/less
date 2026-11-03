@@ -1,6 +1,6 @@
 ---
 name: less
-description: Removes elements without a clear reason to exist from writing, code, and UI code (HTML/CSS, JSX, Tailwind), keeping correctness, needed context, safety, accessibility, and everything the user asked for. Use when the user asks to cut, trim, simplify, tighten, shorten, or declutter something, says it is "too long", "too busy", or "looks cluttered", or asks to clean up AI-written output. Not for building new UI.
+description: Removes elements without a clear reason to exist from writing, code, and UI code (HTML/CSS, JSX, Tailwind), keeping correctness, needed context, safety, accessibility, and everything the user asked for. Use when the user asks to cut, trim, remove, strip, simplify, tighten, shorten, or declutter something, says it is "too long", "too busy", or "looks cluttered", or asks to clean up AI-written output. Not for building or adding UI features, accessibility audits, or performance refactors.
 license: MIT
 ---
 
@@ -32,7 +32,8 @@ an exclusion: work inside it.
 
 ## Removal order
 
-Check every candidate against "Never remove" first.
+Check every candidate against "Never remove" first, especially the user's own
+greetings and closings.
 
 Writing:
 1. Preamble, restated question, and greetings you added ("Great question!").
@@ -72,6 +73,8 @@ aesthetic. Not for building new UI, screenshots, or Figma files.
 - The user's voice when editing their text. Don't rewrite style.
 - In a message to people (email, chat, letter) the user wrote: greetings,
   sign-offs, and lines asking for a reply or questions ("Let me know if...").
+  E.g. "Do reach out anytime if anything is still unclear." stays; you may trim
+  "anytime" and "still".
 - Politeness register: 존댓말/敬語 forms, 様, greetings, sign-offs. Stacked
   softeners and intensifiers inside it (정말, 혹시, 大変, 誠に, 何卒) are filler.
 - Code: behavior (output, side effects, errors); error handling at real
