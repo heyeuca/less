@@ -6,6 +6,10 @@ An agent skill to keep only what has a reason to exist.
 
 less has your agent cut what has no clear reason to exist from writing, code, and UI code, and keep correctness, needed context, safety, accessibility, and what you asked for.
 
+![A landing page without less and with less](demo/landing/side-by-side-top.png)
+
+A landing page grok-4.7 built for a made-up app, then the same page after `/less`: 42% fewer elements and words, invented testimonials and stats gone, price and App Store button kept. Unedited, one run: [demo/landing](demo/landing/).
+
 ```text
 Before: Great question! You're asking how to undo the last Git commit. To undo it while keeping your changes, run `git reset --soft HEAD~1`. I hope this helps! Let me know if you have other questions.
 After:  To undo the last commit and keep your changes, run `git reset --soft HEAD~1`.
