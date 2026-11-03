@@ -22,3 +22,9 @@ compared as normalized CSS text, never matched in the DOM.
 G5 accepts the browser's default focus ring (WCAG 2.4.7 needs visible focus
 only); `outline:none` with no replacement fails. `npm test` runs fixtures in
 `test/` proving both. `LESS_CASES=file.json` points the checker at other cases.
+
+Full run: `python3 evals/run.py prompts OUT` (D-case with-skill prompts also
+include `references/design.md`), save replies as `OUT/<id>.with.out.md` and
+`OUT/<id>.without.out.md`, then `node check.mjs OUT` and
+`node check.mjs OUT --suffix without`. Each writes `OUT/design-<suffix>.json`;
+`python3 evals/run.py sheet OUT` puts those gate results in the pass columns.

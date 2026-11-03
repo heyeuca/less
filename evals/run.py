@@ -17,12 +17,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CASES = json.loads((ROOT / "evals/evals.json").read_text())["evals"]
 SKILL = (ROOT / "skills/less/SKILL.md").read_text()
+DESIGN = (ROOT / "skills/less/references/design.md").read_text()
 
 
 def task(case, with_skill):
     parts = []
     if with_skill:
-        parts.append("Use this skill:\n\n<skill>\n" + SKILL + "</skill>\n")
+        skill = SKILL + ("\n<reference path=\"references/design.md\">\n" + DESIGN + "</reference>\n"
+                         if case.get("format") == "html" else "")
+        parts.append("Use this skill:\n\n<skill>\n" + skill + "</skill>\n")
     if case.get("prompt"):
         parts.append("The user's original request:\n\n" + case["prompt"] + "\n")
     command = "/less" if with_skill else "Make this less verbose."
@@ -51,6 +54,11 @@ def sheet(out):
         "| id | category | must keep | bad after | with skill | without skill | with pass? | without pass? |",
         "|---|---|---|---|---|---|---|---|",
     ]
+    gates = {}
+    for suffix in ("with", "without"):
+        path = out / f"design-{suffix}.json"
+        if path.exists():
+            gates[suffix] = json.loads(path.read_text())
     for case in CASES:
         keep = "<br>".join("[ ] " + cell(k) for k in case["must_keep"]) or "reference: " + cell(case["after"])
         rows.append("| " + " | ".join([
@@ -60,8 +68,8 @@ def sheet(out):
             cell(case.get("bad_after", "")),
             cell(read(out / f"{case['id']}.with.out.md")),
             cell(read(out / f"{case['id']}.without.out.md")),
-            "",
-            "",
+            gates.get("with", {}).get(case["id"], ""),
+            gates.get("without", {}).get(case["id"], ""),
         ]) + " |")
     (out / "sheet.md").write_text("\n".join(rows) + "\n")
     print(f"Wrote {out / 'sheet.md'}")
