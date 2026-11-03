@@ -28,3 +28,8 @@ include `references/design.md`), save replies as `OUT/<id>.with.out.md` and
 `OUT/<id>.without.out.md`, then `node check.mjs OUT` and
 `node check.mjs OUT --suffix without`. Each writes `OUT/design-<suffix>.json`;
 `python3 evals/run.py sheet OUT` puts those gate results in the pass columns.
+
+`format: jsx` cases (D11, D12) are static JSX: the checker renders the returned
+tree to HTML (`className`→`class`, `htmlFor`→`for`, `{…}` props dropped) with
+`fixtures/tailwind.css`, which was precompiled once with `@tailwindcss/cli`
+(no Tailwind at check time). CSS-text entries match the JSX source.

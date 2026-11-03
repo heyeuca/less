@@ -7,7 +7,15 @@ import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { AxeBuilder } from '@axe-core/playwright';
 
-const cases = JSON.parse(readFileSync(process.env.LESS_CASES || new URL('../evals.json', import.meta.url))).evals.filter(c => c.format === 'html');
+const cases = JSON.parse(readFileSync(process.env.LESS_CASES || new URL('../evals.json', import.meta.url))).evals.filter(c => c.format === 'html' || c.format === 'jsx');
+// JSX cases are static markup: render the returned tree to HTML with the precompiled Tailwind fixture.
+const TAILWIND = readFileSync(new URL('./fixtures/tailwind.css', import.meta.url), 'utf8');
+const jsx = src => {
+  const body = src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');'))
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/\sclassName=/g, ' class=').replace(/\shtmlFor=/g, ' for=')
+    .replace(/\s\w+=\{[^}]*\}/g, '').replace(/<(\w+)([^>]*?)\s*\/>/g, '<$1$2></$1>');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Case</title><style>${TAILWIND}</style></head><body>${body}</body></html>`;
+};
 const VIEWPORTS = [{ width: 1280, height: 800 }, { width: 320, height: 640 }];
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const INTERACTIVE = /^(button|link|textbox|searchbox|checkbox|radio|combobox|slider|spinbutton|switch|tab|menuitem|option|listbox)$/;
@@ -15,7 +23,8 @@ const INTERACTIVE = /^(button|link|textbox|searchbox|checkbox|radio|combobox|sli
 const STATEFUL = /:(hover|focus|focus-visible|focus-within|active|visited)\b/;
 const norm = s => s.replace(/\s+/g, ' ').replace(/\s*([{}:;,()>])\s*/g, '$1').trim();
 
-async function measure(page, html, c) {
+async function measure(page, src, c) {
+  const html = c.format === 'jsx' ? jsx(src) : src;
   await page.setContent(html);
   // Let entrance animations settle so axe sees final colors (infinite ones are capped at 2 s).
   await page.evaluate(() => Promise.race([Promise.all(document.getAnimations().map(a => a.finished.catch(() => {}))), new Promise(r => setTimeout(r, 2000))]));
@@ -26,7 +35,7 @@ async function measure(page, html, c) {
   for (const s of c.must_keep_selectors || []) {
     let n = null;
     if (!STATEFUL.test(s)) n = await page.evaluate(s => { try { return document.querySelectorAll(s).length; } catch { return null; } }, s);
-    sels.push(n === null ? norm(html).includes(norm(s)) : n >= 1);
+    sels.push(n === null ? norm(src).includes(norm(s)) : n >= 1);
   }
   const axe = (await new AxeBuilder({ page }).withTags(TAGS).analyze()).violations
     .flatMap(v => v.nodes.map(n => v.id + ' ' + n.target.join(' ')));
@@ -39,7 +48,9 @@ async function measure(page, html, c) {
     if (!(await el.isVisible())) continue;
     const key = (await el.evaluate(e => e.tagName + ' ' + (e.getAttribute('aria-label') || e.textContent || e.id).trim()));
     const box = await el.boundingBox();
-    const style = () => el.evaluate(e => { const s = getComputedStyle(e); return [s.outlineStyle, s.outlineWidth, s.outlineColor, s.boxShadow, s.borderColor].join('|'); });
+    const style = () => el.evaluate(e => { const s = getComputedStyle(e); // An outline with style none or zero width is invisible, whatever its width and color.
+      const outline = s.outlineStyle === 'none' || parseFloat(s.outlineWidth) === 0 ? 'none' : [s.outlineStyle, s.outlineWidth, s.outlineColor].join(' ');
+      return [outline, s.boxShadow, s.borderColor].join('|'); });
     const plain = await style();
     await page.keyboard.press('Tab'); // makes :focus-visible apply
     await el.focus();
@@ -64,7 +75,7 @@ function gates(b, a, c, width) {
   };
 }
 
-const strip = s => s.replace(/^[\s\S]*?```(?:html)?\n/, '').replace(/\n```[\s\S]*$/, '');
+const strip = s => s.replace(/^[\s\S]*?```\w*\n/, '').replace(/\n```[\s\S]*$/, '');
 const argv = process.argv.slice(2);
 const si = argv.indexOf('--suffix');
 const suffix = si >= 0 ? argv.splice(si, 2)[1] : 'with';

@@ -24,7 +24,7 @@ def task(case, with_skill):
     parts = []
     if with_skill:
         skill = SKILL + ("\n<reference path=\"references/design.md\">\n" + DESIGN + "</reference>\n"
-                         if case.get("format") == "html" else "")
+                         if case.get("format") in ("html", "jsx") else "")
         parts.append("Use this skill:\n\n<skill>\n" + skill + "</skill>\n")
     if case.get("prompt"):
         parts.append("The user's original request:\n\n" + case["prompt"] + "\n")
