@@ -205,6 +205,249 @@
       ],
       "bad_after": "def set_age(raw):\n    return int(raw)\n",
       "why_bad": "drops validation at a user-input boundary (error message and behavior change) and the \"why\" comment."
+    },
+    {
+      "id": "N01",
+      "category": "ko prose · preamble/recap",
+      "before": "좋은 질문이에요! 요약하자면, 배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요. 도움이 되었길 바라요!",
+      "after": "배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요.",
+      "must_keep": [
+        "금요일 오후 3시",
+        "`deploy/rollback.sh`",
+        "해요체"
+      ]
+    },
+    {
+      "id": "N02",
+      "category": "ko prose · over-cut · negation",
+      "before": "사실 이건 꼭 말씀드려야 할 것 같은데요, 결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
+      "after": "결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
+      "bad_after": "주문을 취소하세요. 중복 환불이 생길 수 있어요.",
+      "why_bad": "drops '전에는 절대 … 마세요', inverting the instruction.",
+      "must_keep": [
+        "'결제 확인 전에는'",
+        "'절대 … 마세요'",
+        "중복 환불 위험"
+      ]
+    },
+    {
+      "id": "N03",
+      "category": "ko prose · user voice · honorific",
+      "prompt": "이거 좀 줄여 줘",
+      "before": "팀장님, 혹시 시간 괜찮으시면, 정말 죄송하지만 내일 회의를 오후 2시로 옮겨 주실 수 있으실까요? 혹시 어려우시면 말씀 주세요.",
+      "after": "팀장님, 죄송하지만 내일 회의를 오후 2시로 옮겨 주실 수 있을까요? 어려우시면 말씀 주세요.",
+      "bad_after": "내일 회의 2시로 옮겨 주세요.",
+      "why_bad": "drops the addressee and honorifics; the request becomes a command to a superior.",
+      "must_keep": [
+        "'팀장님'",
+        "존댓말 (-시-, -ㄹ까요)",
+        "내일 오후 2시",
+        "alternative offer"
+      ]
+    },
+    {
+      "id": "N04",
+      "category": "ja prose · filler",
+      "before": "ご質問ありがとうございます。結論から申し上げますと、APIキーは管理画面の「設定 > API」から再発行できます。何かあればお気軽にお尋ねください。",
+      "after": "APIキーは管理画面の「設定 > API」から再発行できます。",
+      "must_keep": [
+        "「設定 > API」",
+        "再発行できます",
+        "です・ます調"
+      ]
+    },
+    {
+      "id": "N05",
+      "category": "ja prose · over-cut · keigo",
+      "prompt": "もっと短くして",
+      "before": "山田様、いつも大変お世話になっております。誠に恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。何卒よろしくお願い申し上げます。",
+      "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までに請求書をお送りいただけますでしょうか。よろしくお願いいたします。",
+      "bad_after": "山田さん、11月10日までに請求書を送ってください。",
+      "why_bad": "drops 様, the opening greeting, and keigo; to a client this reads as rude, which changes meaning.",
+      "must_keep": [
+        "'山田様'",
+        "opening greeting",
+        "謙譲語/尊敬語 (お送りいただけますでしょうか)",
+        "11月10日",
+        "closing よろしくお願い…"
+      ]
+    },
+    {
+      "id": "N06",
+      "category": "ja prose · over-cut · exception",
+      "before": "基本的には、返品は購入後30日以内であれば可能です。ただし、セール品は返品できませんので、ご注意ください。",
+      "after": "返品は購入後30日以内なら可能です。ただし、セール品は返品できません。",
+      "bad_after": "返品は購入後30日以内に可能です。",
+      "why_bad": "drops the sale-item exception.",
+      "must_keep": [
+        "30日以内",
+        "セール品は返品できません",
+        "です・ます調"
+      ]
+    },
+    {
+      "id": "N07",
+      "category": "long doc · section-by-section reduction",
+      "prompt": "/less this README",
+      "before": "(~1,800-word README: TOC; Overview; Why we built this (3 paragraphs); Features (table: feature | platform | since); Installation; Usage; FAQ, two items restating Usage and one on proxies; Conclusion recapping Overview; License)",
+      "after": "Same headings and TOC minus removed sections. Why cut to 1–2 sentences. Two FAQ items that restate Usage removed; proxy item kept. Conclusion removed (fails the test). Features table unchanged.",
+      "must_keep": [
+        "all remaining headings and TOC anchors",
+        "Features table rows",
+        "every install command",
+        "every usage example",
+        "proxy FAQ item",
+        "License section"
+      ]
+    },
+    {
+      "id": "N08",
+      "category": "long doc · over-cut · structure",
+      "prompt": "/less this runbook",
+      "before": "(~2,000-word incident runbook with TOC: 1 Summary, 2 Detection, 3 Mitigation (steps 3.1–3.9; step 3.4 says 'if errors persist, go to §5'), 4 Escalation contacts (table), 5 Rollback, 6 Postmortem template)",
+      "after": "All six sections, numbering, and TOC kept. Prose in Summary and Detection tightened; steps, contacts table, and Rollback unchanged.",
+      "bad_after": "Headings flattened into one list; §5 Rollback merged away; steps renumbered 1–7.",
+      "why_bad": "step 3.4's reference to §5 now points nowhere, TOC anchors break, and the reader can't navigate during an incident.",
+      "must_keep": [
+        "headings and numbering 1–6",
+        "TOC anchors",
+        "steps 3.1–3.9 in order",
+        "§5 Rollback",
+        "Escalation contacts table"
+      ]
+    },
+    {
+      "id": "N09",
+      "category": "PR description · padding",
+      "prompt": "tighten this PR description",
+      "before": "## Summary\nThis PR is a really important change that I think will help a lot. It basically fixes the bug where the editor loses the cursor position after save.\n\n## Changes\n- Store cursor position before save\n- Restore it after save\n\n## Testing\nI tested it manually and it seems to work fine.\n\nFixes #42\n\nLet me know if you have any feedback!",
+      "after": "## Summary\nFixes the editor losing the cursor position after save.\n\n## Changes\n- Store cursor position before save\n- Restore it after save\n\n## Testing\nTested manually.\n\nFixes #42",
+      "must_keep": [
+        "'Fixes #42'",
+        "both changes",
+        "Testing section",
+        "section headers (repo template)"
+      ]
+    },
+    {
+      "id": "N10",
+      "category": "PR description · over-cut · breaking change",
+      "prompt": "make this shorter",
+      "before": "This PR renames the config key `timeout` to `timeout_ms` to make the unit clear. **Breaking change:** existing configs using `timeout` will be ignored; users must rename the key. I added a warning log when `timeout` is found. Hope this makes sense!",
+      "after": "Renames config key `timeout` to `timeout_ms` to make the unit clear. **Breaking change:** configs using `timeout` are ignored; rename the key. Logs a warning when `timeout` is found.",
+      "bad_after": "Renames `timeout` to `timeout_ms`.",
+      "why_bad": "drops the breaking-change notice and the migration step.",
+      "must_keep": [
+        "Breaking change notice",
+        "users must rename the key",
+        "warning log"
+      ]
+    },
+    {
+      "id": "N11",
+      "category": "commit message · padding",
+      "prompt": "clean up this AI-written commit message",
+      "before": "fix(reader): restore scroll position when returning from Reader\n\nThis commit carefully and thoughtfully fixes an issue where, when the user returned from Reader mode, the scroll position was not restored, which was frustrating. Now we save the offset on exit because the view is recreated.\n\nCloses #13",
+      "after": "fix(reader): restore scroll position when returning from Reader\n\nSave the offset on exit, because the view is recreated.\n\nCloses #13",
+      "must_keep": [
+        "'fix(reader):' prefix",
+        "'Closes #13'",
+        "the why: view is recreated"
+      ]
+    },
+    {
+      "id": "N12",
+      "category": "commit message · over-cut · why and ref",
+      "prompt": "shorten",
+      "before": "chore(deps): pin sqlite to 3.45.1\n\n3.46.0 changes the default of `PRAGMA trusted_schema`, which breaks our migrations. Pin until #88 lands.\n\nRefs #88",
+      "after": "unchanged",
+      "bad_after": "chore(deps): pin sqlite",
+      "why_bad": "drops the version, the why, and the issue ref; a later reader can't tell when to unpin.",
+      "must_keep": [
+        "'chore(deps):' prefix",
+        "3.45.1",
+        "why (trusted_schema breaks migrations)",
+        "'Refs #88'"
+      ]
+    },
+    {
+      "id": "N13",
+      "category": "code · over-cut · boundary error check",
+      "prompt": "simplify this",
+      "before": "def fetch_user(session, uid):\n    resp = session.get(f\"/users/{uid}\", timeout=5)\n    if resp.status_code == 404:\n        return None\n    resp.raise_for_status()\n    return resp.json()\n",
+      "after": "unchanged",
+      "bad_after": "def fetch_user(session, uid):\n    return session.get(f\"/users/{uid}\").json()\n",
+      "why_bad": "removes the network timeout, 404 handling, and status check at a real boundary; behavior changes.",
+      "must_keep": [
+        "timeout=5",
+        "404 -> None",
+        "raise_for_status()"
+      ]
+    },
+    {
+      "id": "N14",
+      "category": "code · over-cut · why comment",
+      "prompt": "remove unnecessary comments",
+      "before": "// i is the index\nfor (let i = items.length - 1; i >= 0; i--) {\n  // Iterate backwards: splice() shifts later indices.\n  if (items[i].done) items.splice(i, 1);\n}\n",
+      "after": "for (let i = items.length - 1; i >= 0; i--) {\n  // Iterate backwards: splice() shifts later indices.\n  if (items[i].done) items.splice(i, 1);\n}\n",
+      "bad_after": "for (let i = items.length - 1; i >= 0; i--) {\n  if (items[i].done) items.splice(i, 1);\n}\n",
+      "why_bad": "removes the why comment; a later edit to a forward loop reintroduces the bug.",
+      "must_keep": [
+        "backwards-iteration comment",
+        "loop direction"
+      ]
+    },
+    {
+      "id": "N15",
+      "category": "code · over-cut · public signature",
+      "prompt": "simplify this module",
+      "before": "__all__ = [\"parse\"]\n\ndef parse(text, *, strict=False):\n    \"\"\"Public. strict raises on unknown keys.\"\"\"\n    return _parse(text, strict)\n",
+      "after": "unchanged (strict is public API; _parse may be shared)",
+      "bad_after": "def parse(text):\n    return _parse(text, False)\n",
+      "why_bad": "removes a public keyword argument; callers passing strict=True break.",
+      "must_keep": [
+        "parse(text, *, strict=False) signature",
+        "__all__",
+        "docstring"
+      ]
+    },
+    {
+      "id": "N16",
+      "category": "code · over-cut · test-only hook",
+      "prompt": "remove dead code",
+      "before": "class Clock:\n    def __init__(self, now=time.time):\n        self._now = now  # injectable for tests\n\n    def elapsed(self, start):\n        return self._now() - start\n",
+      "after": "unchanged",
+      "bad_after": "class Clock:\n    def elapsed(self, start):\n        return time.time() - start\n",
+      "why_bad": "removes the test seam; tests that inject a fake clock fail.",
+      "must_keep": [
+        "now parameter",
+        "injectable comment"
+      ]
+    },
+    {
+      "id": "N17",
+      "category": "code · over-cut · type annotation",
+      "prompt": "clean this up",
+      "before": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: float\n    y: float\n",
+      "after": "unchanged",
+      "bad_after": "class Point:\n    pass\n",
+      "why_bad": "in a dataclass the annotations define the fields; removing them changes behavior.",
+      "must_keep": [
+        "x: float",
+        "y: float",
+        "@dataclass"
+      ]
+    },
+    {
+      "id": "N18",
+      "category": "code · positive · AI bloat",
+      "prompt": "this AI-written code is bloated, cut it down",
+      "before": "from typing import List\n\nclass SumStrategy:\n    def apply(self, values: List[int]) -> int:\n        # sum the values\n        total = 0\n        for v in values:\n            total += v\n        return total\n\ndef total(values: List[int]) -> int:\n    return SumStrategy().apply(values)\n",
+      "after": "def total(values: list[int]) -> int:\n    return sum(values)\n",
+      "must_keep": [
+        "total(values) name and signature",
+        "same results incl. empty list -> 0"
+      ]
     }
   ]
 }
