@@ -1,0 +1,21 @@
+{
+  "name": "less",
+  "displayName": "less",
+  "description": "An agent skill to keep only what has a reason to exist.",
+  "version": "0.3.4",
+  "author": {
+    "name": "euca"
+  },
+  "homepage": "https://github.com/heyeuca/less",
+  "repository": "https://github.com/heyeuca/less",
+  "license": "MIT",
+  "keywords": [
+    "less",
+    "writing",
+    "code",
+    "ui",
+    "declutter"
+  ],
+  "category": "developer-tools",
+  "skills": "./skills/"
+}

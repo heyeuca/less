@@ -49,6 +49,9 @@ claude plugin marketplace add heyeuca/less
 claude plugin install less@heyeuca
 ```
 
+Cursor plugin: `.cursor-plugin/` carries the same plugin and marketplace
+manifests, pointing at `skills/`.
+
 Manual: from a clone of this repo, copy `skills/less` into your agent's skills folder (`~/.claude/skills` here, or `~/.agents/skills`):
 
 ```sh
