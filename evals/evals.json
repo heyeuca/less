@@ -875,6 +875,53 @@
         "hover:scale-105",
         "bg-gradient-to-r"
       ]
+    },
+    {
+      "id": "D13",
+      "category": "design · translucent sticky header over content, plus real decoration",
+      "format": "html",
+      "prompt": "This landing page looks cluttered. Clean it up.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}.blob{position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%%;background:radial-gradient(#c4b5fd,transparent);filter:blur(60px);z-index:-1}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:12px;text-transform:uppercase;letter-spacing:.1em}.card{border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><div class=\"blob\"></div><section><span class=\"pill\">✨ New</span><h2><span aria-hidden=\"true\">✨</span> Invoices in one place</h2><div class=\"card\"><p>Send, track, and reconcile invoices.</p></div></section><section><h2><span aria-hidden=\"true\">🚀</span> Reports</h2><div class=\"card\"><p>Monthly totals by client.</p></div></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><section><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><section><h2>Reports</h2><p>Monthly totals by client.</p></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><section><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><section><h2>Reports</h2><p>Monthly totals by client.</p></section></main></body></html>",
+      "why_bad": "Drops the header's backdrop-filter as decoration but keeps the 88% fill, so section headings show through the header while scrolling.",
+      "must_keep": [
+        "header text stays legible while scrolling: keep the backdrop blur, or make the header background opaque",
+        "sticky header with logo and nav links",
+        "both sections and their copy"
+      ],
+      "must_keep_roles": [
+        [
+          "navigation",
+          "Main"
+        ],
+        [
+          "link",
+          "Pricing"
+        ],
+        [
+          "link",
+          "Docs"
+        ],
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "heading",
+          "Reports"
+        ]
+      ],
+      "must_keep_selectors": [
+        "header",
+        "header nav a[href='/pricing']"
+      ],
+      "must_remove_hint": [
+        ".blob",
+        ".pill",
+        "box-shadow:0 10px 30px",
+        "emoji in headings"
+      ]
     }
   ]
 }
