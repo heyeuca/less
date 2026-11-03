@@ -14,14 +14,31 @@
     },
     {
       "id": "E02",
-      "category": "own answer · hedges",
+      "category": "own answer · hedges · confirmed source",
+      "prompt": "Source (calendar invite): \"Team sync: Thursday 3 PM. Confirmed.\"",
       "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
       "after": "The meeting is Thursday at 3 PM.",
-      "after_note": "After (time confirmed). If the source marks it as tentative, one hedge stays (\"probably\").",
       "must_keep": [
         "Thursday",
-        "3 PM"
-      ]
+        "3 PM",
+        "no hedge (the source confirms the time)"
+      ],
+      "bad_after": "The meeting is probably Thursday at 3 PM.",
+      "why_bad": "keeps a hedge the source contradicts; the time is confirmed."
+    },
+    {
+      "id": "E02b",
+      "category": "own answer · hedges · tentative source",
+      "prompt": "Source (calendar note): \"Team sync: tentatively Thursday 3 PM, not confirmed yet.\"",
+      "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
+      "after": "The meeting is probably Thursday at 3 PM.",
+      "must_keep": [
+        "Thursday",
+        "3 PM",
+        "\"probably\" (the source marks the time as tentative)"
+      ],
+      "bad_after": "The meeting is Thursday at 3 PM.",
+      "why_bad": "drops the only hedge; states a tentative time as confirmed."
     },
     {
       "id": "E03",
@@ -189,7 +206,7 @@
       "must_keep": [
         "the default path",
         "the file read and parse",
-        "the errors `open` and `json` raise (boundary, §4)"
+        "the errors `open` and `json` raise (boundary; see Never remove)"
       ]
     },
     {
