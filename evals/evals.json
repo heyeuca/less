@@ -1,0 +1,190 @@
+{
+  "skill_name": "less",
+  "invocation": "Every case is invoked with `/less` on `before`; a `prompt` is the user's original request or cue, given as context. `after` is the reference; grade against `must_keep`, not exact match.",
+  "evals": [
+    {
+      "id": "E01",
+      "category": "own answer · preamble/recap",
+      "before": "Great question! You're asking how to undo the last Git commit. To undo it while keeping your changes, run `git reset --soft HEAD~1`. I hope this helps! Let me know if you have other questions.",
+      "after": "To undo the last commit and keep your changes, run `git reset --soft HEAD~1`.",
+      "must_keep": [
+        "the command",
+        "\"keep your changes\""
+      ]
+    },
+    {
+      "id": "E02",
+      "category": "own answer · hedges",
+      "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
+      "after": "The meeting is Thursday at 3 PM.",
+      "after_note": "After (time confirmed). If the source marks it as tentative, one hedge stays (\"probably\").",
+      "must_keep": [
+        "Thursday",
+        "3 PM"
+      ]
+    },
+    {
+      "id": "E03",
+      "category": "own answer · duplicates",
+      "before": "Restart the router. This often fixes connection issues. Turning the router off and on again is a common fix. Restarting usually resolves the problem.",
+      "after": "Restart the router. This often fixes connection issues.",
+      "must_keep": [
+        "the action"
+      ]
+    },
+    {
+      "id": "E04",
+      "category": "own answer · decoration",
+      "before": "## Answer\n\n**Yes.** \n\n- Python 3.12 supports this.",
+      "after": "Yes, Python 3.12 supports this.",
+      "must_keep": [
+        "version number"
+      ]
+    },
+    {
+      "id": "E05",
+      "category": "own answer · unrequested alternatives",
+      "prompt": "How do I convert a PNG to JPG on macOS?",
+      "before": "Open it in Preview, choose File > Export, and pick JPEG. Alternatively, you could use GIMP, Photoshop, an online converter, or ImageMagick, each with its own pros and cons.",
+      "after": "Open it in Preview, choose File > Export, and pick JPEG.",
+      "must_keep": [
+        "all three steps"
+      ]
+    },
+    {
+      "id": "E06",
+      "category": "user text · tighten, keep voice",
+      "prompt": "less: honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
+      "before": "honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
+      "after": "honestly i'm gonna be late tmrw, super sorry, the train thing is a mess again, so maybe 10 min late??",
+      "must_keep": [
+        "casual lowercase voice",
+        "\"10 min\"",
+        "apology",
+        "Not rewritten into formal English."
+      ]
+    },
+    {
+      "id": "E07",
+      "category": "user text · email draft",
+      "before": "Hi Dana, I just wanted to reach out and touch base to let you know that I've attached the Q3 invoice for your review. Please feel free to let me know if you have any questions at all. Thanks so much!",
+      "after": "Hi Dana, I've attached the Q3 invoice for your review. Let me know if you have any questions. Thanks!",
+      "must_keep": [
+        "greeting",
+        "Q3 invoice",
+        "an invitation to ask questions (it's the user's draft, so it is their call to keep)"
+      ]
+    },
+    {
+      "id": "E08",
+      "category": "over-cut · negation",
+      "before": "Do not run the migration until the backup has finished. Running it earlier can corrupt the table.",
+      "after": "unchanged, or \"Don't run the migration until the backup finishes; running it earlier can corrupt the table.\"",
+      "must_keep": [],
+      "bad_after": "Run the migration. It can corrupt the table.",
+      "why_bad": "drops \"do not … until\", inverting the instruction."
+    },
+    {
+      "id": "E09",
+      "category": "over-cut · safety warning",
+      "before": "To free space, delete the `~/Library/Caches` folder contents. Don't delete `~/Library` itself; that removes app settings and can't be undone. This is usually safe and pretty easy.",
+      "after": "To free space, delete the contents of `~/Library/Caches`. Don't delete `~/Library` itself; that removes app settings and can't be undone.",
+      "must_keep": [],
+      "bad_after": "To free space, delete the contents of `~/Library/Caches`.",
+      "why_bad": "drops an irreversible-loss warning."
+    },
+    {
+      "id": "E10",
+      "category": "over-cut · required step",
+      "before": "First, sign out of the app. Then, and this is important, clear the cache in Settings > Storage. After that, sign back in, and you should be all set.",
+      "after": "Sign out, clear the cache in Settings > Storage, then sign back in.",
+      "must_keep": [],
+      "bad_after": "Sign out, then sign back in.",
+      "why_bad": "drops the step that actually fixes the problem."
+    },
+    {
+      "id": "E11",
+      "category": "over-cut · requested format",
+      "prompt": "Give me 3 bullet points on why to use SSH keys.",
+      "before": "- It's worth mentioning that SSH keys are much harder to brute-force than passwords.\n- Another thing to keep in mind is that you don't have to type a password every time.\n- Last but not least, keys can be revoked per machine.",
+      "after": "the same 3 bullets with the lead-ins removed.",
+      "must_keep": [
+        "3 bullets",
+        "all three points"
+      ],
+      "bad_after": "SSH keys resist brute force, skip password typing, and can be revoked per machine.",
+      "why_bad": "the user asked for 3 bullets."
+    },
+    {
+      "id": "E12",
+      "category": "over-cut · exception/condition",
+      "before": "Refunds are available within 30 days of purchase, except for gift cards, which are non-refundable.",
+      "after": "unchanged.",
+      "must_keep": [],
+      "bad_after": "Refunds are available within 30 days.",
+      "why_bad": "drops the exception."
+    },
+    {
+      "id": "E13",
+      "category": "no change · already tight",
+      "before": "The build failed because `node` 18 is required; you have 16. Run `nvm install 18`.",
+      "after": "unchanged.",
+      "must_keep": []
+    },
+    {
+      "id": "E14",
+      "category": "no change · exclusion",
+      "prompt": "less this",
+      "before": "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND…",
+      "before_note": "(MIT license clause)",
+      "after": "text unchanged, plus one line: \"Left as is: license text must stay verbatim.\"",
+      "must_keep": []
+    },
+    {
+      "id": "E15",
+      "category": "citation survives",
+      "before": "As many experts have often pointed out over the years, and according to the WHO's 2023 report, adults should, generally speaking, aim for at least 150 minutes of moderate activity a week.",
+      "after": "According to the WHO's 2023 report, adults should aim for at least 150 minutes of moderate activity a week.",
+      "must_keep": [
+        "WHO 2023 attribution",
+        "\"at least 150 minutes\"",
+        "\"moderate\"",
+        "\"a week\""
+      ],
+      "note": "E15's facts are input text for the case, not claims made by this spec."
+    },
+    {
+      "id": "E16",
+      "category": "code · restating comments + single-use helper",
+      "prompt": "This AI-written function is bloated. Clean it up.",
+      "before": "def _is_even(n):\n    # check if n is even\n    return n % 2 == 0\n\ndef evens(nums):\n    # loop over nums and keep evens\n    return [n for n in nums if _is_even(n)]\n",
+      "after": "def evens(nums):\n    return [n for n in nums if n % 2 == 0]\n",
+      "must_keep": [
+        "`evens(nums)` name and signature",
+        "same results"
+      ]
+    },
+    {
+      "id": "E17",
+      "category": "code · unrequested options + impossible defense",
+      "prompt": "Simplify this. It only needs to read config.json and return the parsed data.",
+      "before": "def load_config(path=\"config.json\", encoding=\"utf-8\", verbose=False):\n    if verbose:\n        print(\"loading\", path)\n    with open(path, encoding=encoding) as f:\n        text = f.read()\n    if text is None:  # f.read() never returns None\n        return {}\n    return json.loads(text)\n",
+      "after": "def load_config(path=\"config.json\"):\n    with open(path, encoding=\"utf-8\") as f:\n        return json.load(f)\n",
+      "must_keep": [
+        "the default path",
+        "the file read and parse",
+        "the errors `open` and `json` raise (boundary, §4)"
+      ]
+    },
+    {
+      "id": "E18",
+      "category": "code · over-cut · boundary validation and \"why\" comment",
+      "prompt": "simplify this",
+      "before": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    age = int(raw)  # convert to int\n    return age\n",
+      "after": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    return int(raw)\n",
+      "must_keep": [],
+      "bad_after": "def set_age(raw):\n    return int(raw)\n",
+      "why_bad": "drops validation at a user-input boundary (error message and behavior change) and the \"why\" comment."
+    }
+  ]
+}
