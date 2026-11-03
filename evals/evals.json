@@ -204,7 +204,7 @@
       "before": "def load_config(path=\"config.json\", encoding=\"utf-8\", verbose=False):\n    if verbose:\n        print(\"loading\", path)\n    with open(path, encoding=encoding) as f:\n        text = f.read()\n    if text is None:  # f.read() never returns None\n        return {}\n    return json.loads(text)\n",
       "after": "def load_config(path=\"config.json\"):\n    with open(path, encoding=\"utf-8\") as f:\n        return json.load(f)\n",
       "must_keep": [
-        "the default path",
+        "reads config.json by default (dropping the `path` parameter is fine: the user said it only reads config.json; behavior and errors must match `before`)",
         "the file read and parse",
         "the errors `open` and `json` raise (boundary; see Never remove)"
       ]

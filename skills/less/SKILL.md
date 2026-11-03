@@ -35,9 +35,9 @@ an exclusion: work inside it.
 Check every candidate against "Never remove" first.
 
 Writing:
-1. Preamble and restated question.
-2. Your own closing recap and offers ("Let me know if..."). In the user's
-   text, sign-offs and invitations to ask are the user's call: keep them.
+1. Preamble, restated question, and greetings you added ("Great question!").
+2. Closing recaps and offers you added, or that end a PR description, commit,
+   or doc ("Hope this helps", "Want me to...").
 3. Hedges and filler that change nothing.
 4. Duplicate points (keep the clearest).
 5. Unrequested caveats and alternatives that don't change what the reader does.
@@ -64,6 +64,8 @@ tables that carry data. Remove a whole section only when it fails the test.
 - The user's ask: requested content, format, length, constraints.
 - Attribution and citations.
 - The user's voice when editing their text. Don't rewrite style.
+- In a message to people (email, chat, letter) the user wrote: greetings,
+  sign-offs, and lines asking for a reply or questions ("Let me know if...").
 - Politeness register: 존댓말/敬語 forms, 様, greetings, sign-offs. Stacked
   softeners and intensifiers inside it (정말, 혹시, 大変, 誠に, 何卒) are filler.
 - Code: behavior (output, side effects, errors); error handling at real
