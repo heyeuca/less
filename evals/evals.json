@@ -80,7 +80,10 @@
       "category": "over-cut · negation",
       "before": "Do not run the migration until the backup has finished. Running it earlier can corrupt the table.",
       "after": "unchanged, or \"Don't run the migration until the backup finishes; running it earlier can corrupt the table.\"",
-      "must_keep": [],
+      "must_keep": [
+        "Do not run the migration until the backup has finished",
+        "can corrupt the table"
+      ],
       "bad_after": "Run the migration. It can corrupt the table.",
       "why_bad": "drops \"do not … until\", inverting the instruction."
     },
@@ -89,7 +92,10 @@
       "category": "over-cut · safety warning",
       "before": "To free space, delete the `~/Library/Caches` folder contents. Don't delete `~/Library` itself; that removes app settings and can't be undone. This is usually safe and pretty easy.",
       "after": "To free space, delete the contents of `~/Library/Caches`. Don't delete `~/Library` itself; that removes app settings and can't be undone.",
-      "must_keep": [],
+      "must_keep": [
+        "Don't delete `~/Library` itself",
+        "can't be undone"
+      ],
       "bad_after": "To free space, delete the contents of `~/Library/Caches`.",
       "why_bad": "drops an irreversible-loss warning."
     },
@@ -98,7 +104,9 @@
       "category": "over-cut · required step",
       "before": "First, sign out of the app. Then, and this is important, clear the cache in Settings > Storage. After that, sign back in, and you should be all set.",
       "after": "Sign out, clear the cache in Settings > Storage, then sign back in.",
-      "must_keep": [],
+      "must_keep": [
+        "clear the cache in Settings > Storage"
+      ],
       "bad_after": "Sign out, then sign back in.",
       "why_bad": "drops the step that actually fixes the problem."
     },
@@ -120,7 +128,10 @@
       "category": "over-cut · exception/condition",
       "before": "Refunds are available within 30 days of purchase, except for gift cards, which are non-refundable.",
       "after": "unchanged.",
-      "must_keep": [],
+      "must_keep": [
+        "except for gift cards",
+        "non-refundable"
+      ],
       "bad_after": "Refunds are available within 30 days.",
       "why_bad": "drops the exception."
     },
@@ -129,7 +140,9 @@
       "category": "no change · already tight",
       "before": "The build failed because `node` 18 is required; you have 16. Run `nvm install 18`.",
       "after": "unchanged.",
-      "must_keep": []
+      "must_keep": [
+        "text unchanged"
+      ]
     },
     {
       "id": "E14",
@@ -138,7 +151,10 @@
       "before": "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND…",
       "before_note": "(MIT license clause)",
       "after": "text unchanged, plus one line: \"Left as is: license text must stay verbatim.\"",
-      "must_keep": []
+      "must_keep": [
+        "text unchanged",
+        "Left as is: license text must stay verbatim."
+      ]
     },
     {
       "id": "E15",
@@ -182,7 +198,11 @@
       "prompt": "simplify this",
       "before": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    age = int(raw)  # convert to int\n    return age\n",
       "after": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    return int(raw)\n",
-      "must_keep": [],
+      "must_keep": [
+        "# The form sends strings; int() raises on \"\", so validate first.",
+        "if not raw.isdigit():",
+        "raise ValueError(\"age must be a whole number\")"
+      ],
       "bad_after": "def set_age(raw):\n    return int(raw)\n",
       "why_bad": "drops validation at a user-input boundary (error message and behavior change) and the \"why\" comment."
     }
