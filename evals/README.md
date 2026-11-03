@@ -9,6 +9,12 @@ python3 evals/run.py sheet OUT
 python3 -m unittest discover -s evals -p 'test_*.py'
 ```
 
+The unit tests also hold `SKILL.md` and `references/design.md` to word budgets
+(`test_budget.py`), because the skill is loaded on every invocation. A new rule
+should merge with or replace an existing one; raise a budget only as a
+deliberate decision. CI runs these tests and the design checker
+(`node check.mjs self`, `npm test`) on every pull request.
+
 `preservation.json` reports exact checks for annotated cases in each arm:
 
 - `removed`: all specified unnecessary spans disappeared.

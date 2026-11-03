@@ -1,0 +1,36 @@
+name: evals
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit tests (preservation checks, skill budget)
+        run: python3 -m unittest discover -s evals -p 'test_*.py'
+
+  design:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: evals/design
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: evals/design/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Reference after passes and bad_after fails for every D case
+        run: node check.mjs self
+      - name: Checker self-tests
+        run: npm test
