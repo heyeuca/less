@@ -37,7 +37,25 @@ ok &&= rejected;
 const design = JSON.parse(readFileSync('../evals.json', 'utf8')).evals;
 const get = id => design.find(row => row.id === id);
 const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11'), d13 = get('D13');
+const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
+// Custom CSS keeps alternate effects real even when their utility classes are
+// absent from the precompiled Tailwind fixture.
+const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
+const toolbar = { ...d12, format: 'html', before: toolbarHTML(d12.before), after: toolbarHTML(d12.after) };
+const effect = css => toolbar.after.replace('</head>', `<style>${css}</style></head>`);
 const regressions = [
+  [d01, 'renamed-inner-card', d01.before.replace('<div class="card"><div class="card">', '<div class="card"><section class="inner">').replace('}</style>', '}.inner{border:1px solid #ddd}</style>').replace('</div></div>', '</section></div>'), false],
+  [d02, 'uppercase-gradient', d02.after.replace('</style>', '.hero{background:LINEAR-GRADIENT(135deg,#f5f0ff,#e0f2ff)}</style>'), false],
+  [d02, 'escaped-gradient', d02.after.replace('</style>', String.raw`.hero{background:\6c inear-gradient(135deg,#f5f0ff,#e0f2ff)}</style>`), false],
+  [d04, 'retained-logos', d04.after.replace('</main>', '<img src="data:," alt="Logo"><img src="data:," alt="Logo"></main>'), false],
+  [d06, 'renamed-animation', d06.after.replace('</style>', '@keyframes rise{from{opacity:0}to{opacity:1}}section{animation:rise .6s}</style>'), false],
+  [d09, 'renamed-eyebrow', d09.after.replace('<h2', '<span class="label">HEADS UP</span><h2'), false],
+  [d10, 'renamed-badge', d10.after.replace('<h2', '<span class="label">New</span><h2'), false],
+  [d11, 'retagged-surfaces', d11.before.replace('✨ Profile', '').replace('<div', '<section').replace('</div>\n    </main>', '</section>\n    </main>'), false],
+  [toolbar, 'alternate-shadow', effect('button{box-shadow:0 1px 2px #555}'), false],
+  [toolbar, 'alternate-gradient', effect('nav{background-image:linear-gradient(red,blue)}'), false],
+  [toolbar, 'alternate-transition', effect('button{transition:box-shadow .3s}'), false],
+  [toolbar, 'alternate-hover', effect('button:hover{scale:1.1}'), false],
   [d03, 'entity-emoji', d03.after.replace('Fast sync', '&#x1F680; Fast sync'), false],
   [d04, 'retag-testimonial', d04.after.replace('</main>', '<div>"Best tool ever!" — Happy Customer</div></main>'), false],
   [d04, 'useful-section', d04.after.replace('<form>', '<section><form>').replace('</form>', '</form></section>'), true],

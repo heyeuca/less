@@ -99,14 +99,23 @@ async function measure(page, src, c) {
   for (const snippet of c.must_remove_text || [])
     removed.push(!norm(src).includes(norm(snippet)));
   // Browser text decodes entities, so markup spelling cannot hide visible copy.
-  const text = norm(await page.locator('body').innerText());
+  const text = norm(await page.locator('body').innerText()).toLowerCase();
   for (const snippet of c.must_remove_rendered_text || [])
-    removed.push(!text.includes(norm(snippet)));
-  for (const { selector, properties } of c.must_have_styles || []) {
+    removed.push(!text.includes(norm(snippet).toLowerCase()));
+  if (c.must_remove_computed_background) {
+    removed.push(await page.evaluate(() => ![...document.querySelectorAll('*')].some(el =>
+      [null, '::before', '::after'].some(pseudo =>
+        /linear-gradient/i.test(getComputedStyle(el, pseudo).backgroundImage)))));
+  }
+  for (const { selector, properties, hover } of c.must_have_styles || []) {
     const matches = page.locator(selector);
-    removed.push(await matches.count() > 0 && await matches.evaluateAll((els, properties) =>
-      els.every(el => Object.entries(properties).every(([key, expected]) =>
-        getComputedStyle(el).getPropertyValue(key) === expected)), properties));
+    removed.push(await matches.count() > 0);
+    for (let i = 0; i < await matches.count(); i++) {
+      const el = matches.nth(i);
+      if (hover) await el.hover();
+      removed.push(await el.evaluate((el, properties) => Object.entries(properties).every(
+        ([key, expected]) => getComputedStyle(el).getPropertyValue(key) === expected), properties));
+    }
   }
   if (c.must_remove_nested_surfaces) {
     removed.push(await page.evaluate(() => {
@@ -115,8 +124,8 @@ async function measure(page, src, c) {
         return s.boxShadow !== 'none' || ['Top', 'Right', 'Bottom', 'Left'].some(side =>
           s[`border${side}Style`] !== 'none' && parseFloat(s[`border${side}Width`]) > 0);
       };
-      return ![...document.querySelectorAll('div')].some(el => surface(el) &&
-        [...el.querySelectorAll('div')].some(surface));
+      return ![...document.querySelectorAll('div,section,article,aside,main')].some(el => surface(el) &&
+        [...el.querySelectorAll('div,section,article,aside,main')].some(surface));
     }));
   }
   return { roles, sels, axe, nodes, focus, reflow, overlays, info, removed };
