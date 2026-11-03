@@ -43,3 +43,15 @@ preservation gates, it rejects unchanged output on reduction cases. These are
 fixture-specific assertions, not a general visual quality score. In `self`
 mode, `before` checks preservation only; `after` must pass all gates and
 `bad_after` must fail at least one gate, otherwise the command exits nonzero.
+
+Use `must_remove_rendered_text` for visible content (body innerText, with HTML
+entities decoded by the browser). Keep `must_remove_text` for source-only
+assertions. Content checks avoid requiring a particular tag or wrapper layout.
+`must_have_styles` asserts canonical computed CSS values on every matching
+element and requires at least one match. D07 requires the form's four border
+widths to be zero and its box-shadow to be none, independent of declaration
+spelling. D11 uses `must_remove_nested_surfaces` to reject divs with a visible
+border or shadow inside similarly styled divs; unstyled layout wrappers and
+useful spans remain allowed. These are fixture-specific checks, not a general
+classifier for visual clutter. `npm test` covers entity-encoded emoji, retagged
+copy, equivalent CSS, retained decoration, and legitimate layout changes.

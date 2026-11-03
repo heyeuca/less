@@ -577,7 +577,7 @@
       "must_remove_selectors": [
         ".eyebrow"
       ],
-      "must_remove_text": [
+      "must_remove_rendered_text": [
         "🚀",
         "🔒",
         "✨"
@@ -617,9 +617,9 @@
         "Trusted by section",
         "testimonial"
       ],
-      "must_remove_selectors": [
-        "blockquote",
-        "main > section"
+      "must_remove_rendered_text": [
+        "Trusted by",
+        "\"Best tool ever!\" — Happy Customer"
       ]
     },
     {
@@ -654,8 +654,8 @@
       "must_remove_hint": [
         "slogan paragraph"
       ],
-      "must_remove_selectors": [
-        "main > p"
+      "must_remove_rendered_text": [
+        "Empower your team to connect, collaborate, and create. We're here for you, every step of the way."
       ]
     },
     {
@@ -730,9 +730,17 @@
         ".panel box-shadow",
         ".panel border"
       ],
-      "must_remove_text": [
-        "border:1px solid #e5e7eb",
-        "box-shadow:0 10px 30px"
+      "must_have_styles": [
+        {
+          "selector": "form",
+          "properties": {
+            "border-top-width": "0px",
+            "border-right-width": "0px",
+            "border-bottom-width": "0px",
+            "border-left-width": "0px",
+            "box-shadow": "none"
+          }
+        }
       ]
     },
     {
@@ -876,10 +884,10 @@
         "nested card div",
         "eyebrow span"
       ],
-      "must_remove_selectors": [
-        "div div",
-        "span"
-      ]
+      "must_remove_rendered_text": [
+        "✨ Profile"
+      ],
+      "must_remove_nested_surfaces": true
     },
     {
       "id": "D12",

@@ -33,5 +33,32 @@ try { execFileSync('node', ['check.mjs', 'self'], {
   env: { ...process.env, LESS_CASES: fixture }, stdio: 'pipe' }); }
 catch (e) { rejected = e.status === 1; }
 ok &&= rejected;
-console.log(ok ? 'self-test PASS' : 'self-test FAIL');
+// Exercise rendered-content and computed-style checks against equivalent markup.
+const design = JSON.parse(readFileSync('../evals.json', 'utf8')).evals;
+const get = id => design.find(row => row.id === id);
+const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11');
+const regressions = [
+  [d03, 'entity-emoji', d03.after.replace('Fast sync', '&#x1F680; Fast sync'), false],
+  [d04, 'retag-testimonial', d04.after.replace('</main>', '<div>"Best tool ever!" — Happy Customer</div></main>'), false],
+  [d04, 'useful-section', d04.after.replace('<form>', '<section><form>').replace('</form>', '</form></section>'), true],
+  [d05, 'retag-slogan', d05.before.replace('<p>Empower', '<div>Empower').replace('way.</p>', 'way.</div>'), false],
+  [d05, 'move-reply-time', d05.after.replace('<p>We reply within 2 business days.</p>', '').replace('</main>', '<p>We reply within 2 business days.</p></main>'), true],
+  [d07, 'equivalent-effects', d07.before.replace('#e5e7eb', 'rgb(229,231,235)').replace('0 10px 30px', '0px 10px 30px'), false],
+  [d11, 'useful-wrapper', d11.after.replace('<form', '<div><span aria-hidden="true"> / </span><form').replace('</form>', '</form></div>'), true],
+  [d11, 'renamed-surfaces', d11.before.replace('✨ Profile', '').replaceAll('rounded-xl', 'rounded-lg'), false],
+];
+const cases = regressions.map(([base, name, output]) => {
+  const row = { ...base, id: name };
+  writeFileSync(`${out}/${name}.with.out.md`, output);
+  return row;
+});
+writeFileSync(fixture, JSON.stringify({ evals: cases }));
+run([out], { LESS_CASES: fixture });
+const results = JSON.parse(readFileSync(`${out}/design-with.json`, 'utf8'));
+for (const [, name, , expected] of regressions) {
+  const correct = expected ? results[name].startsWith('PASS') : /FAIL.*G8✗/.test(results[name]);
+  console.log(`${name}: ${correct ? 'PASS' : 'FAIL'} (${results[name]})`);
+  ok &&= correct;
+}
+console.log(ok ? 'self-test PASS'  : 'self-test FAIL');
 process.exit(ok ? 0 : 1);

@@ -98,6 +98,27 @@ async function measure(page, src, c) {
     removed.push(await page.locator(selector).count() === 0);
   for (const snippet of c.must_remove_text || [])
     removed.push(!norm(src).includes(norm(snippet)));
+  // Browser text decodes entities, so markup spelling cannot hide visible copy.
+  const text = norm(await page.locator('body').innerText());
+  for (const snippet of c.must_remove_rendered_text || [])
+    removed.push(!text.includes(norm(snippet)));
+  for (const { selector, properties } of c.must_have_styles || []) {
+    const matches = page.locator(selector);
+    removed.push(await matches.count() > 0 && await matches.evaluateAll((els, properties) =>
+      els.every(el => Object.entries(properties).every(([key, expected]) =>
+        getComputedStyle(el).getPropertyValue(key) === expected)), properties));
+  }
+  if (c.must_remove_nested_surfaces) {
+    removed.push(await page.evaluate(() => {
+      const surface = el => {
+        const s = getComputedStyle(el);
+        return s.boxShadow !== 'none' || ['Top', 'Right', 'Bottom', 'Left'].some(side =>
+          s[`border${side}Style`] !== 'none' && parseFloat(s[`border${side}Width`]) > 0);
+      };
+      return ![...document.querySelectorAll('div')].some(el => surface(el) &&
+        [...el.querySelectorAll('div')].some(surface));
+    }));
+  }
   return { roles, sels, axe, nodes, focus, reflow, overlays, info, removed };
 }
 
