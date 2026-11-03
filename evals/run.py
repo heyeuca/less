@@ -5,9 +5,17 @@
       Writes OUT/<id>.with.md (SKILL.md included) and OUT/<id>.without.md.
       Paste each into a fresh session of any model; save the reply as
       OUT/<id>.with.out.md or OUT/<id>.without.out.md.
+      Also writes OUT/<id>.organic.md: only what a user would type. Run it in a
+      session where the skill is installed, not pasted, and save the reply as
+      OUT/<id>.organic.out.md; it shows whether the skill triggers on its own.
+
+  python3 evals/run.py triggers OUT
+      Writes OUT/triggers.md from triggers.json: each request, whether the skill
+      should load, and an empty column for what happened in a fresh session.
 
   python3 evals/run.py preservation OUT
-      Checks annotated spans and exact no-ops in both arms; writes preservation.json.
+      Checks annotated spans and exact no-ops in both arms (and the organic arm
+      when any of its replies exist); writes preservation.json.
       Does not replace semantic grading.
 
   python3 evals/run.py sheet OUT
@@ -22,6 +30,9 @@ ROOT = Path(__file__).resolve().parent.parent
 CASES = json.loads((ROOT / "evals/evals.json").read_text())["evals"]
 SKILL = (ROOT / "skills/less/SKILL.md").read_text()
 DESIGN = (ROOT / "skills/less/references/design.md").read_text()
+TRIGGERS = json.loads((ROOT / "evals/triggers.json").read_text())
+# Cases without a user prompt are the agent's own answer; a user would just ask.
+ORGANIC_REQUEST = "Tighten this up."
 
 
 def task(case, with_skill):
@@ -37,12 +48,28 @@ def task(case, with_skill):
     return "\n".join(parts)
 
 
+def organic(case):
+    """What a user would type: no skill text and no evaluation framing."""
+    return (case.get("prompt") or ORGANIC_REQUEST) + "\n\n" + case["before"] + "\n"
+
+
 def prompts(out):
     out.mkdir(parents=True, exist_ok=True)
     for case in CASES:
         (out / f"{case['id']}.with.md").write_text(task(case, True))
         (out / f"{case['id']}.without.md").write_text(task(case, False))
-    print(f"Wrote {2 * len(CASES)} prompts to {out}")
+        (out / f"{case['id']}.organic.md").write_text(organic(case))
+    print(f"Wrote {3 * len(CASES)} prompts to {out}")
+
+
+def triggers(out):
+    out.mkdir(parents=True, exist_ok=True)
+    rows = ["| # | request | should load less | loaded? |", "|---|---|---|---|"]
+    for expected, key in (("yes", "should_trigger"), ("no", "should_not_trigger")):
+        for request in TRIGGERS[key]:
+            rows.append(f"| {len(rows) - 1} | {cell(request)} | {expected} | |")
+    (out / "triggers.md").write_text("\n".join(rows) + "\n")
+    print(f"Wrote {out / 'triggers.md'}")
 
 
 def cell(text):
@@ -56,7 +83,10 @@ def read(path):
 def preservation(out):
     """Exact regression backstops, not a semantic quality score."""
     reports = {}
-    for suffix in ("with", "without"):
+    arms = ["with", "without"]
+    if any(out.glob("*.organic.out.md")):
+        arms.append("organic")
+    for suffix in arms:
         rows = []
         for case in CASES:
             if not any(k in case for k in ("protected_spans", "must_remove_spans", "exact_noop")):
@@ -120,6 +150,7 @@ def sheet(out):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3 or sys.argv[1] not in ("prompts", "sheet", "preservation"):
+    commands = {"prompts": prompts, "triggers": triggers, "sheet": sheet, "preservation": preservation}
+    if len(sys.argv) != 3 or sys.argv[1] not in commands:
         sys.exit(__doc__)
-    {"prompts": prompts, "sheet": sheet, "preservation": preservation}[sys.argv[1]](Path(sys.argv[2]))
+    commands[sys.argv[1]](Path(sys.argv[2]))

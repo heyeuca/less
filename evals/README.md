@@ -27,10 +27,11 @@ actual removal quality, and unintended damage to good material in the generated 
 Report these separately from reduction counts and exact no-op rates; do not
 collapse them into one quality score. Inspect per-case failures in both arms.
 
-P01–P10 are five paired prose regressions: empty emphasis versus uncertainty,
+P01–P14 are seven paired prose regressions: empty emphasis versus uncertainty,
 scope and approximation, repeated endings versus actionable endings, causal
-qualifications, and obligation. Each pair has a reduction case and a clean
-protection case. Good adjacent sentences are exact protected spans. Add a
+qualifications, obligation, and over-compression in English and Korean
+(arrows, fragments, and dropped articles in place of complete sentences). Each
+pair has a reduction case and a clean protection case. Good adjacent sentences are exact protected spans. Add a
 removal example and a legitimate-use protection example together when adding a
 new deletion rule; use the same approach for code and UI regressions.
 
@@ -45,3 +46,41 @@ informed by [UNSLOP's core contract](https://github.com/theclaymethod/unslop/blo
 and [evaluation protocol](https://github.com/theclaymethod/unslop/blob/17ed39c9d0b522f44190ff0c6233867eadee192a/evals/CORE-BENCHMARK.md).
 The cases and implementation here are written for less; no scanner, voice
 preset, or rewrite pipeline is imported.
+
+## Rule coverage
+
+Rules in `SKILL.md` (W, S, M) and `references/design.md` (C, K) carry stable
+IDs, and every case lists the rules it exercises in `rules`. `test_coverage.py`
+fails when a case cites an unknown ID, when a rule has no case, or when a
+writing or code removal rule (W, S) lacks either a case where it removes
+something or a protection case (a no-op or a known `bad_after`). Rules with no
+case yet are listed in `KNOWN_GAPS`; closing one means adding a case and
+deleting its ID there.
+
+## Organic and trigger runs
+
+`prompts` also writes `OUT/<id>.organic.md`: the user's request and content
+only, with no skill text and no evaluation framing. Run these in a session
+where the skill is installed rather than pasted, and save replies as
+`OUT/<id>.organic.out.md`; `preservation` then reports an `organic` arm. This
+checks that the skill loads and behaves the same when nobody hands it over.
+`python3 evals/run.py triggers OUT` writes `triggers.md` from `triggers.json`
+for recording whether the skill loaded on each request in a fresh session.
+
+## Changing the skill
+
+1. Encode a failure as a case before adding prose. Tag it with the rule it
+   tests and add its pair. Add or change a rule only when no case and check
+   can carry the lesson, and merge or replace an existing rule to stay inside
+   the word budget.
+2. Change one rule at a time. Measure it with the frozen prompts and grader,
+   on several runs, against the previous version. Keep the change only when
+   it helps past run-to-run noise and no case regresses; otherwise revert it.
+3. Log every attempt outside the tree (for example `decision.tsv`: id,
+   hypothesis, change, before, after, delta, verdict, note), including
+   reverted ones.
+
+The encode-first, one-change-per-measurement, and organic-prompt practices
+follow [pstack](https://github.com/cursor/plugins/tree/c742dd61706fbacc1b95f1a20b7b988cf096ce6c/pstack)
+(its encode-lessons-in-structure principle and its eval and hillclimb
+playbooks). Its style rewrites are not adopted.
