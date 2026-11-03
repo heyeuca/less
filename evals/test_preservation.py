@@ -52,6 +52,15 @@ class PreservationTest(unittest.TestCase):
             self.assertFalse(rows['P09']['preserved'])
             self.assertTrue(rows['P09']['removed'])
 
+    def test_removal_span_survives_whitespace_change(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            (out / 'P09.with.out.md').write_text(
+                'For completeness:\nAll inputs must be validated. Secrets must never appear in logs.')
+            rows = {row['id']: row for row in self.report(out)['with']['cases']}
+            self.assertTrue(rows['P09']['preserved'])
+            self.assertFalse(rows['P09']['removed'])
+
     def test_annotations_never_enter_generation_prompts(self):
         case = dict(run.CASES[-1], protected_spans=['SECRET_GOLD_MARKER'])
         for with_skill in (True, False):

@@ -1056,7 +1056,7 @@
         "배포는 금요일입니다."
       ],
       "must_remove_spans": [
-        "분명히 말하자면, "
+        "분명히 말하자면,"
       ],
       "exact_noop": false
     },
@@ -1094,7 +1094,7 @@
         "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
       ],
       "must_remove_spans": [
-        "참고로 말씀드리면, "
+        "참고로 말씀드리면,"
       ],
       "exact_noop": false,
       "bad_after": "50%의 요청이 실패합니다.",
@@ -1218,7 +1218,7 @@
         "Secrets must never appear in logs."
       ],
       "must_remove_spans": [
-        "For completeness: "
+        "For completeness:"
       ],
       "exact_noop": false
     },
