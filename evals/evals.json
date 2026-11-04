@@ -244,7 +244,7 @@
       "after": "text unchanged, plus one line: \"Left as is: license text must stay verbatim.\"",
       "must_keep": [
         "text unchanged",
-        "Left as is: license text must stay verbatim."
+        "one line naming the exclusion (license or legal text kept verbatim); any wording"
       ]
     },
     {

@@ -10,6 +10,9 @@
       agent's own earlier answer is an assistant turn. Replay it in a session
       where the skill is installed, not pasted, and save the final reply as
       OUT/<id>.organic.out.md.
+      Also writes OUT/run.json: SHA-256 hashes of the skill, runner, cases,
+      checker, and every prompt, plus empty fields for the model, sampling,
+      session setup, grader, and attempts. Fill those in before publishing.
 
   python3 evals/run.py triggers OUT
       Writes OUT/triggers.md from triggers.json: each request, whether the skill
@@ -24,18 +27,41 @@
       Writes OUT/sheet.md: one row per case with the must-keep checklist,
       both outputs, and empty pass/fail columns for a human or model grader.
 """
+import hashlib
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CASES = json.loads((ROOT / "evals/evals.json").read_text())["evals"]
-SKILL = (ROOT / "skills/less/SKILL.md").read_text()
-DESIGN = (ROOT / "skills/less/references/design.md").read_text()
-TRIGGERS = json.loads((ROOT / "evals/triggers.json").read_text())
+
+
+def load(path):
+    """UTF-8 regardless of locale, with line endings kept as stored."""
+    return path.read_bytes().decode("utf-8")
+
+
+def save(path, text):
+    path.write_bytes(text.encode("utf-8"))
+
+
+CASES = json.loads(load(ROOT / "evals/evals.json"))["evals"]
+SKILL = load(ROOT / "skills/less/SKILL.md")
+DESIGN = load(ROOT / "skills/less/references/design.md")
+TRIGGERS = json.loads(load(ROOT / "evals/triggers.json"))
 # What a user types when the case names no request of its own.
 ORGANIC_REQUEST = "Tighten this up."
 ORGANIC_FOLLOWUP = "Tighten your last answer."
+# Files whose content decides what a run measured.
+FROZEN = ["skills/less/SKILL.md", "skills/less/references/design.md",
+          "evals/run.py", "evals/evals.json", "evals/design/check.mjs"]
+# What a published run must state; prompts leaves these for the operator.
+RUN_FIELDS = {
+    "model": "model ID and version for each arm",
+    "sampling": "temperature, seed, and other settings, or provider defaults",
+    "session": "fresh session per case? file, repo, and tool access?",
+    "grader": "grader model and the instructions it was given",
+    "attempts": "every failed or retried attempt, kept rather than dropped",
+}
 
 
 def task(case, with_skill):
@@ -72,12 +98,26 @@ def organic(case):
 
 def prompts(out):
     out.mkdir(parents=True, exist_ok=True)
+    written = {}
     for case in CASES:
-        (out / f"{case['id']}.with.md").write_text(task(case, True))
-        (out / f"{case['id']}.without.md").write_text(task(case, False))
-        (out / f"{case['id']}.organic.json").write_text(
-            json.dumps(organic(case), indent=2, ensure_ascii=False) + "\n")
-    print(f"Wrote {3 * len(CASES)} prompts to {out}")
+        written[f"{case['id']}.with.md"] = task(case, True)
+        written[f"{case['id']}.without.md"] = task(case, False)
+        written[f"{case['id']}.organic.json"] = json.dumps(
+            organic(case), indent=2, ensure_ascii=False) + "\n"
+    for name, text in written.items():
+        save(out / name, text)
+    record = {
+        "inputs": {name: sha256((ROOT / name).read_bytes()) for name in FROZEN},
+        "prompts": {name: sha256(text.encode("utf-8")) for name, text in written.items()},
+        **{field: None for field in RUN_FIELDS},
+        "fill_in": RUN_FIELDS,
+    }
+    save(out / "run.json", json.dumps(record, indent=2) + "\n")
+    print(f"Wrote {len(written)} prompts and run.json to {out}")
+
+
+def sha256(data):
+    return hashlib.sha256(data).hexdigest()
 
 
 def triggers(out):
@@ -86,7 +126,7 @@ def triggers(out):
     for expected, key in (("yes", "should_trigger"), ("no", "should_not_trigger")):
         for request in TRIGGERS[key]:
             rows.append(f"| {len(rows) - 1} | {cell(request)} | {expected} | |")
-    (out / "triggers.md").write_text("\n".join(rows) + "\n")
+    save(out / "triggers.md", "\n".join(rows) + "\n")
     print(f"Wrote {out / 'triggers.md'}")
 
 
@@ -95,7 +135,7 @@ def cell(text):
 
 
 def read(path):
-    return path.read_text() if path.exists() else "(missing)"
+    return load(path) if path.exists() else "(missing)"
 
 
 def preservation(out):
@@ -111,7 +151,7 @@ def preservation(out):
                 continue
             path = out / f"{case['id']}.{suffix}.out.md"
             # Preserve line endings and final newlines for exact no-op checks.
-            output = path.read_bytes().decode("utf-8") if path.exists() else None
+            output = load(path) if path.exists() else None
             rows.append({
                 "id": case["id"],
                 "missing": output is None,
@@ -128,7 +168,7 @@ def preservation(out):
             applicable = [row[metric] for row in rows if row[metric] is not None]
             summary[metric] = {"passed": sum(applicable), "total": len(applicable)}
         reports[suffix] = {"summary": summary, "cases": rows}
-    (out / "preservation.json").write_text(json.dumps(reports, indent=2) + "\n")
+    save(out / "preservation.json", json.dumps(reports, indent=2) + "\n")
     print(f"Wrote {out / 'preservation.json'}")
 
 
@@ -141,7 +181,7 @@ def sheet(out):
     for suffix in ("with", "without"):
         path = out / f"design-{suffix}.json"
         if path.exists():
-            gates[suffix] = json.loads(path.read_text())
+            gates[suffix] = json.loads(load(path))
     for case in CASES:
         keep = "<br>".join("[ ] " + cell(k) for k in case["must_keep"]) or "reference: " + cell(case["after"])
         rows.append("| " + " | ".join([
@@ -154,7 +194,7 @@ def sheet(out):
             gates.get("with", {}).get(case["id"], ""),
             gates.get("without", {}).get(case["id"], ""),
         ]) + " |")
-    (out / "sheet.md").write_text("\n".join(rows) + "\n")
+    save(out / "sheet.md", "\n".join(rows) + "\n")
     print(f"Wrote {out / 'sheet.md'}")
     quality = [
         "| id | arm | removal quality | meaning / behavior preserved | damage to good material | evidence |",
@@ -163,7 +203,7 @@ def sheet(out):
     for case in CASES:
         for suffix in ("with", "without"):
             quality.append(f"| {case['id']} | {suffix} | | | | |")
-    (out / "quality.md").write_text("\n".join(quality) + "\n")
+    save(out / "quality.md", "\n".join(quality) + "\n")
     print(f"Wrote {out / 'quality.md'}")
 
 

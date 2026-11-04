@@ -49,6 +49,14 @@ rules keep every heading and every opt-out, so P15 and D21 may fail. They
 measure whether a narrower rule would help. Change a rule only when held-out
 runs show the narrower version removes more without failing P16 or D22.
 
+`prompts` also writes `OUT/run.json`. It holds SHA-256 hashes of the skill,
+runner, cases, and checker, and one for every generated prompt. It also has
+empty fields for the model and version, the sampling settings, the session
+setup (a fresh session per case? file, repo, or tool access?), the grader and
+its instructions, and every failed or retried attempt. Fill these in, and
+publish `run.json` with the results directory. A result without one can't be
+checked.
+
 The new cases are explicitly `tune`: their answers informed the instructions.
 Existing cases are also development/regression evidence, not held-out evidence.
 Before claiming quality gains, freeze the skill and grader, collect unseen

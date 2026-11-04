@@ -15,6 +15,12 @@ jobs:
           python-version: "3.12"
       - name: Unit tests (preservation checks, skill budget)
         run: python3 -m unittest discover -s evals -p 'test_*.py'
+      - name: Unit tests under a non-UTF-8 locale
+        run: python3 -X utf8=0 -m unittest discover -s evals -p 'test_*.py'
+        env:
+          LC_ALL: C
+          LANG: C
+          PYTHONCOERCECLOCALE: "0"  # otherwise Python switches C to C.UTF-8
 
   design:
     runs-on: ubuntu-latest
