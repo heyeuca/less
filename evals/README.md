@@ -65,11 +65,16 @@ case and deleting its ID from `KNOWN_GAPS`.
 
 ## Organic and trigger runs
 
-`prompts` also writes `OUT/<id>.organic.md`: the user's request and content
-only, with no skill text and no evaluation framing. Run these in a session
-where the skill is installed rather than pasted, and save replies as
-`OUT/<id>.organic.out.md`. Once any organic reply exists, `preservation` also
-reports an `organic` arm with the same span and no-op checks. That checks the
+`prompts` also writes `OUT/<id>.organic.json`: the conversation a user would
+have, as role/content messages, with no skill text and no evaluation framing.
+Cases with `author: "assistant"` hold the agent's own earlier answer, so it
+stays an assistant turn after the question in `prompt`, followed by a request
+to tighten it. Other content is the user's, sent with their request. `context`
+(such as a calendar invite) sits beside the request and never replaces it.
+Replay these in a session where the skill is installed rather than pasted, and
+save the final reply as `OUT/<id>.organic.out.md`. Once any organic reply
+exists, `preservation` also reports an `organic` arm with the same span and
+no-op checks. That checks the
 output, not whether the skill loaded: record loading separately with
 `python3 evals/run.py triggers OUT`, which writes `triggers.md` from
 `triggers.json` for each request run in a fresh session.

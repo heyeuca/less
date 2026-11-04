@@ -5,9 +5,11 @@
       Writes OUT/<id>.with.md (SKILL.md included) and OUT/<id>.without.md.
       Paste each into a fresh session of any model; save the reply as
       OUT/<id>.with.out.md or OUT/<id>.without.out.md.
-      Also writes OUT/<id>.organic.md: only what a user would type. Run it in a
-      session where the skill is installed, not pasted, and save the reply as
-      OUT/<id>.organic.out.md; it shows whether the skill triggers on its own.
+      Also writes OUT/<id>.organic.json: the conversation a user would have, as
+      role/content messages with no skill text or evaluation framing. The
+      agent's own earlier answer is an assistant turn. Replay it in a session
+      where the skill is installed, not pasted, and save the final reply as
+      OUT/<id>.organic.out.md.
 
   python3 evals/run.py triggers OUT
       Writes OUT/triggers.md from triggers.json: each request, whether the skill
@@ -31,8 +33,9 @@ CASES = json.loads((ROOT / "evals/evals.json").read_text())["evals"]
 SKILL = (ROOT / "skills/less/SKILL.md").read_text()
 DESIGN = (ROOT / "skills/less/references/design.md").read_text()
 TRIGGERS = json.loads((ROOT / "evals/triggers.json").read_text())
-# Cases without a user prompt are the agent's own answer; a user would just ask.
+# What a user types when the case names no request of its own.
 ORGANIC_REQUEST = "Tighten this up."
+ORGANIC_FOLLOWUP = "Tighten your last answer."
 
 
 def task(case, with_skill):
@@ -43,14 +46,28 @@ def task(case, with_skill):
         parts.append("Use this skill:\n\n<skill>\n" + skill + "</skill>\n")
     if case.get("prompt"):
         parts.append("The user's original request:\n\n" + case["prompt"] + "\n")
+    if case.get("context"):
+        parts.append("Context the user provided:\n\n" + case["context"] + "\n")
     command = "Remove unnecessary material while preserving meaning, behavior, and requested constraints."
-    parts.append(command + "\n\n" + case["before"] + "\n")
+    label = "Your earlier answer:\n\n" if case.get("author") == "assistant" else ""
+    parts.append(command + "\n\n" + label + case["before"] + "\n")
     return "\n".join(parts)
 
 
 def organic(case):
-    """What a user would type: no skill text and no evaluation framing."""
-    return (case.get("prompt") or ORGANIC_REQUEST) + "\n\n" + case["before"] + "\n"
+    """The conversation a user would have: no skill text and no evaluation framing.
+
+    The agent's own earlier answer stays an assistant turn, and context sits
+    beside the request instead of replacing it.
+    """
+    if case.get("author") == "assistant":
+        question = "\n\n".join(filter(None, [case.get("context"), case["prompt"]]))
+        return [{"role": "user", "content": question},
+                {"role": "assistant", "content": case["before"]},
+                {"role": "user", "content": ORGANIC_FOLLOWUP}]
+    request = case.get("prompt") or ORGANIC_REQUEST
+    content = "\n\n".join(filter(None, [request, case.get("context"), case["before"]]))
+    return [{"role": "user", "content": content + "\n"}]
 
 
 def prompts(out):
@@ -58,7 +75,8 @@ def prompts(out):
     for case in CASES:
         (out / f"{case['id']}.with.md").write_text(task(case, True))
         (out / f"{case['id']}.without.md").write_text(task(case, False))
-        (out / f"{case['id']}.organic.md").write_text(organic(case))
+        (out / f"{case['id']}.organic.json").write_text(
+            json.dumps(organic(case), indent=2, ensure_ascii=False) + "\n")
     print(f"Wrote {3 * len(CASES)} prompts to {out}")
 
 

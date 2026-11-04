@@ -1,6 +1,6 @@
 {
   "skill_name": "less",
-  "invocation": "Both arms receive the same removal request and original prompt; only skill context differs. Grade meaning against must_keep. protected_spans must remain verbatim; must_remove_spans must disappear. exact_noop requires byte-for-byte equality with before. after is otherwise illustrative.",
+  "invocation": "Both arms receive the same removal request, original prompt, and context; only skill context differs. author \"assistant\" marks the agent's own earlier answer to prompt; otherwise the content is the user's. context is supporting material, never the request. Grade meaning against must_keep. protected_spans must remain verbatim; must_remove_spans must disappear. exact_noop requires byte-for-byte equality with before. after is otherwise illustrative.",
   "evals": [
     {
       "id": "E01",
@@ -9,6 +9,8 @@
         "W1",
         "W2"
       ],
+      "author": "assistant",
+      "prompt": "How do I undo my last Git commit but keep my changes?",
       "before": "Great question! You're asking how to undo the last Git commit. To undo it while keeping your changes, run `git reset --soft HEAD~1`. I hope this helps! Let me know if you have other questions.",
       "after": "To undo the last commit and keep your changes, run `git reset --soft HEAD~1`.",
       "must_keep": [
@@ -23,7 +25,9 @@
         "W3",
         "M1"
       ],
-      "prompt": "Source (calendar invite): \"Team sync: Thursday 3 PM. Confirmed.\"",
+      "author": "assistant",
+      "prompt": "When is the team sync?",
+      "context": "Source (calendar invite): \"Team sync: Thursday 3 PM. Confirmed.\"",
       "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
       "after": "The meeting is Thursday at 3 PM.",
       "must_keep": [
@@ -41,7 +45,9 @@
         "W3",
         "M2"
       ],
-      "prompt": "Source (calendar note): \"Team sync: tentatively Thursday 3 PM, not confirmed yet.\"",
+      "author": "assistant",
+      "prompt": "When is the team sync?",
+      "context": "Source (calendar note): \"Team sync: tentatively Thursday 3 PM, not confirmed yet.\"",
       "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
       "after": "The meeting is probably Thursday at 3 PM.",
       "must_keep": [
@@ -58,6 +64,8 @@
       "rules": [
         "W4"
       ],
+      "author": "assistant",
+      "prompt": "My Wi-Fi keeps dropping. What should I try first?",
       "before": "Restart the router. This often fixes connection issues. Turning the router off and on again is a common fix. Restarting usually resolves the problem.",
       "after": "Restart the router. This often fixes connection issues.",
       "must_keep": [
@@ -70,6 +78,8 @@
       "rules": [
         "W6"
       ],
+      "author": "assistant",
+      "prompt": "Can I use match statements in Python 3.12?",
       "before": "## Answer\n\n**Yes.** \n\n- Python 3.12 supports this.",
       "after": "Yes, Python 3.12 supports this.",
       "must_keep": [
@@ -82,6 +92,7 @@
       "rules": [
         "W5"
       ],
+      "author": "assistant",
       "prompt": "How do I convert a PNG to JPG on macOS?",
       "before": "Open it in Preview, choose File > Export, and pick JPEG. Alternatively, you could use GIMP, Photoshop, an online converter, or ImageMagick, each with its own pros and cons.",
       "after": "Open it in Preview, choose File > Export, and pick JPEG.",
@@ -97,7 +108,7 @@
         "W7",
         "M7"
       ],
-      "prompt": "less: honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
+      "prompt": "less:",
       "before": "honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
       "after": "honestly i'm gonna be late tmrw, super sorry, the train thing is a mess again, so maybe 10 min late??",
       "must_keep": [
@@ -128,6 +139,8 @@
       "rules": [
         "M1"
       ],
+      "author": "assistant",
+      "prompt": "When can I run the migration?",
       "before": "Do not run the migration until the backup has finished. Running it earlier can corrupt the table.",
       "after": "unchanged, or \"Don't run the migration until the backup finishes; running it earlier can corrupt the table.\"",
       "must_keep": [
@@ -144,6 +157,8 @@
         "W5",
         "M4"
       ],
+      "author": "assistant",
+      "prompt": "How do I free up disk space on my Mac?",
       "before": "To free space, delete the `~/Library/Caches` folder contents. Don't delete `~/Library` itself; that removes app settings and can't be undone. This is usually safe and pretty easy.",
       "after": "To free space, delete the contents of `~/Library/Caches`. Don't delete `~/Library` itself; that removes app settings and can't be undone.",
       "must_keep": [
@@ -159,6 +174,8 @@
       "rules": [
         "M3"
       ],
+      "author": "assistant",
+      "prompt": "The app keeps showing old data. How do I fix it?",
       "before": "First, sign out of the app. Then, and this is important, clear the cache in Settings > Storage. After that, sign back in, and you should be all set.",
       "after": "Sign out, clear the cache in Settings > Storage, then sign back in.",
       "must_keep": [
@@ -174,6 +191,7 @@
         "W6",
         "M5"
       ],
+      "author": "assistant",
       "prompt": "Give me 3 bullet points on why to use SSH keys.",
       "before": "- It's worth mentioning that SSH keys are much harder to brute-force than passwords.\n- Another thing to keep in mind is that you don't have to type a password every time.\n- Last but not least, keys can be revoked per machine.",
       "after": "the same 3 bullets with the lead-ins removed.",
@@ -191,6 +209,8 @@
         "W5",
         "M1"
       ],
+      "author": "assistant",
+      "prompt": "What's your refund policy?",
       "before": "Refunds are available within 30 days of purchase, except for gift cards, which are non-refundable.",
       "after": "unchanged.",
       "must_keep": [
@@ -206,6 +226,8 @@
       "rules": [
         "W3"
       ],
+      "author": "assistant",
+      "prompt": "Why did my build fail?",
       "before": "The build failed because `node` 18 is required; you have 16. Run `nvm install 18`.",
       "after": "unchanged.",
       "must_keep": [
@@ -232,6 +254,8 @@
         "W3",
         "M6"
       ],
+      "author": "assistant",
+      "prompt": "How much exercise should adults get each week?",
       "before": "As many experts have often pointed out over the years, and according to the WHO's 2023 report, adults should, generally speaking, aim for at least 150 minutes of moderate activity a week.",
       "after": "According to the WHO's 2023 report, adults should aim for at least 150 minutes of moderate activity a week.",
       "must_keep": [
@@ -298,6 +322,8 @@
         "W1",
         "W2"
       ],
+      "author": "assistant",
+      "prompt": "배포는 언제 해요? 롤백은 어떻게 하죠?",
       "before": "좋은 질문이에요! 요약하자면, 배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요. 도움이 되었길 바라요!",
       "after": "배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요.",
       "must_keep": [
@@ -313,6 +339,8 @@
         "M1",
         "M9"
       ],
+      "author": "assistant",
+      "prompt": "결제 확인 전에 주문을 취소해도 되나요?",
       "before": "사실 이건 꼭 말씀드려야 할 것 같은데요, 결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
       "after": "결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
       "bad_after": "주문을 취소하세요. 중복 환불이 생길 수 있어요.",
@@ -351,6 +379,8 @@
         "W2",
         "M9"
       ],
+      "author": "assistant",
+      "prompt": "APIキーを再発行するにはどうすればいいですか？",
       "before": "ご質問ありがとうございます。結論から申し上げますと、APIキーは管理画面の「設定 > API」から再発行できます。何かあればお気軽にお尋ねください。",
       "after": "APIキーは管理画面の「設定 > API」から再発行できます。",
       "must_keep": [
@@ -386,6 +416,8 @@
       "rules": [
         "M1"
       ],
+      "author": "assistant",
+      "prompt": "返品はできますか？",
       "before": "基本的には、返品は購入後30日以内であれば可能です。ただし、セール品は返品できませんので、ご注意ください。",
       "after": "返品は購入後30日以内なら可能です。ただし、セール品は返品できません。",
       "bad_after": "返品は購入後30日以内に可能です。",
