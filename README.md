@@ -83,7 +83,8 @@ above have not been remeasured with these changes. Future reports should retain
 model/version settings, raw outputs, grading decisions, and behavior-check
 commands so results can be reproduced.
 
-The current suite adds 14 paired preservation cases (64 total). See the
+The current suite adds 14 paired preservation cases and 8 cases that cover
+every remaining rule ID (72 total). See the
 [evaluation guide](evals/README.md) for separate removal, preservation, damage,
 and exact no-op checks. No updated model performance result is claimed.
 

@@ -10,7 +10,7 @@ DESIGN_IDS = set(re.findall(r"^\| (C\d+) \|", run.DESIGN, re.M)) | set(
 
 # Rules no case exercises yet. Closing a gap means adding a case and removing
 # its ID here; a new rule without a case fails until it gets one.
-KNOWN_GAPS = {"M11", "C5", "C10", "C11", "C12", "K2", "K3", "K7", "K9"}
+KNOWN_GAPS = set()
 
 
 def noop(case):

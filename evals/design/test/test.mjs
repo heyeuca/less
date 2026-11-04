@@ -38,6 +38,7 @@ const design = JSON.parse(readFileSync('../evals.json', 'utf8')).evals;
 const get = id => design.find(row => row.id === id);
 const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11'), d13 = get('D13');
 const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
+const d18 = get('D18');
 // Custom CSS keeps alternate effects real even when their utility classes are
 // absent from the precompiled Tailwind fixture.
 const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
@@ -68,6 +69,7 @@ const regressions = [
   [d11, 'useful-wrapper', d11.after.replace('<form', '<div><span aria-hidden="true"> / </span><form').replace('</form>', '</form></div>'), true],
   [d11, 'renamed-surfaces', d11.before.replace('✨ Profile', '').replaceAll('rounded-xl', 'rounded-lg'), false],
   [d13, 'renamed-blob', d13.after.replace('</style>', '.orb{position:absolute;width:320px;height:320px;filter:blur(60px);z-index:-1}</style>').replace('<main>', '<main><div class="orb"></div>'), false],
+  [d18, 'route-arrow-removed', d18.after.replace('Tokyo → Osaka', 'Tokyo to Osaka'), false, 'G2'],
   [d13, 'opaque-header', d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {
@@ -78,8 +80,9 @@ const cases = regressions.map(([base, name, output]) => {
 writeFileSync(fixture, JSON.stringify({ evals: cases }));
 run([out], { LESS_CASES: fixture });
 const results = JSON.parse(readFileSync(`${out}/design-with.json`, 'utf8'));
-for (const [, name, , expected] of regressions) {
-  const correct = expected ? results[name].startsWith('PASS') : /FAIL.*G8✗/.test(results[name]);
+// A rejected output must fail the named gate (G8, required removals, unless stated).
+for (const [, name, , expected, gate = 'G8'] of regressions) {
+  const correct = expected ? results[name].startsWith('PASS') : new RegExp(`FAIL.*${gate}✗`).test(results[name]);
   console.log(`${name}: ${correct ? 'PASS' : 'FAIL'} (${results[name]})`);
   ok &&= correct;
 }

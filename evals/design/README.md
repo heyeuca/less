@@ -14,6 +14,10 @@ required removals hold. Element and CSS declaration counts print as info only.
     node check.mjs self        # before, after, bad_after vs before
     node check.mjs OUT [ID]    # OUT/<id>.with.out.md (from ../run.py) vs before
 
+`must_keep_rendered_text` entries must stay in the page's visible text
+(matched case-insensitively), for content a selector can't name, such as the
+route arrow in D18. They count toward G2.
+
 A `must_keep_selectors` entry is a CSS selector (counted, hidden elements
 included) unless it isn't a valid selector or uses a state pseudo-class such as
 `:hover`; then it is CSS text, matched as a substring after whitespace is
