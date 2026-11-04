@@ -2,6 +2,7 @@
 import contextlib
 import io
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -63,9 +64,24 @@ class PreservationTest(unittest.TestCase):
 
     def test_annotations_never_enter_generation_prompts(self):
         case = dict(run.CASES[-1], protected_spans=['SECRET_GOLD_MARKER'])
-        for with_skill in (True, False):
-            self.assertNotIn('SECRET_GOLD_MARKER', run.task(case, with_skill))
+        for prompt in (run.task(case, True), run.task(case, False), run.organic(case)):
+            self.assertNotIn('SECRET_GOLD_MARKER', prompt)
         self.assertTrue(run.task(case, True).endswith(run.task(case, False)))
+
+    def test_organic_prompts_carry_no_evaluation_framing(self):
+        framing = re.compile(r'\b(evals?|tests?|judge|rubric|score|benchmark|candidate|skill)\b', re.I)
+        for case in run.CASES:
+            prompt = run.organic(case)
+            with self.subTest(case=case['id']):
+                self.assertTrue(prompt.endswith(case['before'] + '\n'))
+                self.assertNotRegex(prompt[:-len(case['before']) - 1], framing)
+
+    def test_organic_arm_is_reported_only_when_run(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            self.assertNotIn('organic', self.report(out))
+            (out / 'P01.organic.out.md').write_text(run.CASES[0]['before'])
+            self.assertIn('organic', self.report(out))
 
 
 if __name__ == '__main__':

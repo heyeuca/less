@@ -5,6 +5,10 @@
     {
       "id": "E01",
       "category": "own answer · preamble/recap",
+      "rules": [
+        "W1",
+        "W2"
+      ],
       "before": "Great question! You're asking how to undo the last Git commit. To undo it while keeping your changes, run `git reset --soft HEAD~1`. I hope this helps! Let me know if you have other questions.",
       "after": "To undo the last commit and keep your changes, run `git reset --soft HEAD~1`.",
       "must_keep": [
@@ -15,6 +19,10 @@
     {
       "id": "E02",
       "category": "own answer · hedges · confirmed source",
+      "rules": [
+        "W3",
+        "M1"
+      ],
       "prompt": "Source (calendar invite): \"Team sync: Thursday 3 PM. Confirmed.\"",
       "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
       "after": "The meeting is Thursday at 3 PM.",
@@ -29,6 +37,10 @@
     {
       "id": "E02b",
       "category": "own answer · hedges · tentative source",
+      "rules": [
+        "W3",
+        "M2"
+      ],
       "prompt": "Source (calendar note): \"Team sync: tentatively Thursday 3 PM, not confirmed yet.\"",
       "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
       "after": "The meeting is probably Thursday at 3 PM.",
@@ -43,6 +55,9 @@
     {
       "id": "E03",
       "category": "own answer · duplicates",
+      "rules": [
+        "W4"
+      ],
       "before": "Restart the router. This often fixes connection issues. Turning the router off and on again is a common fix. Restarting usually resolves the problem.",
       "after": "Restart the router. This often fixes connection issues.",
       "must_keep": [
@@ -52,6 +67,9 @@
     {
       "id": "E04",
       "category": "own answer · decoration",
+      "rules": [
+        "W6"
+      ],
       "before": "## Answer\n\n**Yes.** \n\n- Python 3.12 supports this.",
       "after": "Yes, Python 3.12 supports this.",
       "must_keep": [
@@ -61,6 +79,9 @@
     {
       "id": "E05",
       "category": "own answer · unrequested alternatives",
+      "rules": [
+        "W5"
+      ],
       "prompt": "How do I convert a PNG to JPG on macOS?",
       "before": "Open it in Preview, choose File > Export, and pick JPEG. Alternatively, you could use GIMP, Photoshop, an online converter, or ImageMagick, each with its own pros and cons.",
       "after": "Open it in Preview, choose File > Export, and pick JPEG.",
@@ -71,6 +92,11 @@
     {
       "id": "E06",
       "category": "user text · tighten, keep voice",
+      "rules": [
+        "W3",
+        "W7",
+        "M7"
+      ],
       "prompt": "less: honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
       "before": "honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
       "after": "honestly i'm gonna be late tmrw, super sorry, the train thing is a mess again, so maybe 10 min late??",
@@ -84,6 +110,10 @@
     {
       "id": "E07",
       "category": "user text · email draft",
+      "rules": [
+        "W7",
+        "M8"
+      ],
       "before": "Hi Dana, I just wanted to reach out and touch base to let you know that I've attached the Q3 invoice for your review. Please feel free to let me know if you have any questions at all. Thanks so much!",
       "after": "Hi Dana, I've attached the Q3 invoice for your review. Let me know if you have any questions. Thanks!",
       "must_keep": [
@@ -95,6 +125,9 @@
     {
       "id": "E08",
       "category": "over-cut · negation",
+      "rules": [
+        "M1"
+      ],
       "before": "Do not run the migration until the backup has finished. Running it earlier can corrupt the table.",
       "after": "unchanged, or \"Don't run the migration until the backup finishes; running it earlier can corrupt the table.\"",
       "must_keep": [
@@ -107,6 +140,10 @@
     {
       "id": "E09",
       "category": "over-cut · safety warning",
+      "rules": [
+        "W5",
+        "M4"
+      ],
       "before": "To free space, delete the `~/Library/Caches` folder contents. Don't delete `~/Library` itself; that removes app settings and can't be undone. This is usually safe and pretty easy.",
       "after": "To free space, delete the contents of `~/Library/Caches`. Don't delete `~/Library` itself; that removes app settings and can't be undone.",
       "must_keep": [
@@ -119,6 +156,9 @@
     {
       "id": "E10",
       "category": "over-cut · required step",
+      "rules": [
+        "M3"
+      ],
       "before": "First, sign out of the app. Then, and this is important, clear the cache in Settings > Storage. After that, sign back in, and you should be all set.",
       "after": "Sign out, clear the cache in Settings > Storage, then sign back in.",
       "must_keep": [
@@ -130,6 +170,10 @@
     {
       "id": "E11",
       "category": "over-cut · requested format",
+      "rules": [
+        "W6",
+        "M5"
+      ],
       "prompt": "Give me 3 bullet points on why to use SSH keys.",
       "before": "- It's worth mentioning that SSH keys are much harder to brute-force than passwords.\n- Another thing to keep in mind is that you don't have to type a password every time.\n- Last but not least, keys can be revoked per machine.",
       "after": "the same 3 bullets with the lead-ins removed.",
@@ -143,6 +187,10 @@
     {
       "id": "E12",
       "category": "over-cut · exception/condition",
+      "rules": [
+        "W5",
+        "M1"
+      ],
       "before": "Refunds are available within 30 days of purchase, except for gift cards, which are non-refundable.",
       "after": "unchanged.",
       "must_keep": [
@@ -155,6 +203,9 @@
     {
       "id": "E13",
       "category": "no change · already tight",
+      "rules": [
+        "W3"
+      ],
       "before": "The build failed because `node` 18 is required; you have 16. Run `nvm install 18`.",
       "after": "unchanged.",
       "must_keep": [
@@ -164,6 +215,7 @@
     {
       "id": "E14",
       "category": "no change · exclusion",
+      "rules": [],
       "prompt": "less this",
       "before": "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND…",
       "before_note": "(MIT license clause)",
@@ -176,6 +228,10 @@
     {
       "id": "E15",
       "category": "citation survives",
+      "rules": [
+        "W3",
+        "M6"
+      ],
       "before": "As many experts have often pointed out over the years, and according to the WHO's 2023 report, adults should, generally speaking, aim for at least 150 minutes of moderate activity a week.",
       "after": "According to the WHO's 2023 report, adults should aim for at least 150 minutes of moderate activity a week.",
       "must_keep": [
@@ -189,6 +245,10 @@
     {
       "id": "E16",
       "category": "code · restating comments + single-use helper",
+      "rules": [
+        "S1",
+        "S2"
+      ],
       "prompt": "This AI-written function is bloated. Clean it up.",
       "before": "def _is_even(n):\n    # check if n is even\n    return n % 2 == 0\n\ndef evens(nums):\n    # loop over nums and keep evens\n    return [n for n in nums if _is_even(n)]\n",
       "after": "def evens(nums):\n    return [n for n in nums if n % 2 == 0]\n",
@@ -200,6 +260,10 @@
     {
       "id": "E17",
       "category": "code · unrequested options + impossible defense",
+      "rules": [
+        "S3",
+        "S4"
+      ],
       "prompt": "Simplify this. Remove the path, encoding, and verbose options; it only needs to read config.json as UTF-8 and return the parsed data.",
       "before": "def load_config(path=\"config.json\", encoding=\"utf-8\", verbose=False):\n    if verbose:\n        print(\"loading\", path)\n    with open(path, encoding=encoding) as f:\n        text = f.read()\n    if text is None:  # f.read() never returns None\n        return {}\n    return json.loads(text)\n",
       "after": "def load_config():\n    with open(\"config.json\", encoding=\"utf-8\") as f:\n        text = f.read()\n    return json.loads(text)\n",
@@ -212,6 +276,10 @@
     {
       "id": "E18",
       "category": "code · over-cut · boundary validation and \"why\" comment",
+      "rules": [
+        "S1",
+        "M10"
+      ],
       "prompt": "simplify this",
       "before": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    age = int(raw)  # convert to int\n    return age\n",
       "after": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    return int(raw)\n",
@@ -226,6 +294,10 @@
     {
       "id": "N01",
       "category": "ko prose · preamble/recap",
+      "rules": [
+        "W1",
+        "W2"
+      ],
       "before": "좋은 질문이에요! 요약하자면, 배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요. 도움이 되었길 바라요!",
       "after": "배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요.",
       "must_keep": [
@@ -237,6 +309,10 @@
     {
       "id": "N02",
       "category": "ko prose · over-cut · negation",
+      "rules": [
+        "M1",
+        "M9"
+      ],
       "before": "사실 이건 꼭 말씀드려야 할 것 같은데요, 결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
       "after": "결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
       "bad_after": "주문을 취소하세요. 중복 환불이 생길 수 있어요.",
@@ -250,6 +326,11 @@
     {
       "id": "N03",
       "category": "ko prose · user voice · honorific",
+      "rules": [
+        "W7",
+        "M7",
+        "M9"
+      ],
       "prompt": "이거 좀 줄여 줘",
       "before": "팀장님, 혹시 시간 괜찮으시면, 정말 죄송하지만 내일 회의를 오후 2시로 옮겨 주실 수 있으실까요? 혹시 어려우시면 말씀 주세요.",
       "after": "팀장님, 죄송하지만 내일 회의를 오후 2시로 옮겨 주실 수 있을까요? 어려우시면 말씀 주세요.",
@@ -265,6 +346,11 @@
     {
       "id": "N04",
       "category": "ja prose · filler",
+      "rules": [
+        "W1",
+        "W2",
+        "M9"
+      ],
       "before": "ご質問ありがとうございます。結論から申し上げますと、APIキーは管理画面の「設定 > API」から再発行できます。何かあればお気軽にお尋ねください。",
       "after": "APIキーは管理画面の「設定 > API」から再発行できます。",
       "must_keep": [
@@ -276,6 +362,11 @@
     {
       "id": "N05",
       "category": "ja prose · over-cut · keigo",
+      "rules": [
+        "W1",
+        "M8",
+        "M9"
+      ],
       "prompt": "もっと短くして",
       "before": "山田様、いつも大変お世話になっております。誠に恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。何卒よろしくお願い申し上げます。",
       "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。よろしくお願い申し上げます。",
@@ -292,6 +383,9 @@
     {
       "id": "N06",
       "category": "ja prose · over-cut · exception",
+      "rules": [
+        "M1"
+      ],
       "before": "基本的には、返品は購入後30日以内であれば可能です。ただし、セール品は返品できませんので、ご注意ください。",
       "after": "返品は購入後30日以内なら可能です。ただし、セール品は返品できません。",
       "bad_after": "返品は購入後30日以内に可能です。",
@@ -305,6 +399,11 @@
     {
       "id": "N07",
       "category": "long doc · section-by-section reduction",
+      "rules": [
+        "W1",
+        "W2",
+        "W3"
+      ],
       "prompt": "/less this README",
       "before": "# Quillnote CLI\n\nWelcome to the Quillnote CLI README! In this document, we will walk you through everything you need to know about Quillnote, a command-line tool for turning folders of Markdown notes into a searchable static site. Whether you are a beginner or an experienced user, we hope this guide will be helpful.\n\n## Table of Contents\n\n- [Overview](#overview)\n- [Why This Matters](#why-this-matters)\n- [Requirements](#requirements)\n- [Installation](#installation)\n- [Configuration](#configuration)\n- [Troubleshooting](#troubleshooting)\n- [Summary](#summary)\n- [License](#license)\n\n## Overview\n\nIn this section, we will provide an overview of Quillnote. Essentially, Quillnote is a command-line tool that basically takes a folder of Markdown notes and turns it into a searchable static site. It is designed to be simple, fast, and easy to use. In other words, you give it notes, and it gives you a site.\n\n## Why This Matters\n\nIn today's fast-paced world, knowledge is more important than ever. Notes are a crucial part of how we think, learn, and grow. Having a reliable way to publish your notes can truly transform the way you work. By using Quillnote, you are taking an important step toward a more organized and productive future. We believe that everyone deserves tools that empower them to share their ideas with the world.\n\n## Requirements\n\nBefore we begin, it's worth noting that Quillnote has a few requirements. Please make sure your system meets the following requirements before continuing:\n\n| Requirement | Minimum version | Notes |\n|---|---|---|\n| Node.js | 20.0 | LTS recommended |\n| Git | 2.30 | Needed for `quill deploy` |\n| Disk space | 200 MB | For the search index |\n\nAs mentioned above, these are the minimum versions. Using older versions may potentially cause issues.\n\n## Installation\n\nIn this section, we will go through the installation process step by step. Don't worry, it's quite straightforward!\n\n1. First, open your terminal of choice.\n2. Next, install Quillnote globally by running the following command:\n   ```sh\n   npm install -g quillnote\n   ```\n3. Then, initialize a new project in your notes folder. This creates a `quill.config.json` file:\n   ```sh\n   quill init ./notes\n   ```\n4. After that, build the site:\n   ```sh\n   quill build\n   ```\n5. Finally, preview it locally at `http://localhost:4000`:\n   ```sh\n   quill serve\n   ```\n\nAnd that's it! You have successfully installed Quillnote. Congratulations!\n\n## Configuration\n\nIn this section, we will talk about configuration. Quillnote is configured through the `quill.config.json` file that was created in step 3. Generally speaking, the most important options are:\n\n- `title`: the site title shown in the header.\n- `baseUrl`: the URL where the site will be hosted. This must end with a slash.\n- `exclude`: a list of glob patterns for notes that should not be published.\n\n> **Warning:** Notes are published as-is. Anything not matched by `exclude` will be public after `quill deploy`, including notes that contain private information.\n\nIt's important to remember that the `baseUrl` must end with a slash, as noted above.\n\n## Troubleshooting\n\nIn this section, we will cover some common issues you might run into.\n\n- **`quill: command not found`**: This usually means the global install did not complete. Re-run step 2 and make sure your npm global bin folder is on your `PATH`.\n- **`Missing quill.config.json`**: You probably skipped step 3. Go back to step 3 and run `quill init` in your notes folder.\n- **Search returns no results**: Delete the `.quill/` cache folder and run `quill build` again.\n\nIf none of these solutions work for you, feel free to open an issue. We are always happy to help!\n\n## Summary\n\nTo summarize, in this README we covered what Quillnote is, why it matters, its requirements, how to install it, how to configure it, and how to troubleshoot common problems. We hope you found this guide useful and that you enjoy using Quillnote as much as we enjoyed building it. Happy note-taking!\n\n## License\n\nQuillnote is released under the MIT License. See the `LICENSE` file for details.\n",
       "after": "# Quillnote CLI\n\nQuillnote turns a folder of Markdown notes into a searchable static site.\n\n## Table of Contents\n\n- [Overview](#overview)\n- [Requirements](#requirements)\n- [Installation](#installation)\n- [Configuration](#configuration)\n- [Troubleshooting](#troubleshooting)\n- [License](#license)\n\n## Overview\n\nQuillnote is a command-line tool: you give it a folder of notes, and it builds a site.\n\n## Requirements\n\n| Requirement | Minimum version | Notes |\n|---|---|---|\n| Node.js | 20.0 | LTS recommended |\n| Git | 2.30 | Needed for `quill deploy` |\n| Disk space | 200 MB | For the search index |\n\nOlder versions may cause issues.\n\n## Installation\n\n1. Open a terminal.\n2. Install Quillnote globally:\n   ```sh\n   npm install -g quillnote\n   ```\n3. Initialize a project in your notes folder. This creates `quill.config.json`:\n   ```sh\n   quill init ./notes\n   ```\n4. Build the site:\n   ```sh\n   quill build\n   ```\n5. Preview it at `http://localhost:4000`:\n   ```sh\n   quill serve\n   ```\n\n## Configuration\n\nQuillnote reads `quill.config.json`, created in step 3. The main options:\n\n- `title`: the site title shown in the header.\n- `baseUrl`: the URL where the site will be hosted. This must end with a slash.\n- `exclude`: a list of glob patterns for notes that should not be published.\n\n> **Warning:** Notes are published as-is. Anything not matched by `exclude` will be public after `quill deploy`, including notes that contain private information.\n\n## Troubleshooting\n\n- **`quill: command not found`**: The global install did not complete. Re-run step 2 and make sure your npm global bin folder is on your `PATH`.\n- **`Missing quill.config.json`**: You skipped step 3. Run `quill init` in your notes folder.\n- **Search returns no results**: Delete the `.quill/` cache folder and run `quill build` again.\n\nIf none of these work, open an issue.\n\n## License\n\nQuillnote is released under the MIT License. See the `LICENSE` file for details.\n",
@@ -327,6 +426,9 @@
     {
       "id": "N08",
       "category": "long doc · over-cut · structure",
+      "rules": [
+        "M3"
+      ],
       "prompt": "/less this guide",
       "before": "# Harborline Restore Guide\n\nThank you for choosing Harborline! In this guide, we will explain how to restore a database from a Harborline backup snapshot. Restoring data can feel stressful, but don't worry: we will go through it together, one step at a time.\n\n## Table of Contents\n\n- [1. Before You Begin](#1-before-you-begin)\n- [2. Restore Steps](#2-restore-steps)\n- [3. Verify the Restore](#3-verify-the-restore)\n- [4. Roll Back a Failed Restore](#4-roll-back-a-failed-restore)\n- [5. The Importance of Backups](#5-the-importance-of-backups)\n- [6. Snapshot Retention](#6-snapshot-retention)\n\n## 1. Before You Begin\n\nIn this section, we will cover what you need before you begin. It's generally a good idea to prepare in advance. Basically, you will need:\n\n- Admin access to the Harborline console.\n- The `harbor` CLI, version 3.2 or later.\n- The ID of the snapshot you want to restore.\n\n> **Warning:** A restore overwrites the target database. Any writes made after the snapshot was taken will be lost unless you complete step 2.3.\n\n## 2. Restore Steps\n\nNow that you have everything ready, let's go through the restore steps. Please follow them carefully and in order.\n\n2.1. Log in to the CLI:\n```sh\nharbor login\n```\n\n2.2. List available snapshots and note the ID you want:\n```sh\nharbor snapshots list --db orders\n```\n\n2.3. Take a safety snapshot of the current state, so you can roll back if needed:\n```sh\nharbor snapshots create --db orders --tag pre-restore\n```\n\n2.4. Put the database in maintenance mode to stop new writes:\n```sh\nharbor db maintenance on --db orders\n```\n\n2.5. Run the restore:\n```sh\nharbor restore --db orders --snapshot <SNAPSHOT_ID>\n```\n\n2.6. Turn maintenance mode off:\n```sh\nharbor db maintenance off --db orders\n```\n\nGreat job! You have now completed the restore steps.\n\n## 3. Verify the Restore\n\nIn this section, we will verify the restore. Verification is an important step that you should not skip. To verify, run:\n\n```sh\nharbor db check --db orders\n```\n\nIf the check reports errors, do not turn maintenance mode back on manually. Instead, go to section 4 and roll back using the safety snapshot from step 2.3.\n\n## 4. Roll Back a Failed Restore\n\nIf something went wrong, don't panic! You can roll back to the safety snapshot you took in step 2.3:\n\n```sh\nharbor restore --db orders --snapshot-tag pre-restore\n```\n\nThen repeat step 2.6 to turn maintenance mode off.\n\n## 5. The Importance of Backups\n\nBackups are one of the most important parts of any data strategy. Without backups, organizations risk losing valuable information. With Harborline, you can have peace of mind knowing that your data is safe and recoverable. We truly believe that reliable backups are the foundation of a resilient business.\n\n## 6. Snapshot Retention\n\nSnapshots are kept according to your plan. As a quick reference:\n\n| Plan | Retention | Safety snapshots |\n|---|---|---|\n| Starter | 7 days | Deleted after 24 hours |\n| Team | 30 days | Deleted after 7 days |\n| Enterprise | 90 days | Kept until deleted manually |\n\nIn summary, this guide showed you how to prepare, restore, verify, roll back, and understand retention. We hope it was helpful!\n",
       "after": "# Harborline Restore Guide\n\nHow to restore a database from a Harborline backup snapshot.\n\n## Table of Contents\n\n- [1. Before You Begin](#1-before-you-begin)\n- [2. Restore Steps](#2-restore-steps)\n- [3. Verify the Restore](#3-verify-the-restore)\n- [4. Roll Back a Failed Restore](#4-roll-back-a-failed-restore)\n- [6. Snapshot Retention](#6-snapshot-retention)\n\n## 1. Before You Begin\n\nYou need:\n\n- Admin access to the Harborline console.\n- The `harbor` CLI, version 3.2 or later.\n- The ID of the snapshot you want to restore.\n\n> **Warning:** A restore overwrites the target database. Any writes made after the snapshot was taken will be lost unless you complete step 2.3.\n\n## 2. Restore Steps\n\nFollow these in order.\n\n2.1. Log in to the CLI:\n```sh\nharbor login\n```\n\n2.2. List available snapshots and note the ID you want:\n```sh\nharbor snapshots list --db orders\n```\n\n2.3. Take a safety snapshot of the current state, so you can roll back if needed:\n```sh\nharbor snapshots create --db orders --tag pre-restore\n```\n\n2.4. Put the database in maintenance mode to stop new writes:\n```sh\nharbor db maintenance on --db orders\n```\n\n2.5. Run the restore:\n```sh\nharbor restore --db orders --snapshot <SNAPSHOT_ID>\n```\n\n2.6. Turn maintenance mode off:\n```sh\nharbor db maintenance off --db orders\n```\n\n## 3. Verify the Restore\n\nDon't skip this. Run:\n\n```sh\nharbor db check --db orders\n```\n\nIf the check reports errors, do not turn maintenance mode back on manually. Go to section 4 and roll back using the safety snapshot from step 2.3.\n\n## 4. Roll Back a Failed Restore\n\nRoll back to the safety snapshot from step 2.3:\n\n```sh\nharbor restore --db orders --snapshot-tag pre-restore\n```\n\nThen repeat step 2.6 to turn maintenance mode off.\n\n## 6. Snapshot Retention\n\n| Plan | Retention | Safety snapshots |\n|---|---|---|\n| Starter | 7 days | Deleted after 24 hours |\n| Team | 30 days | Deleted after 7 days |\n| Enterprise | 90 days | Kept until deleted manually |\n",
@@ -347,6 +449,11 @@
     {
       "id": "N09",
       "category": "PR description · padding",
+      "rules": [
+        "W1",
+        "W2",
+        "W3"
+      ],
       "prompt": "tighten this PR description",
       "before": "## Summary\nThis PR is a really important change that I think will help a lot. It basically fixes the bug where the editor loses the cursor position after save.\n\n## Changes\n- Store cursor position before save\n- Restore it after save\n\n## Testing\nI tested it manually and it seems to work fine.\n\nFixes #42\n\nLet me know if you have any feedback!",
       "after": "## Summary\nFixes the editor losing the cursor position after save.\n\n## Changes\n- Store cursor position before save\n- Restore it after save\n\n## Testing\nTested manually.\n\nFixes #42",
@@ -360,6 +467,9 @@
     {
       "id": "N10",
       "category": "PR description · over-cut · breaking change",
+      "rules": [
+        "M3"
+      ],
       "prompt": "make this shorter",
       "before": "This PR renames the config key `timeout` to `timeout_ms` to make the unit clear. **Breaking change:** existing configs using `timeout` will be ignored; users must rename the key. I added a warning log when `timeout` is found. Hope this makes sense!",
       "after": "Renames config key `timeout` to `timeout_ms` to make the unit clear. **Breaking change:** configs using `timeout` are ignored; rename the key. Logs a warning when `timeout` is found.",
@@ -374,6 +484,10 @@
     {
       "id": "N11",
       "category": "commit message · padding",
+      "rules": [
+        "W2",
+        "W3"
+      ],
       "prompt": "clean up this AI-written commit message",
       "before": "fix(reader): restore scroll position when returning from Reader\n\nThis commit carefully and thoughtfully fixes an issue where, when the user returned from Reader mode, the scroll position was not restored, which was frustrating. Now we save the offset on exit because the view is recreated.\n\nCloses #13",
       "after": "fix(reader): restore scroll position when returning from Reader\n\nSave the offset on exit, because the view is recreated.\n\nCloses #13",
@@ -386,6 +500,10 @@
     {
       "id": "N12",
       "category": "commit message · over-cut · why and ref",
+      "rules": [
+        "M3",
+        "M6"
+      ],
       "prompt": "shorten",
       "before": "chore(deps): pin sqlite to 3.45.1\n\n3.46.0 changes the default of `PRAGMA trusted_schema`, which breaks our migrations. Pin until #88 lands.\n\nRefs #88",
       "after": "unchanged",
@@ -401,6 +519,10 @@
     {
       "id": "N13",
       "category": "code · over-cut · boundary error check",
+      "rules": [
+        "S4",
+        "M10"
+      ],
       "prompt": "simplify this",
       "before": "def fetch_user(session, uid):\n    resp = session.get(f\"/users/{uid}\", timeout=5)\n    if resp.status_code == 404:\n        return None\n    resp.raise_for_status()\n    return resp.json()\n",
       "after": "unchanged",
@@ -415,6 +537,10 @@
     {
       "id": "N14",
       "category": "code · over-cut · why comment",
+      "rules": [
+        "S1",
+        "M10"
+      ],
       "prompt": "remove unnecessary comments",
       "before": "// i is the index\nfor (let i = items.length - 1; i >= 0; i--) {\n  // Iterate backwards: splice() shifts later indices.\n  if (items[i].done) items.splice(i, 1);\n}\n",
       "after": "for (let i = items.length - 1; i >= 0; i--) {\n  // Iterate backwards: splice() shifts later indices.\n  if (items[i].done) items.splice(i, 1);\n}\n",
@@ -428,6 +554,10 @@
     {
       "id": "N15",
       "category": "code · over-cut · public signature",
+      "rules": [
+        "S3",
+        "M10"
+      ],
       "prompt": "simplify this module",
       "before": "__all__ = [\"parse\"]\n\ndef parse(text, *, strict=False):\n    \"\"\"Public. strict raises on unknown keys.\"\"\"\n    return _parse(text, strict)\n",
       "after": "unchanged (strict is public API; _parse may be shared)",
@@ -442,6 +572,10 @@
     {
       "id": "N16",
       "category": "code · over-cut · test-only hook",
+      "rules": [
+        "S2",
+        "M10"
+      ],
       "prompt": "remove dead code",
       "before": "class Clock:\n    def __init__(self, now=time.time):\n        self._now = now  # injectable for tests\n\n    def elapsed(self, start):\n        return self._now() - start\n",
       "after": "unchanged",
@@ -455,6 +589,9 @@
     {
       "id": "N17",
       "category": "code · over-cut · type annotation",
+      "rules": [
+        "M10"
+      ],
       "prompt": "clean this up",
       "before": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: float\n    y: float\n",
       "after": "unchanged",
@@ -469,6 +606,10 @@
     {
       "id": "N18",
       "category": "code · positive · AI bloat",
+      "rules": [
+        "S1",
+        "S2"
+      ],
       "prompt": "this AI-written code is bloated, cut it down",
       "before": "from typing import List\n\nclass SumStrategy:\n    def apply(self, values: List[int]) -> int:\n        # sum the values\n        total = 0\n        for v in values:\n            total += v\n        return total\n\ndef total(values: List[int]) -> int:\n    return SumStrategy().apply(values)\n",
       "after": "from typing import List\n\ndef total(values: List[int]) -> int:\n    total = 0\n    for v in values:\n        total += v\n    return total\n",
@@ -480,6 +621,10 @@
     {
       "id": "D01",
       "category": "design · cards in cards",
+      "rules": [
+        "C2",
+        "C3"
+      ],
       "format": "html",
       "prompt": "Clean up this pricing card; it looks AI-generated.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>.card{border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:16px}</style></head><body><main><div class=\"card\"><div class=\"card\"><h2>Pro</h2><p data-testid=\"price\">$12/mo</p><button>Start trial</button></div></div></main></body></html>",
@@ -513,6 +658,9 @@
     {
       "id": "D02",
       "category": "design · gradient and glow hero",
+      "rules": [
+        "C1"
+      ],
       "format": "html",
       "prompt": "This hero is too busy. Simplify it.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Home</title><style>body{margin:0;color:#111}.hero{padding:48px 16px;background:linear-gradient(135deg,#f5f0ff,#e0f2ff)}.orb{position:absolute;width:300px;height:300px;border-radius:50%;background:#c4b5fd;filter:blur(64px);opacity:.5}h1{font-size:40px}@media (max-width:600px){h1{font-size:28px}}</style></head><body><main><section class=\"hero\"><div class=\"orb\" aria-hidden=\"true\"></div><h1>Track every shipment</h1><a href=\"/signup\">Get started</a></section></main></body></html>",
@@ -551,6 +699,10 @@
     {
       "id": "D03",
       "category": "design · eyebrows + emoji icons",
+      "rules": [
+        "C4",
+        "C6"
+      ],
       "format": "html",
       "prompt": "Declutter this features section.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:#555}</style></head><body><main><section><span class=\"eyebrow\">Features</span><h2>Features</h2><ul><li>🚀 Fast sync across devices</li><li>🔒 End-to-end encryption</li><li>✨ Offline mode</li></ul></section></main></body></html>",
@@ -588,6 +740,9 @@
     {
       "id": "D04",
       "category": "design · unrequested logo strip and testimonials",
+      "rules": [
+        "C7"
+      ],
       "format": "html",
       "prompt": "I only asked for a signup form. Clean this up.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sign up</title><style></style></head><body><main><h1>Sign up</h1><form><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required><button type=\"submit\">Sign up</button></form><section><h2>Trusted by</h2><img src=\"data:,\" alt=\"Logo\"><img src=\"data:,\" alt=\"Logo\"></section><section><blockquote>\"Best tool ever!\" — Happy Customer</blockquote></section></main></body></html>",
@@ -630,6 +785,9 @@
     {
       "id": "D05",
       "category": "design · filler copy in a form",
+      "rules": [
+        "C8"
+      ],
       "format": "html",
       "prompt": "Trim this contact page.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Contact</title><style></style></head><body><main><h1>Contact us</h1><p>Empower your team to connect, collaborate, and create. We're here for you, every step of the way.</p><form><label for=\"msg\">Message</label><textarea id=\"msg\" name=\"message\"></textarea><p>We reply within 2 business days.</p><button type=\"submit\">Send</button></form></main></body></html>",
@@ -666,6 +824,10 @@
     {
       "id": "D06",
       "category": "design · animation everywhere, reduced-motion present",
+      "rules": [
+        "C9",
+        "K6"
+      ],
       "format": "html",
       "prompt": "There's too much motion here. Simplify.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1}}section{animation:up .6s}.card{transition:all .3s}.card:hover{transform:scale(1.03)}button{transition:background-color .15s}button:hover{background:#1e40af;color:#fff}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}</style></head><body><main><section><h2>Plans</h2><div class=\"card\"><h3>Basic</h3><button>Choose Basic</button></div></section><section><h2>FAQ</h2><p>Cancel anytime.</p></section></main></body></html>",
@@ -715,6 +877,10 @@
     {
       "id": "D07",
       "category": "design · over-cut · only boundary",
+      "rules": [
+        "C2",
+        "K4"
+      ],
       "format": "html",
       "prompt": "Remove the extra borders and shadows.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}input{background:#fff;border:1px solid #767676;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
@@ -759,6 +925,11 @@
     {
       "id": "D08",
       "category": "design · over-cut · requested element",
+      "rules": [
+        "C1",
+        "K10",
+        "K11"
+      ],
       "format": "html",
       "prompt": "Simplify this hero. Keep the brand gradient.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Brightside</title><style>body{margin:0}.hero{padding:48px 16px;color:#111;background:linear-gradient(90deg,#ffd6a5,#fdffb6)}</style></head><body><main><section class=\"hero\"><h1>Brightside Café</h1><a href=\"/menu\">See the menu</a></section></main></body></html>",
@@ -786,6 +957,11 @@
     {
       "id": "D09",
       "category": "design · over-cut · accessible name and focus",
+      "rules": [
+        "C4",
+        "K1",
+        "K5"
+      ],
       "format": "html",
       "prompt": "Declutter this dialog.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>button:focus-visible{outline:2px solid #1a56db;outline-offset:2px}.icon{width:32px;height:32px}.eyebrow{text-transform:uppercase;font-size:12px}</style></head><body><main><div role=\"dialog\" aria-labelledby=\"t\"><span class=\"eyebrow\">✨ Heads up</span><h2 id=\"t\">Delete project?</h2><p>This can't be undone.</p><button class=\"icon\" aria-label=\"Close dialog\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
@@ -829,6 +1005,10 @@
     {
       "id": "D10",
       "category": "design · over-cut · state branches",
+      "rules": [
+        "C4",
+        "K8"
+      ],
       "format": "html",
       "prompt": "Remove anything unused from this orders panel.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>.badge{background:#eef;border-radius:999px;padding:2px 8px;font-size:12px}</style></head><body><main><section><span class=\"badge\">New</span><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul><p id=\"loading\" role=\"status\" hidden>Loading orders…</p><p id=\"empty\" hidden>No orders yet.</p><p id=\"error\" role=\"alert\" hidden>Couldn't load orders. Try again.</p></section></main></body></html>",
@@ -867,6 +1047,11 @@
     {
       "id": "D11",
       "category": "design · JSX + Tailwind · cards in cards, eyebrow",
+      "rules": [
+        "C3",
+        "C4",
+        "K1"
+      ],
       "format": "jsx",
       "prompt": "This profile form looks AI-generated. Strip it down.",
       "before": "export function ProfileForm({ onSave }) {\n  return (\n    <main className=\"p-4\">\n      <div className=\"rounded-xl border border-gray-200 p-4 shadow-md\">\n        <div className=\"rounded-xl border border-gray-200 p-4 shadow-md\">\n          <span className=\"text-xs tracking-widest text-gray-700 uppercase\">✨ Profile</span>\n          <h2 className=\"text-xl font-semibold\">Display name</h2>\n          <form onSubmit={onSave}>\n            <label htmlFor=\"name\" className=\"block text-sm\">Name</label>\n            <input id=\"name\" name=\"displayName\" className=\"rounded border border-gray-500 px-2 py-1\" />\n            <button type=\"submit\" className=\"mt-2 rounded bg-blue-700 px-3 py-2 text-white\">Save</button>\n          </form>\n        </div>\n      </div>\n    </main>\n  );\n}\n",
@@ -911,6 +1096,12 @@
     {
       "id": "D12",
       "category": "design · JSX + Tailwind · over-cut · focus ring",
+      "rules": [
+        "C1",
+        "C2",
+        "C9",
+        "K5"
+      ],
       "format": "jsx",
       "prompt": "Remove the extra effects from this toolbar.",
       "before": "export function Toolbar() {\n  return (\n    <main className=\"p-4\">\n      <nav aria-label=\"Editor\" className=\"flex gap-2 p-2 bg-gradient-to-r from-indigo-50 to-sky-50\">\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-700 shadow-lg transition-all hover:scale-105\">Bold</button>\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-700 shadow-lg transition-all hover:scale-105\">Italic</button>\n      </nav>\n    </main>\n  );\n}\n",
@@ -983,6 +1174,12 @@
     {
       "id": "D13",
       "category": "design · translucent sticky header over content, plus real decoration",
+      "rules": [
+        "C1",
+        "C4",
+        "C6",
+        "K12"
+      ],
       "format": "html",
       "prompt": "This landing page looks cluttered. Clean it up.",
       "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}.blob{position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%%;background:radial-gradient(#c4b5fd,transparent);filter:blur(60px);z-index:-1}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:12px;text-transform:uppercase;letter-spacing:.1em}.card{border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><div class=\"blob\"></div><section><span class=\"pill\">✨ New</span><h2><span aria-hidden=\"true\">✨</span> Invoices in one place</h2><div class=\"card\"><p>Send, track, and reconcile invoices.</p></div></section><section><h2><span aria-hidden=\"true\">🚀</span> Reports</h2><div class=\"card\"><p>Monthly totals by client.</p></div></section></main></body></html>",
@@ -1044,6 +1241,9 @@
     {
       "id": "P01",
       "category": "paired preservation · certainty",
+      "rules": [
+        "W3"
+      ],
       "pair_id": "certainty",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1063,6 +1263,10 @@
     {
       "id": "P02",
       "category": "paired preservation · certainty",
+      "rules": [
+        "W3",
+        "M2"
+      ],
       "pair_id": "certainty",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1082,6 +1286,9 @@
     {
       "id": "P03",
       "category": "paired preservation · scope",
+      "rules": [
+        "W3"
+      ],
       "pair_id": "scope",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1103,6 +1310,9 @@
     {
       "id": "P04",
       "category": "paired preservation · scope",
+      "rules": [
+        "M2"
+      ],
       "pair_id": "scope",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1126,6 +1336,10 @@
     {
       "id": "P05",
       "category": "paired preservation · ending",
+      "rules": [
+        "W2",
+        "W4"
+      ],
       "pair_id": "ending",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1145,6 +1359,11 @@
     {
       "id": "P06",
       "category": "paired preservation · ending",
+      "rules": [
+        "W2",
+        "W4",
+        "M3"
+      ],
       "pair_id": "ending",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1166,6 +1385,9 @@
     {
       "id": "P07",
       "category": "paired preservation · causality",
+      "rules": [
+        "W3"
+      ],
       "pair_id": "causality",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1185,6 +1407,9 @@
     {
       "id": "P08",
       "category": "paired preservation · causality",
+      "rules": [
+        "M2"
+      ],
       "pair_id": "causality",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1204,6 +1429,9 @@
     {
       "id": "P09",
       "category": "paired preservation · obligation",
+      "rules": [
+        "W3"
+      ],
       "pair_id": "obligation",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1225,6 +1453,9 @@
     {
       "id": "P10",
       "category": "paired preservation · obligation",
+      "rules": [
+        "M2"
+      ],
       "pair_id": "obligation",
       "split": "tune",
       "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
@@ -1242,6 +1473,100 @@
       "exact_noop": true,
       "bad_after": "Inputs should be validated. Secrets should not appear in logs.",
       "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P11",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W3",
+        "W7"
+      ],
+      "pair_id": "compression",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "Just so you know, the parser rejects a bad date, exits with code 2, and writes nothing.",
+      "after": "The parser rejects a bad date, exits with code 2, and writes nothing.",
+      "must_keep": [
+        "parser rejects a bad date, exits with code 2, and writes nothing: one complete sentence"
+      ],
+      "protected_spans": [
+        "parser rejects a bad date, exits with code 2, and writes nothing."
+      ],
+      "must_remove_spans": [
+        "Just so you know,"
+      ],
+      "exact_noop": false,
+      "bad_after": "Parser rejects bad date → exit 2, no write.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P12",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W7"
+      ],
+      "pair_id": "compression",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "The parser rejects a bad date, exits with code 2, and writes nothing.",
+      "after": "The parser rejects a bad date, exits with code 2, and writes nothing.",
+      "must_keep": [
+        "The parser rejects a bad date, exits with code 2, and writes nothing."
+      ],
+      "protected_spans": [
+        "The parser rejects a bad date, exits with code 2, and writes nothing."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Parser: bad date → exit 2, no write.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P13",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W3",
+        "W7"
+      ],
+      "pair_id": "compression-ko",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "참고로, 날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "after": "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "must_keep": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다: 완결된 문장"
+      ],
+      "protected_spans": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다."
+      ],
+      "must_remove_spans": [
+        "참고로,"
+      ],
+      "exact_noop": false,
+      "bad_after": "날짜 오류 → 종료 코드 2, 기록 없음.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P14",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W7"
+      ],
+      "pair_id": "compression-ko",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "after": "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "must_keep": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다."
+      ],
+      "protected_spans": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "날짜 오류 시 종료 코드 2, 기록 없음.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
     }
   ]
 }

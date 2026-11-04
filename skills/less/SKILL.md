@@ -41,24 +41,25 @@ Check every candidate against "Never remove" first, especially the user's own
 greetings and closings.
 
 Writing:
-1. Preamble, restated question, and greetings you added ("Great question!").
-2. Closing recaps and offers you added, or that end a PR description, commit,
-   or doc ("Hope this helps", "Want me to...").
-3. Hedges and filler that change nothing.
-4. Duplicate points (keep the clearest).
-5. Unrequested caveats and alternatives that don't change what the reader does.
-6. Decoration on answers under ~5 sentences: headers, bold, bullets.
-7. Merge and shorten the rest, keeping complete sentences. When editing the
-   user's text, do not merge or rephrase sentences; only repair grammar
-   directly affected by a deletion.
+- W1. Preamble, restated question, and greetings you added ("Great question!").
+- W2. Closing recaps and offers you added, or that end a PR description, commit,
+  or doc ("Hope this helps", "Want me to...").
+- W3. Hedges and filler that change nothing, including sentences that could
+  appear unchanged in any other document.
+- W4. Duplicate points (keep the clearest).
+- W5. Unrequested caveats and alternatives that don't change what the reader does.
+- W6. Decoration on answers under ~5 sentences: headers, bold, bullets.
+- W7. Merge and shorten the rest, keeping complete sentences: no arrows,
+  fragments, or dropped articles. When editing the user's text, do not merge or
+  rephrase sentences; only repair grammar directly affected by a deletion.
 
 Code:
-1. Comments that restate the code.
-2. Unnecessary abstractions: helpers, wrappers, interfaces, factories.
-   Single use alone is not evidence that an abstraction is unnecessary.
-3. Unrequested options, flags, config.
-4. Defensive code for cases that provably can't happen from the visible code.
-   Otherwise keep it.
+- S1. Comments that restate the code.
+- S2. Unnecessary abstractions: helpers, wrappers, interfaces, factories.
+  Single use alone is not evidence that an abstraction is unnecessary.
+- S3. Unrequested options, flags, config.
+- S4. Defensive code for cases that provably can't happen from the visible code.
+  Otherwise keep it.
 
 Before removing code or options, inspect available callers, exports, and
 relevant tests. Preserve externally used signatures and behavior unless the
@@ -79,29 +80,29 @@ aesthetic. Not for building new UI, screenshots, or Figma files.
 
 ## Never remove
 
-- Correctness: numbers, units, dates, conditions, exceptions, negations.
-- Claim strength: uncertainty, approximation, scope, causal relationships, and
+- M1. Correctness: numbers, units, dates, conditions, exceptions, negations.
+- M2. Claim strength: uncertainty, approximation, scope, causal relationships, and
   obligation. Keep meaning-bearing qualifiers such as "about", "some", "at
   most", "may", and "must"; shortening must not strengthen or weaken a claim.
-- Needed context: what the reader needs to act (prerequisites, steps, versions).
-- Safety: data-loss, security, money, legal, irreversible-action warnings.
-- The user's ask: requested content, format, length, constraints.
-- Attribution and citations.
-- The user's voice when editing their text. Don't rewrite style.
-- In a message to people (email, chat, letter) the user wrote: greetings,
+- M3. Needed context: what the reader needs to act (prerequisites, steps, versions).
+- M4. Safety: data-loss, security, money, legal, irreversible-action warnings.
+- M5. The user's ask: requested content, format, length, constraints.
+- M6. Attribution and citations.
+- M7. The user's voice when editing their text. Don't rewrite style.
+- M8. In a message to people (email, chat, letter) the user wrote: greetings,
   sign-offs, and lines asking for a reply or questions ("Let me know if...").
   E.g. "Do reach out anytime if anything is still unclear." stays; you may trim
   "anytime" and "still". Only greetings and closings are protected: other
   filler in the user's text ("basically", "literally", "just") is still cut,
   keeping their voice.
-- Politeness register: 존댓말/敬語 forms, 様, greetings, sign-offs. Stacked
+- M9. Politeness register: 존댓말/敬語 forms, 様, greetings, sign-offs. Stacked
   softeners and intensifiers inside it (정말, 혹시, 大変, 誠に, 何卒) are
   candidates only: keep them when they carry uncertainty or social intent.
-- Code: behavior (output, side effects, errors); error handling at real
+- M10. Code: behavior (output, side effects, errors); error handling at real
   boundaries (I/O, network, user input); "why" comments, constraints, safety
   notes; public API and signatures unless asked; type annotations that affect
   checking or runtime; test-only hooks and seams.
-- Anything whose purpose you can't determine.
+- M11. Anything whose purpose you can't determine.
 
 ## Stop
 
