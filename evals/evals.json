@@ -278,7 +278,6 @@
       "category": "code · over-cut · boundary validation and \"why\" comment",
       "rules": [
         "S1",
-        "S4",
         "M10"
       ],
       "prompt": "simplify this",
@@ -1491,7 +1490,7 @@
         "parser rejects a bad date, exits with code 2, and writes nothing: one complete sentence"
       ],
       "protected_spans": [
-        "rejects a bad date, exits with code 2, and writes nothing."
+        "parser rejects a bad date, exits with code 2, and writes nothing."
       ],
       "must_remove_spans": [
         "Just so you know,"

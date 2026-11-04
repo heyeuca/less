@@ -14,7 +14,10 @@ KNOWN_GAPS = {"M11", "C5", "C10", "C11", "C12", "K2", "K3", "K7", "K9"}
 
 
 def noop(case):
-    return case["after"] in ("unchanged", case["before"])
+    # "unchanged", "unchanged." and "unchanged (reason)" all describe a no-op;
+    # "unchanged, or <cut>" allows a removal, so it is not one.
+    return case["after"] == case["before"] or re.fullmatch(
+        r"unchanged\.?( \(.*\))?", case["after"]) is not None
 
 
 class CoverageTest(unittest.TestCase):
