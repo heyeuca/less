@@ -72,7 +72,12 @@ stays an assistant turn after the question in `prompt`, followed by a request
 to tighten it. Other content is the user's, sent with their request. `context`
 (such as a calendar invite) sits beside the request and never replaces it.
 Replay these in a session where the skill is installed rather than pasted, and
-save the final reply as `OUT/<id>.organic.out.md`. Once any organic reply
+save the final reply as `OUT/<id>.organic.out.md`. Replay each message with its
+own role. Chat UIs usually cannot add a prior assistant turn, so replay
+`author: "assistant"` cases through a client that takes the full message list
+(an API or agent SDK with the skill installed). If no such client is available,
+leave those cases unrun. Never merge the answer into a user message: that
+reintroduces the authorship error these cases guard against. Once any organic reply
 exists, `preservation` also reports an `organic` arm with the same span and
 no-op checks. That checks the
 output, not whether the skill loaded: record loading separately with
