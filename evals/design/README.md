@@ -59,7 +59,8 @@ entities decoded by the browser, matched case-insensitively as whole words, so
 assertions. Content checks avoid requiring a particular tag or wrapper layout.
 `must_have_styles` asserts canonical computed CSS values on every matching
 element and requires at least one match. A `hover: true` assertion checks each
-matching element while hovered. The pointer is moved off the page before each
+matching element while hovered. A `reduced_motion: true` assertion checks
+the styles a visitor who asked for reduced motion gets (D22's spinner). The pointer is moved off the page before each
 measurement, so a hover never carries into the next page's checks. D13 requires
 `position: sticky` on its header. D12 protects the focus ring separately while
 requiring no decorative shadow, transition, or scale at rest and on hover.

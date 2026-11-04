@@ -1895,6 +1895,161 @@
       "exact_noop": true,
       "bad_after": "날짜 오류 시 종료 코드 2, 기록 없음.",
       "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P15",
+      "category": "paired preservation · redundant heading",
+      "rules": [
+        "W4"
+      ],
+      "pair_id": "headings",
+      "split": "tune",
+      "note": "Measures #34 section 4: the current rule keeps every heading or opt-out, so this case may fail until a narrower rule is measured. Do not change the rule from this case alone.",
+      "prompt": "Trim this doc; keep anything readers navigate by.",
+      "before": "# Deploying\n\n## Deploying\n\nRun `make deploy` from the main branch. Deploys take about ten minutes.\n",
+      "after": "# Deploying\n\nRun `make deploy` from the main branch. Deploys take about ten minutes.\n",
+      "must_keep": [
+        "# Deploying",
+        "Run `make deploy` from the main branch. Deploys take about ten minutes."
+      ],
+      "protected_spans": [
+        "# Deploying",
+        "Run `make deploy` from the main branch. Deploys take about ten minutes."
+      ],
+      "must_remove_spans": [
+        "## Deploying"
+      ],
+      "exact_noop": false,
+      "bad_after": "Run `make deploy` from the main branch.",
+      "why_bad": "Drops the document title and the duration along with the duplicate heading."
+    },
+    {
+      "id": "P16",
+      "category": "paired preservation · headings a TOC links to",
+      "rules": [
+        "W4",
+        "M3"
+      ],
+      "pair_id": "headings",
+      "split": "tune",
+      "prompt": "Trim this doc; keep anything readers navigate by.",
+      "before": "## Contents\n\n- [Setup](#setup)\n- [Usage](#usage)\n\n## Setup\n\nRun `make setup`.\n\n## Usage\n\nRun `make run`.\n",
+      "after": "## Contents\n\n- [Setup](#setup)\n- [Usage](#usage)\n\n## Setup\n\nRun `make setup`.\n\n## Usage\n\nRun `make run`.\n",
+      "must_keep": [
+        "## Setup",
+        "## Usage",
+        "- [Setup](#setup)",
+        "- [Usage](#usage)"
+      ],
+      "protected_spans": [
+        "## Setup",
+        "## Usage",
+        "- [Setup](#setup)",
+        "- [Usage](#usage)"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Run `make setup`, then `make run`.\n",
+      "why_bad": "Merges the sections and drops the headings the contents links point to, breaking #setup and #usage."
+    },
+    {
+      "id": "D21",
+      "category": "design · orphaned reduced-motion rule",
+      "rules": [
+        "C9",
+        "K6"
+      ],
+      "format": "html",
+      "note": "Measures #34 section 4: the current rule keeps every heading or opt-out, so this case may fail until a narrower rule is measured. Do not change the rule from this case alone.",
+      "prompt": "Remove the entrance animation from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{animation:rise .6s ease-out}@media (prefers-reduced-motion:reduce){.hero{animation:none}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@media (prefers-reduced-motion:reduce){.hero{animation:none}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section></main></body></html>",
+      "why_bad": "Keeps a prefers-reduced-motion rule that no longer turns anything off.",
+      "must_keep": [
+        "heading and copy"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the rise animation, its keyframes, and the opt-out that only covered it"
+      ],
+      "must_remove_text": [
+        "@keyframes rise",
+        "prefers-reduced-motion"
+      ],
+      "must_have_styles": [
+        {
+          "selector": ".hero",
+          "properties": {
+            "animation-name": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D22",
+      "category": "design · over-cut · opt-out still covers a spinner",
+      "rules": [
+        "C9",
+        "K6"
+      ],
+      "format": "html",
+      "prompt": "Remove the entrance animation from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{animation:rise .6s ease-out}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class=\"spinner\" role=\"status\" aria-label=\"Loading invoices\"></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class=\"spinner\" role=\"status\" aria-label=\"Loading invoices\"></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class=\"spinner\" role=\"status\" aria-label=\"Loading invoices\"></div></main></body></html>",
+      "why_bad": "Removes the reduced-motion opt-out while the loading spinner still animates (K6, WCAG 2.3.3).",
+      "must_keep": [
+        "loading spinner and its animation",
+        "the prefers-reduced-motion opt-out, which still covers the spinner"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "status",
+          "Loading invoices"
+        ]
+      ],
+      "must_keep_selectors": [
+        "@media (prefers-reduced-motion:reduce)",
+        "@keyframes spin"
+      ],
+      "must_remove_hint": [
+        "the hero's rise animation and its keyframes"
+      ],
+      "must_remove_text": [
+        "@keyframes rise"
+      ],
+      "must_have_styles": [
+        {
+          "selector": ".hero",
+          "properties": {
+            "animation-name": "none"
+          }
+        },
+        {
+          "selector": ".spinner",
+          "properties": {
+            "animation-name": "spin"
+          }
+        },
+        {
+          "selector": ".spinner",
+          "properties": {
+            "animation-name": "none"
+          },
+          "reduced_motion": true
+        }
+      ]
     }
   ]
 }
