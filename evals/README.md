@@ -41,6 +41,14 @@ pair has a reduction case and a clean protection case. Good adjacent sentences a
 removal example and a legitimate-use protection example together when adding a
 new deletion rule; use the same approach for code and UI regressions.
 
+P15–P16 and D21–D22 test two absolute keep rules from the other side (#34).
+P15 has a heading that only repeats the title, and D21 has a reduced-motion
+rule left with nothing to turn off. Their pairs, P16 and D22, keep headings a
+contents list links to and an opt-out that still covers a spinner. The current
+rules keep every heading and every opt-out, so P15 and D21 may fail. They
+measure whether a narrower rule would help. Change a rule only when held-out
+runs show the narrower version removes more without failing P16 or D22.
+
 The new cases are explicitly `tune`: their answers informed the instructions.
 Existing cases are also development/regression evidence, not held-out evidence.
 Before claiming quality gains, freeze the skill and grader, collect unseen
