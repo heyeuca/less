@@ -56,7 +56,8 @@ ORGANIC_FOLLOWUP = "Tighten your last answer."
 # Files whose content decides what a run measured.
 FROZEN = ["skills/less/SKILL.md", "skills/less/references/design.md",
           "evals/run.py", "evals/evals.json", "evals/design/check.mjs",
-          "evals/design/fixtures/tailwind.css"]
+          "evals/design/fixtures/tailwind.css", "evals/design/package.json",
+          "evals/design/package-lock.json"]
 # What a published run must state; prompts leaves these for the operator.
 RUN_FIELDS = {
     "model": "model ID and version for each arm",
@@ -131,15 +132,18 @@ def inputs():
 
 
 def check_frozen(out):
-    """Grade only with the inputs the prompts were made from."""
+    """Grade only with the inputs the prompts were made from. Returns False for
+    a directory without run.json: its results are graded but marked unverified."""
     path = out / "run.json"
     if not path.exists():
-        return
+        print(f"warning: no run.json in {out}; results are marked unverified")
+        return False
     recorded = json.loads(load(path))["inputs"]
     changed = [name for name, digest in inputs().items() if recorded.get(name) != digest]
     if changed:
         raise SystemExit(f"{', '.join(changed)} changed since {path} was written; "
                          "grade at the commit that wrote it")
+    return True
 
 
 def triggers(out):
@@ -163,8 +167,7 @@ def read(path):
 
 def preservation(out):
     """Exact regression backstops, not a semantic quality score."""
-    check_frozen(out)
-    reports = {}
+    reports = {"verified": check_frozen(out)}
     arms = ["with", "without"]
     if any(out.glob("*.organic.out.md")):
         arms.append("organic")
@@ -197,7 +200,7 @@ def preservation(out):
 
 
 def sheet(out):
-    check_frozen(out)
+    banner = [] if check_frozen(out) else ["UNVERIFIED: no run.json, so the grading inputs can't be checked.", ""]
     rows = [
         "| id | category | must keep | bad after | with skill | without skill | with pass? | without pass? |",
         "|---|---|---|---|---|---|---|---|",
@@ -219,7 +222,7 @@ def sheet(out):
             gates.get("with", {}).get(case["id"], ""),
             gates.get("without", {}).get(case["id"], ""),
         ]) + " |")
-    save(out / "sheet.md", "\n".join(rows) + "\n")
+    save(out / "sheet.md", "\n".join(banner + rows) + "\n")
     print(f"Wrote {out / 'sheet.md'}")
     quality = [
         "| id | arm | removal quality | meaning / behavior preserved | damage to good material | evidence |",
@@ -228,7 +231,7 @@ def sheet(out):
     for case in CASES:
         for suffix in ("with", "without"):
             quality.append(f"| {case['id']} | {suffix} | | | | |")
-    save(out / "quality.md", "\n".join(quality) + "\n")
+    save(out / "quality.md", "\n".join(banner + quality) + "\n")
     print(f"Wrote {out / 'quality.md'}")
 
 

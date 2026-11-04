@@ -193,15 +193,20 @@ const [mode, ...ids] = argv;
 const results = {};
 if (!mode) { console.log('usage: node check.mjs self | OUT [ID...]'); process.exit(2); }
 // Grade only with the inputs the prompts were made from (run.py prompts records them in OUT/run.json).
-if (mode !== 'self' && !process.env.LESS_CASES && existsSync(`${mode}/run.json`)) {
-  const recorded = JSON.parse(readFileSync(`${mode}/run.json`, 'utf8')).inputs || {};
+// A run with run.json is checked against every recorded input; one without is graded but marked unverified.
+const recorded = mode !== 'self' && existsSync(`${mode}/run.json`)
+  ? JSON.parse(readFileSync(`${mode}/run.json`, 'utf8')).inputs || {} : null;
+if (recorded) {
   const root = new URL('../../', import.meta.url);
-  const changed = ['evals/evals.json', 'evals/design/check.mjs', 'evals/design/fixtures/tailwind.css'].filter(name =>
-    recorded[name] !== createHash('sha256').update(readFileSync(new URL(name, root))).digest('hex'));
-  if (changed.length) {
-    console.log(`${changed.join(', ')} changed since ${mode}/run.json was written; grade at the commit that wrote it`);
-    process.exit(2);
-  }
+  const hash = name => existsSync(new URL(name, root)) && createHash('sha256').update(readFileSync(new URL(name, root))).digest('hex');
+  const changed = Object.entries(recorded).filter(([name, digest]) => hash(name) !== digest).map(([name]) => name);
+  const refuse = process.env.LESS_CASES ? 'LESS_CASES would grade a recorded run with other cases'
+    : !Object.keys(recorded).length ? `${mode}/run.json records no inputs`
+    : changed.length ? `${changed.join(', ')} changed since ${mode}/run.json was written; grade at the commit that wrote it` : '';
+  if (refuse) { console.log(refuse); process.exit(2); }
+} else if (mode !== 'self') {
+  console.log(`warning: no run.json in ${mode}; results are marked unverified`);
+  results._unverified = true;
 }
 const browser = await chromium.launch();
 let failed = 0;

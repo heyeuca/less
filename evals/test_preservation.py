@@ -144,6 +144,16 @@ class PreservationTest(unittest.TestCase):
                 with self.subTest(command=command.__name__), self.assertRaises(SystemExit):
                     command(out)
 
+    def test_results_without_run_json_are_marked_unverified(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            self.assertFalse(self.report(out)['verified'])
+            with contextlib.redirect_stdout(io.StringIO()):
+                run.sheet(out)
+            self.assertTrue(run.load(out / 'sheet.md').startswith('UNVERIFIED'))
+            run.save(out / 'run.json', json.dumps({'inputs': run.inputs()}))
+            self.assertTrue(self.report(out)['verified'])
+
     def test_sheet_cells_drop_carriage_returns(self):
         self.assertEqual(run.cell('a\r\nb'), 'a<br>b')
 

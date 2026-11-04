@@ -57,8 +57,11 @@ its instructions, and every failed or retried attempt. Fill these in, and
 publish `run.json` with the results directory. A result without one can't be
 checked. `prompts` refuses a directory that isn't empty.
 `preservation`, `sheet`, and `check.mjs` refuse to grade it once the skill,
-runner, cases, checker, or Tailwind fixture differs from what was recorded, so
-new criteria are never applied to old outputs.
+runner, cases, checker, its fixture, or its dependency lockfile differs from
+what was recorded, so new criteria are never applied to old outputs. A
+directory without `run.json` is still graded, but its results are marked
+unverified (`"verified": false`, an `UNVERIFIED` line, `_unverified` in the
+design results). `check.mjs` won't grade a recorded run with `LESS_CASES`.
 
 The new cases are explicitly `tune`: their answers informed the instructions.
 Existing cases are also development/regression evidence, not held-out evidence.
