@@ -115,6 +115,29 @@ python3 evals/always.py prompts OUT   # OUT/<id>.always.md and OUT/<id>.plain.md
 python3 evals/always.py sheet OUT     # OUT/always.md checklist per case and arm
 ```
 
+## Held-out remeasurement
+
+`heldout.json` holds cases written after the skill was frozen and never used to
+tune it. `protocol.json` fixes the requirements before any run: at least two
+model families, three runs per family, absolute gates on the with-skill arm,
+and blind grading by a model from a different family. `protocol.py` enforces
+them:
+
+```sh
+python3 evals/protocol.py prompts ROOT/<family>/<run>   # prompts + freeze.json
+python3 evals/protocol.py blind ROOT/<family>/<run> SEED  # blind/ for the grader, key.json kept back
+python3 evals/protocol.py report ROOT                     # report.json per family, run, case
+```
+
+Give the grader only `blind/`: the request, the input, and outputs labeled A and
+B. It fills in `blind/grades.json` and names its own family. `report` refuses a
+run whose inputs changed after its prompts were written. It also refuses a
+grader from the generating family. It never pools families. Absolute gates (no
+lost protected span, every clean input returned unchanged, no graded damage)
+fail on any single output, and a paired win over the baseline doesn't override
+them. Don't change the skill based on held-out results. Encode the lesson as a
+new `tune` case and write fresh held-out cases for the next measurement.
+
 ## Changing the skill
 
 1. Encode a failure as a case before adding prose. Tag it with the rule it

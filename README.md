@@ -91,6 +91,9 @@ The current suite adds 14 paired preservation cases and 8 cases that cover
 every remaining rule ID (72 total). See the
 [evaluation guide](evals/README.md) for separate removal, preservation, damage,
 and exact no-op checks. No updated model performance result is claimed.
+The next measurement follows the held-out protocol in the evaluation guide:
+unseen cases, two or more model families, and blind grading by a model from
+another family.
 
 ## License
 
