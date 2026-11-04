@@ -117,11 +117,17 @@ def run_report(out, family):
     changed = [n for n, d in inputs().items() if freeze["inputs"].get(n) != d]
     if changed:
         raise SystemExit(f"{out}: {', '.join(changed)} changed since its prompts; report at that commit")
+    edited = [n for n, d in freeze["prompts"].items()
+              if not (out / n).exists() or digest((out / n).read_bytes()) != d]
+    if edited:
+        raise SystemExit(f"{out}: prompt files differ from freeze.json: {', '.join(edited)}")
     graded = {}
     if (out / "blind/grades.json").exists() and (out / "key.json").exists():
         sheet = json.loads(load(out / "blind/grades.json"))
         key = json.loads(load(out / "key.json"))
-        if all(None not in g.values() for g in sheet["grades"].values()):
+        # Count grades only when every blind label has every field filled in.
+        if set(sheet["grades"]) == set(key) and all(
+                g.get(field) is not None for g in sheet["grades"].values() for field in GRADE_FIELDS):
             graded = {(label.split(".")[0], key[label]): g for label, g in sheet["grades"].items()}
             grader = sheet["grader"].get("family")
             if not grader or grader == family:
@@ -152,10 +158,11 @@ def report(root):
                 for r in sorted(family_dir.iterdir()) if (r / "freeze.json").exists()}
         if runs:
             families[family_dir.name] = runs
-    complete = (len(families) >= PROTOCOL["min_families"]
-                and all(len(runs) >= PROTOCOL["min_runs_per_family"] for runs in families.values()))
-    gates = all(v is not False for runs in families.values() for r in runs.values() for v in r["gates"].values())
-    graded = all(r["gates"]["damage"] is not None for runs in families.values() for r in runs.values())
+    # Ungraded runs don't count: completion and the damage gate both need every run blind-graded.
+    graded = bool(families) and all(r["gates"]["damage"] is not None for runs in families.values() for r in runs.values())
+    complete = graded and (len(families) >= PROTOCOL["min_families"]
+                           and all(len(runs) >= PROTOCOL["min_runs_per_family"] for runs in families.values()))
+    gates = bool(families) and all(v is True for runs in families.values() for r in runs.values() for v in r["gates"].values())
     result = {"protocol_complete": complete, "all_graded": graded, "absolute_gates_pass": gates,
               "families": families}
     save(root / "report.json", json.dumps(result, indent=2, ensure_ascii=False) + "\n")

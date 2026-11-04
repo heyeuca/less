@@ -92,6 +92,34 @@ class ProtocolTest(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.quiet(protocol.report, root)
 
+    def test_edited_prompt_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = self.make_run(root, "alpha", "run1")
+            name = f"{protocol.CASES[0]['id']}.with.md"
+            protocol.save(out / name, protocol.load(out / name) + "Also add a summary.\n")
+            with self.assertRaises(SystemExit):
+                self.quiet(protocol.report, root)
+
+    def test_incomplete_grades_never_pass(self):
+        for damage in ("drop label", "drop field"):
+            with self.subTest(damage=damage), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                for family in ("alpha", "beta"):
+                    for n in (1, 2, 3):
+                        out = self.make_run(root, family, f"run{n}")
+                sheet = json.loads(protocol.load(out / "blind/grades.json"))
+                label = next(iter(sheet["grades"]))
+                if damage == "drop label":
+                    del sheet["grades"][label]
+                else:
+                    del sheet["grades"][label]["damage"]
+                protocol.save(out / "blind/grades.json", json.dumps(sheet))
+                result = self.quiet(protocol.report, root)
+                self.assertFalse(result["all_graded"])
+                self.assertFalse(result["protocol_complete"])
+                self.assertFalse(result["absolute_gates_pass"])
+
     def test_prompts_refuse_a_used_directory_and_blind_needs_every_reply(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
