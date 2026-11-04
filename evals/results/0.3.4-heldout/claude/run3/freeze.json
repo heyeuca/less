@@ -1,0 +1,41 @@
+{
+  "inputs": {
+    "skills/less/SKILL.md": "68370eff217fa41dadd56d7e214c3a634ecb42c6943b36f4e7cac9f8e3805183",
+    "skills/less/references/design.md": "aac4ceb388570271717bc2f9feab277a4ae40d281a5f3204420255db0184a435",
+    "evals/run.py": "18e6bea79ceffd28109d931db6d9f29dba7580db25f996af882799cc0fe2b5e3",
+    "evals/protocol.py": "e43e69df2273f700677a235f8feb2448934fbee27775c2bbec66a10b7221764f",
+    "evals/protocol.json": "05b5a326617b196c37785ea0879a90ed99036748660206e5c7ceeb76abe03874",
+    "evals/heldout.json": "4b45c2d5f733678cc88c662039e764e89ce039795a148cf9594d924632fe99d8"
+  },
+  "prompts": {
+    "H01.with.md": "77b2e3ef5611e331f4328a016bc884802c2620ebcd282bc02c3e64e574c92337",
+    "H01.without.md": "2352a4f8923c11ad1c2379948a2bac8fad12d0bea6ae943f432e431b1c01006a",
+    "H02.with.md": "c763a63834e5bb4961bda77b9f9dc260d4ffde098dd4f4376d609575588b4a13",
+    "H02.without.md": "3973ceda2b9579bb3461ac471033d4285ab10b35834dc2ce69774e0dfd6251d3",
+    "H03.with.md": "7db00d8b3a4d062e8cc4639eb55646e5d7e5df2f15a947fcdd817608e3aac46a",
+    "H03.without.md": "86fe4d6fc81d96c2c62a57dcc7477ff8db00ce811d13f647a08abdee6fb6270a",
+    "H04.with.md": "393cbbb3d3477004548ee60eff2625ef57d195a92eb58348d15f842d7d952739",
+    "H04.without.md": "f733c751dcabce49af43b7034f7643711e657e968b71be44649f7866c8c76d44",
+    "H05.with.md": "1b74898ed2b677b33c22704cda78af50bd022512f793b85be3e6b81ad6bae8b6",
+    "H05.without.md": "c9758435bb04b8b3a38fd2af2982556f7e032abb59af046a7b256807ba81ade9",
+    "H06.with.md": "b7957a45f4347df50eaf86910d16240871017f07d9a132b39e8cd17e7371fd53",
+    "H06.without.md": "52b34d932ec07ad774bbbdc76dd49c0c1a04cbf237e7b9b89d045dc64a885aff",
+    "H07.with.md": "02a8df31497b54cdb773def07aecf21c85c027df0c547d04a91a69b897bd525f",
+    "H07.without.md": "5c8f2604e31ea2e1bcb339e5aa1e63b9b0b0256b17201b9b78b078b5aefa852d",
+    "H08.with.md": "18411cb203690e83e5f711404f89069565b427823de8d6ff9482b7961f4b4afe",
+    "H08.without.md": "b16a1cceb1c1007e17ed91119df4b5447a01685e470b8e8ac98a1c9a4339a4e4",
+    "H09.with.md": "a6f71aa15c4f0344b26e96ce9ff567cc831e78cf8672e46f4a0d4de22947c193",
+    "H09.without.md": "f881a888889e69adb4582eeb9c2512506b11c531ed2a505012bd2225275a3252",
+    "H10.with.md": "e35610ab5dc945c31822b745c955f42b8f4ce3af20f7389b75d2202430e58c6f",
+    "H10.without.md": "0f9344f9924754d2c7741a8f41bbf130a319c21f548e18fbd446a7cb03f7346e"
+  },
+  "family": "claude",
+  "model": "claude-opus-5-5",
+  "sampling": "CLI default",
+  "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+  "cli": "2.1.287 (Claude Code)",
+  "runner": {
+    "evals/measure.py": "317ccbfb930fb492c015506d0f6ae26fea34d4a8879bba04a43931e11cc63078",
+    "evals/measure.json": "7ee1f2cef4f50215c751bca7e4f9a6ffe3c662703f691e6d2451ae16157c7248"
+  }
+}

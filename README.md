@@ -71,6 +71,22 @@ measured yet. See [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## Results
 
+**v0.3.4 held-out measurement** ([details](evals/results/0.3.4-heldout.md)):
+10 unseen cases, claude-opus-5-5 and gpt-6.1-sol, 3 runs each, blind-graded by
+the other family.
+
+- Protected spans kept: 28/30 and 27/30 with the skill, 10/30 and 7/30 without.
+- Outputs the grader marked as damaged: 0/30 and 3/30 with the skill, 15/30 and
+  15/30 without.
+- Clean inputs returned byte-for-byte: 6/12 and 5/12 with the skill, 0/12
+  without.
+
+The absolute gates (no lost span, every clean input unchanged, no damage) did
+not pass. Most with-skill misses are measurement artifacts: trailing
+newlines, code fences, and a capitalized span. The real misses are three
+gpt-6.1-sol cases: a needed sentence cut (H01), a lowered keigo register
+(H04), and an inlined variable in clean code (H06).
+
 Measured with v0.3.3 on the 50 cases in [`evals/`](evals/), 2 runs with grok-4.7, against the same model without the skill.
 
 - All cases: 50/50 in both runs (100%), with 0 must-keep misses in 100 outputs. Without the skill: 39/50 (78%), 10 misses in 50.
