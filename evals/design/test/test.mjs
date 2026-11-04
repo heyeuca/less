@@ -41,7 +41,7 @@ const design = JSON.parse(readFileSync('../evals.json', 'utf8')).evals;
 const get = id => design.find(row => row.id === id);
 const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11'), d13 = get('D13');
 const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
-const d18 = get('D18');
+const d18 = get('D18'), d14 = get('D14');
 // Custom CSS keeps alternate effects real even when their utility classes are
 // absent from the precompiled Tailwind fixture.
 const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
@@ -72,6 +72,7 @@ const regressions = [
   [d11, 'useful-wrapper', d11.after.replace('<form', '<div><span aria-hidden="true"> / </span><form').replace('</form>', '</form></div>'), true],
   [d11, 'renamed-surfaces', d11.before.replace('✨ Profile', '').replaceAll('rounded-xl', 'rounded-lg'), false],
   [d13, 'renamed-blob', d13.after.replace('</style>', '.orb{position:absolute;width:320px;height:320px;filter:blur(60px);z-index:-1}</style>').replace('<main>', '<main><div class="orb"></div>'), false],
+  [d14, 'renamed-marker', d14.before.replaceAll('class="num"', 'class="n"'), false],
   [d18, 'route-arrow-removed', d18.after.replace('Tokyo → Osaka', 'Tokyo to Osaka'), false, 'G2'],
   [d13, 'unstuck-header', d13.after.replace('position:sticky;top:0;', ''), false],
   [d03, 'glued-emoji', d03.after.replace('Fast sync', '🚀Fast sync'), false],
