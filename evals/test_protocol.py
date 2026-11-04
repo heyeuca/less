@@ -111,7 +111,7 @@ class ProtocolTest(unittest.TestCase):
                 self.quiet(protocol.report, root)
 
     def test_incomplete_grades_never_pass(self):
-        for damage in ("drop label", "drop field"):
+        for damage in ("drop label", "drop field", "string boolean"):
             with self.subTest(damage=damage), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 for family in ("alpha", "beta"):
@@ -121,8 +121,10 @@ class ProtocolTest(unittest.TestCase):
                 label = next(iter(sheet["grades"]))
                 if damage == "drop label":
                     del sheet["grades"][label]
-                else:
+                elif damage == "drop field":
                     del sheet["grades"][label]["damage"]
+                else:
+                    sheet["grades"][label]["damage"] = "false"
                 protocol.save(out / "blind/grades.json", json.dumps(sheet))
                 result = self.quiet(protocol.report, root)
                 self.assertFalse(result["all_graded"])

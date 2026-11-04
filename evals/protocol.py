@@ -97,6 +97,12 @@ def blind(out, seed):
     print(f"Wrote {out / 'blind'}; keep {out / 'key.json'} from the grader")
 
 
+def valid(grade):
+    """A finished grade: true/false for the yes-no fields (not "false" strings), a label for quality."""
+    return (all(isinstance(grade.get(f), bool) for f in ("meaning_preserved", "damage"))
+            and grade.get("removal_quality") in ("good", "partial", "none", "n/a"))
+
+
 def checks(case, output):
     return {
         "missing": output is None,
@@ -126,8 +132,7 @@ def run_report(out, family):
         sheet = json.loads(load(out / "blind/grades.json"))
         key = json.loads(load(out / "key.json"))
         # Count grades only when every blind label has every field filled in.
-        if set(sheet["grades"]) == set(key) and all(
-                g.get(field) is not None for g in sheet["grades"].values() for field in GRADE_FIELDS):
+        if set(sheet["grades"]) == set(key) and all(valid(g) for g in sheet["grades"].values()):
             # A grade judges the blind copy; refuse it if that copy no longer matches the reply.
             stale = [label for label, arm in key.items()
                      if not (out / "blind" / f"{label}.out.md").exists()
