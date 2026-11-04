@@ -125,6 +125,12 @@ class PreservationTest(unittest.TestCase):
             # A filled-in record is never overwritten.
             with self.assertRaises(SystemExit):
                 run.prompts(out)
+        # Nor are replies from a run that predates run.json.
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            run.save(out / 'P01.with.out.md', 'old reply')
+            with self.assertRaises(SystemExit):
+                run.prompts(out)
 
     def test_grading_refuses_changed_inputs(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -13,7 +13,7 @@
       Also writes OUT/run.json: SHA-256 hashes of the skill, runner, cases,
       checker, and every prompt, plus empty fields for the model, sampling,
       session setup, grader, and attempts. Fill those in before publishing.
-      Refuses a directory that already has run.json; preservation, sheet, and
+      Refuses a non-empty directory; preservation, sheet, and
       check.mjs refuse to grade it once a recorded input has changed.
 
   python3 evals/run.py triggers OUT
@@ -100,9 +100,9 @@ def organic(case):
 
 
 def prompts(out):
-    # A filled-in run.json can't be regenerated; never overwrite one.
-    if (out / "run.json").exists():
-        raise SystemExit(f"{out} already has run.json; use a new output directory")
+    # Prompts and run.json describe the replies saved next to them; never mix runs.
+    if out.is_dir() and any(out.iterdir()):
+        raise SystemExit(f"{out} is not empty; use a new output directory")
     out.mkdir(parents=True, exist_ok=True)
     written = {}
     for case in CASES:
