@@ -64,17 +64,41 @@ class PreservationTest(unittest.TestCase):
 
     def test_annotations_never_enter_generation_prompts(self):
         case = dict(run.CASES[-1], protected_spans=['SECRET_GOLD_MARKER'])
-        for prompt in (run.task(case, True), run.task(case, False), run.organic(case)):
+        for prompt in (run.task(case, True), run.task(case, False), json.dumps(run.organic(case))):
             self.assertNotIn('SECRET_GOLD_MARKER', prompt)
         self.assertTrue(run.task(case, True).endswith(run.task(case, False)))
 
     def test_organic_prompts_carry_no_evaluation_framing(self):
         framing = re.compile(r'\b(evals?|tests?|judge|rubric|score|benchmark|candidate|skill)\b', re.I)
         for case in run.CASES:
-            prompt = run.organic(case)
             with self.subTest(case=case['id']):
-                self.assertTrue(prompt.endswith(case['before'] + '\n'))
-                self.assertNotRegex(prompt[:-len(case['before']) - 1], framing)
+                for message in run.organic(case):
+                    text = message['content'].replace(case['before'], '')
+                    self.assertNotRegex(text, framing)
+
+    def test_organic_conversations_keep_authorship(self):
+        for case in run.CASES:
+            messages = run.organic(case)
+            roles = [m['role'] for m in messages]
+            with self.subTest(case=case['id']):
+                if case.get('author') == 'assistant':
+                    # The agent's own answer is its turn, after the question it answered.
+                    self.assertEqual(roles, ['user', 'assistant', 'user'])
+                    self.assertEqual(messages[1]['content'], case['before'])
+                    self.assertIn(case['prompt'], messages[0]['content'])
+                else:
+                    self.assertEqual(roles, ['user'])
+                    self.assertTrue(messages[0]['content'].endswith(case['before'] + '\n'))
+
+    def test_context_never_replaces_the_request(self):
+        cases = [case for case in run.CASES if case.get('context')]
+        self.assertTrue(cases)
+        for case in cases:
+            with self.subTest(case=case['id']):
+                self.assertTrue(case.get('prompt'))
+                self.assertNotEqual(case['prompt'], case['context'])
+                self.assertIn(case['prompt'], run.organic(case)[0]['content'])
+                self.assertIn(case['context'], run.task(case, False))
 
     def test_organic_arm_is_reported_only_when_run(self):
         with tempfile.TemporaryDirectory() as tmp:
