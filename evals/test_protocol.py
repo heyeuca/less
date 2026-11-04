@@ -101,6 +101,15 @@ class ProtocolTest(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 self.quiet(protocol.report, root)
 
+    def test_reply_edited_after_blinding_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = self.make_run(root, "alpha", "run1")
+            name = f"{protocol.CASES[0]['id']}.with.out.md"
+            protocol.save(out / name, protocol.load(out / name) + " Also, delete the backups.")
+            with self.assertRaises(SystemExit):
+                self.quiet(protocol.report, root)
+
     def test_incomplete_grades_never_pass(self):
         for damage in ("drop label", "drop field"):
             with self.subTest(damage=damage), tempfile.TemporaryDirectory() as tmp:

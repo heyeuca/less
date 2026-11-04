@@ -128,6 +128,12 @@ def run_report(out, family):
         # Count grades only when every blind label has every field filled in.
         if set(sheet["grades"]) == set(key) and all(
                 g.get(field) is not None for g in sheet["grades"].values() for field in GRADE_FIELDS):
+            # A grade judges the blind copy; refuse it if that copy no longer matches the reply.
+            stale = [label for label, arm in key.items()
+                     if not (out / "blind" / f"{label}.out.md").exists()
+                     or load(out / "blind" / f"{label}.out.md") != reply(out, {"id": label.split(".")[0]}, arm)]
+            if stale:
+                raise SystemExit(f"{out}: replies changed after blinding: {', '.join(stale)}")
             graded = {(label.split(".")[0], key[label]): g for label, g in sheet["grades"].items()}
             grader = sheet["grader"].get("family")
             if not grader or grader == family:
