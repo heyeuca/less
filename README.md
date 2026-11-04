@@ -63,11 +63,11 @@ Apply the less skill to everything you write: keep only what has a reason to exi
 
 ## Results
 
-Measured on the 50 cases in [`evals/`](evals/), 2 runs with grok-4.7, against the same model without the skill.
+Measured with v0.3.3 on the 50 cases in [`evals/`](evals/), 2 runs with grok-4.7, against the same model without the skill.
 
-- All cases: 50/50 in both runs (100%), with 0 must-keep misses in 100 outputs. Without the skill: 38/50 (76%), 11 misses in 50.
+- All cases: 50/50 in both runs (100%), with 0 must-keep misses in 100 outputs. Without the skill: 39/50 (78%), 10 misses in 50.
 - Writing and code: 29–31% fewer words on 37 cases, with 0 must-keep misses and identical code behavior. Without the skill: 39% fewer, but must-keep content lost in 7 cases.
-- UI: 17–18% fewer elements and 42% fewer CSS declarations on 13 cases, with 13/13 accessibility and semantics gates and 0 new axe violations in both runs. Without the skill: 8/13.
+- UI: 17–18% fewer elements and 42% fewer CSS declarations on 13 cases, with 13/13 accessibility and semantics gates and 0 new axe violations in both runs. Without the skill: 10/13 on the gates and 9/13 by meaning.
 
 A separate grading agent checks each case against its `must_keep` list; code is run and compared, and UI is checked with Playwright and axe. The runs were isolated from the repo. We tuned the skill on these evals, so read them as a regression test, not a benchmark, and only one model was tested.
 
