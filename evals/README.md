@@ -57,21 +57,22 @@ preset, or rewrite pipeline is imported.
 
 Rules in `SKILL.md` (W, S, M) and `references/design.md` (C, K) carry stable
 IDs, and every case lists the rules it exercises in `rules`. `test_coverage.py`
-fails when a case cites an unknown ID, when a rule has no case, or when a
-writing or code removal rule (W, S) lacks either a case where it removes
-something or a protection case (a no-op or a known `bad_after`). Rules with no
-case yet are listed in `KNOWN_GAPS`; closing one means adding a case and
-deleting its ID there.
+fails when a case cites an unknown ID, when a rule has no case and is not
+listed in `KNOWN_GAPS`, when a listed gap now has a case, or when a writing or
+code removal rule (W, S) lacks either a case where it removes something or a
+protection case (a no-op or a known `bad_after`). Closing a gap means adding a
+case and deleting its ID from `KNOWN_GAPS`.
 
 ## Organic and trigger runs
 
 `prompts` also writes `OUT/<id>.organic.md`: the user's request and content
 only, with no skill text and no evaluation framing. Run these in a session
 where the skill is installed rather than pasted, and save replies as
-`OUT/<id>.organic.out.md`; `preservation` then reports an `organic` arm. This
-checks that the skill loads and behaves the same when nobody hands it over.
-`python3 evals/run.py triggers OUT` writes `triggers.md` from `triggers.json`
-for recording whether the skill loaded on each request in a fresh session.
+`OUT/<id>.organic.out.md`. Once any organic reply exists, `preservation` also
+reports an `organic` arm with the same span and no-op checks. That checks the
+output, not whether the skill loaded: record loading separately with
+`python3 evals/run.py triggers OUT`, which writes `triggers.md` from
+`triggers.json` for each request run in a fresh session.
 
 ## Changing the skill
 
