@@ -32,6 +32,36 @@
    "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:#fff}section{min-height:120vh}</style></head><body><header>Acme Docs Blog</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
    "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:#fff}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
    "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:rgba(255,255,255,.6)}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>"
+  },
+  {
+   "id": "T04",
+   "category": "checker self-test \u00b7 G7 needs a real blur: blur(0) is not legibility",
+   "format": "html",
+   "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{position:sticky;top:0;padding:8px;background:#fff}section{min-height:120vh}</style></head><body><header>Acme Docs Blog</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
+   "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{backdrop-filter:blur(8px);position:sticky;top:0;padding:8px;background:rgba(255,255,255,.6)}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>",
+   "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}header{backdrop-filter:blur(0);position:sticky;top:0;padding:8px;background:rgba(255,255,255,.6)}section{min-height:120vh}</style></head><body><header>Acme Docs</header><main><section><h2>One</h2><p>Body text.</p></section><section><h2>Two</h2></section></main></body></html>"
+  },
+  {
+   "id": "T05",
+   "format": "html",
+   "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}button{margin:0;padding:12px 24px;font-size:20px;color:#111;background:#fff;border:1px solid #111}button:hover{color:#eee}</style></head><body><main><button>Save</button></main></body></html>",
+   "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>T</title><style>body{margin:0}button{margin:0;padding:12px 24px;font-size:20px;color:#111;background:#fff;border:1px solid #111}button:hover{color:#eee}</style></head><body><main><button>Save</button></main></body></html>",
+   "must_keep_roles": [
+    [
+     "button",
+     "Save"
+    ]
+   ],
+   "must_have_styles": [
+    {
+     "selector": "button",
+     "properties": {
+      "color": "rgb(238, 238, 238)"
+     },
+     "hover": true
+    }
+   ],
+   "category": "checker self-test \u00b7 a hover check leaves nothing hovered for the next page"
   }
  ]
 }

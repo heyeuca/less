@@ -6,9 +6,9 @@ violations (wcag2a/2aa/21aa/22aa), G4 interactive nodes kept unless
 `must_remove_hint` names them, G5 focus indicator and ≥24px target no worse,
 G6 reflow at 320px holds if it held before, G7 every fixed/sticky element with
 text on the returned page that content scrolls under has an opaque fill or a
-`backdrop-filter` (computed style, not pixels; one already see-through before,
-same tag and about the same place, prints a pre-existing note instead), G8
-required removals hold. Element and CSS declaration counts print as info only.
+backdrop blur of at least 4px (computed style, not pixels; one already
+see-through before, same tag and about the same place, prints a pre-existing
+note instead), G8 required removals hold. Element and CSS declaration counts print as info only.
 
     npm ci && npx playwright install chromium
     node check.mjs self        # before, after, bad_after vs before
@@ -25,6 +25,11 @@ normalized.
 
 Selectors with pseudo-classes (`:hover`, `:focus-visible`, etc.) are always
 compared as normalized CSS text, never matched in the DOM.
+
+G7 is a heuristic. It shows that an overlay hides or blurs what scrolls under
+it. `blur(0)` or a filter with no blur doesn't count. It does not measure
+contrast against what shows through, so a pass is not a legibility guarantee.
+Check such cases by eye or with a contrast tool.
 
 G5 accepts the browser's default focus ring (WCAG 2.4.7 needs visible focus
 only); `outline:none` with no replacement fails. `npm test` runs fixtures in
@@ -49,11 +54,14 @@ mode, `before` checks preservation only; `after` must pass all gates and
 `bad_after` must fail at least one gate, otherwise the command exits nonzero.
 
 Use `must_remove_rendered_text` for visible content (body innerText, with HTML
-entities decoded by the browser, matched case-insensitively). Keep `must_remove_text` for source-only
+entities decoded by the browser, matched case-insensitively as whole words, so
+"New" doesn't match "renew" or "news"). Keep `must_remove_text` for source-only
 assertions. Content checks avoid requiring a particular tag or wrapper layout.
 `must_have_styles` asserts canonical computed CSS values on every matching
 element and requires at least one match. A `hover: true` assertion checks each
-matching element while hovered. D12 protects the focus ring separately while
+matching element while hovered. The pointer is moved off the page before each
+measurement, so a hover never carries into the next page's checks. D13 requires
+`position: sticky` on its header. D12 protects the focus ring separately while
 requiring no decorative shadow, transition, or scale at rest and on hover.
 `must_remove_computed_background` rejects computed linear, radial, and conic gradients, repeating ones included
 (also on pseudo-elements), regardless of function case or CSS escapes. D07 requires the form's four border

@@ -21,10 +21,20 @@ const TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const INTERACTIVE = /^(button|link|textbox|searchbox|checkbox|radio|combobox|slider|spinbutton|switch|tab|menuitem|option|listbox)$/;
 // Dynamic pseudo-classes never match a static page, so such strings are CSS text, as are strings that aren't selectors.
 const STATEFUL = /:(hover|focus|focus-visible|focus-within|active|visited)\b/;
+// Smallest backdrop blur (px) that G7 accepts in place of an opaque fill.
+const MIN_BLUR = 4;
+// Rendered-text removals match whole words: "New" must not match "renew" or "news".
+const wordMatch = (text, snippet) => {
+  const esc = snippet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(?<![\\p{L}\\p{N}])${esc}(?![\\p{L}\\p{N}])`, 'u').test(text);
+};
 const norm = s => s.replace(/\s+/g, ' ').replace(/\s*([{}:;,()>])\s*/g, '$1').trim();
 
 async function measure(page, src, c) {
   const html = c.format === 'jsx' ? jsx(src) : src;
+  // The pointer survives setContent; park it outside the page so an earlier hover check can't leave
+  // this page's axe, focus, and style measurements in a hovered state ((0, 0) may be on an element).
+  await page.mouse.move(-1, -1);
   await page.setContent(html);
   // Let entrance animations settle so axe sees final colors (infinite ones are capped at 2 s).
   await page.evaluate(() => Promise.race([Promise.all(document.getAnimations().map(a => a.finished.catch(() => {}))), new Promise(r => setTimeout(r, 2000))]));
@@ -62,9 +72,11 @@ async function measure(page, src, c) {
     focus.push({ key, ring, target: Math.min(box.width, box.height) >= 24 });
   }
   const reflow = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
-  // G7: scroll so content sits under each fixed/sticky element with text; its text stays legible only if
-  // its own fill is opaque or a backdrop-filter is set (computed style, not pixels, so it isn't flaky).
-  const overlays = await page.evaluate(() => {
+  // G7: scroll so content sits under each fixed/sticky element with text; its text counts as legible only if
+  // its own fill is opaque or its backdrop-filter blurs by at least MIN_BLUR px (computed style, not pixels,
+  // so it isn't flaky). blur(0) or a filter without blur doesn't count. This is a heuristic, not a contrast
+  // measurement: it can't tell whether the text reads well over what shows through.
+  const overlays = await page.evaluate(minBlur => {
     // Force instant scrolling so a page's `scroll-behavior: smooth` can't leave the probe mid-scroll.
     const root = document.documentElement, saved = [root.style.scrollBehavior, document.body.style.scrollBehavior];
     root.style.scrollBehavior = document.body.style.scrollBehavior = 'auto';
@@ -87,14 +99,15 @@ async function measure(page, src, c) {
         rect = r;
         return t.top < r.bottom && t.bottom > r.top && t.left < r.right && t.right > r.left;
       });
-      const alpha = (s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)/) || [, 1])[1];
+      const alpha = (s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)/) || [, 1])[1] * s.opacity;
+      const blur = Math.max(0, ...[...s.backdropFilter.matchAll(/blur\(([\d.]+)px\)/g)].map(m => +m[1]));
       out.push({ key: e.tagName + ' ' + e.innerText.replace(/\s+/g, ' ').trim().slice(0, 40), tag: e.tagName,
-        top: rect.top, bottom: rect.bottom, width: rect.width, overlaps, legible: +alpha >= 0.99 || s.backdropFilter !== 'none' });
+        top: rect.top, bottom: rect.bottom, width: rect.width, overlaps, legible: alpha >= 0.99 || blur >= minBlur });
       jump(0);
     }
     [root.style.scrollBehavior, document.body.style.scrollBehavior] = saved;
     return out;
-  });
+  }, MIN_BLUR);
   const info = await page.evaluate(() => ({ elements: document.querySelectorAll('body *').length, decls: [...document.styleSheets].flatMap(s => [...s.cssRules]).reduce((n, r) => n + (r.style ? r.style.length : 0), 0) }));
   const removed = [];
   for (const selector of c.must_remove_selectors || [])
@@ -104,7 +117,7 @@ async function measure(page, src, c) {
   // Browser text decodes entities, so markup spelling cannot hide visible copy.
   const text = norm(await page.locator('body').innerText()).toLowerCase();
   for (const snippet of c.must_remove_rendered_text || [])
-    removed.push(!text.includes(norm(snippet).toLowerCase()));
+    removed.push(!wordMatch(text, norm(snippet).toLowerCase()));
   if (c.must_remove_computed_background) {
     removed.push(await page.evaluate(() => ![...document.querySelectorAll('*')].some(el =>
       [null, '::before', '::after'].some(pseudo =>
