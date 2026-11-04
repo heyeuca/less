@@ -120,10 +120,14 @@ async function measure(page, src, c) {
     removed.push(!norm(src).includes(norm(snippet)));
   // Browser text decodes entities, so markup spelling cannot hide visible copy.
   const text = norm(await page.locator('body').innerText()).toLowerCase();
-  // Also each visible element on its own: CSS spacing doesn't reach innerText, so a styled "01" next to
-  // "Send" would otherwise read as the single word "01send".
-  const pieces = (await page.locator('body *:visible').evaluateAll(els => els.map(e => e.innerText || '')))
-    .map(t => norm(t).toLowerCase());
+  // Also each visible element that CSS sets apart (not display:inline, or with side margin, padding, or
+  // border): that spacing doesn't reach innerText, so a styled "01" next to "Send" would otherwise read
+  // as "01send". Plain inline runs stay joined, so <b>New</b>ark is still the word "Newark".
+  const pieces = (await page.locator('body *:visible').evaluateAll(els => els.filter(e => {
+    const s = getComputedStyle(e);
+    return s.display !== 'inline' || ['marginLeft', 'marginRight', 'paddingLeft', 'paddingRight',
+      'borderLeftWidth', 'borderRightWidth'].some(k => parseFloat(s[k]) > 0);
+  }).map(e => e.innerText || ''))).map(t => norm(t).toLowerCase());
   for (const snippet of c.must_remove_rendered_text || [])
     removed.push(![text, ...pieces].some(t => wordMatch(t, norm(snippet).toLowerCase())));
   if (c.must_remove_computed_background) {

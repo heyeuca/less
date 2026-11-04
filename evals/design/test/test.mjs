@@ -73,10 +73,11 @@ const regressions = [
   [d11, 'renamed-surfaces', d11.before.replace('✨ Profile', '').replaceAll('rounded-xl', 'rounded-lg'), false],
   [d13, 'renamed-blob', d13.after.replace('</style>', '.orb{position:absolute;width:320px;height:320px;filter:blur(60px);z-index:-1}</style>').replace('<main>', '<main><div class="orb"></div>'), false],
   [d14, 'renamed-marker', d14.before.replaceAll('class="num"', 'class="n"'), false],
-  [d14, 'glued-marker', d14.before.replaceAll('class="num"', 'class="n"').replaceAll('</span> ', '</span>'), false],
+  [d14, 'glued-marker', d14.before.replace('.num{', '.n{').replaceAll('class="num"', 'class="n"').replaceAll('</span> ', '</span>'), false],
   [d18, 'route-arrow-removed', d18.after.replace('Tokyo → Osaka', 'Tokyo to Osaka'), false, 'G2'],
   [d13, 'unstuck-header', d13.after.replace('position:sticky;top:0;', ''), false],
   [d03, 'glued-emoji', d03.after.replace('Fast sync', '🚀Fast sync'), false],
+  [d10, 'split-word', d10.after.replace('<h2>Orders</h2>', '<h2>Orders</h2><p>Ships from our <b>New</b>ark office.</p>'), true],
   [d10, 'renew-copy', d10.after.replace('<h2>Orders</h2>', '<h2>Orders</h2><p>Renew your plan. See the news.</p>'), true],
   [d13, 'opaque-header', d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
