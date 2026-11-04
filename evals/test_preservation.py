@@ -14,14 +14,14 @@ class PreservationTest(unittest.TestCase):
     def report(self, out):
         with contextlib.redirect_stdout(io.StringIO()):
             run.preservation(out)
-        return json.loads((out / 'preservation.json').read_text())
+        return json.loads(run.load(out / 'preservation.json'))
 
     def test_references_and_missing_outputs(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             for case in run.CASES:
                 if 'protected_spans' in case:
-                    (out / f"{case['id']}.with.out.md").write_text(case['after'])
+                    run.save(out / f"{case['id']}.with.out.md", case['after'])
             report = self.report(out)
             for counts in report['with']['summary'].values():
                 self.assertEqual(counts['passed'], counts['total'])
@@ -33,9 +33,9 @@ class PreservationTest(unittest.TestCase):
         cases = {case['id']: case for case in run.CASES}
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
-            (out / 'P01.with.out.md').write_text(cases['P01']['before'])
-            (out / 'P02.with.out.md').write_text(cases['P02']['before'] + '\n')
-            (out / 'P03.with.out.md').write_text('50%의 요청이 실패합니다.')
+            run.save(out / 'P01.with.out.md', cases['P01']['before'])
+            run.save(out / 'P02.with.out.md', cases['P02']['before'] + '\n')
+            run.save(out / 'P03.with.out.md', '50%의 요청이 실패합니다.')
             rows = {row['id']: row for row in self.report(out)['with']['cases']}
             self.assertTrue(rows['P01']['preserved'])
             self.assertFalse(rows['P01']['removed'])
@@ -47,7 +47,7 @@ class PreservationTest(unittest.TestCase):
     def test_validation_obligation_cannot_be_weakened(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
-            (out / 'P09.with.out.md').write_text(
+            run.save(out / 'P09.with.out.md',
                 'Some inputs should be validated. Secrets must never appear in logs.')
             rows = {row['id']: row for row in self.report(out)['with']['cases']}
             self.assertFalse(rows['P09']['preserved'])
@@ -56,7 +56,7 @@ class PreservationTest(unittest.TestCase):
     def test_removal_span_survives_whitespace_change(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
-            (out / 'P09.with.out.md').write_text(
+            run.save(out / 'P09.with.out.md',
                 'For completeness:\nAll inputs must be validated. Secrets must never appear in logs.')
             rows = {row['id']: row for row in self.report(out)['with']['cases']}
             self.assertTrue(rows['P09']['preserved'])
@@ -104,11 +104,74 @@ class PreservationTest(unittest.TestCase):
                 self.assertIn(case['prompt'], run.organic(case)[0]['content'])
                 self.assertIn(case['context'], run.task(case, False))
 
+    def test_runner_io_is_utf8_on_any_locale(self):
+        source = run.load(Path(run.__file__))
+        for call in ('read_text(', 'write_text(', 'open('):
+            self.assertNotIn(call, source)
+
+    def test_run_record_hashes_inputs_and_every_prompt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            with contextlib.redirect_stdout(io.StringIO()):
+                run.prompts(out)
+            record = json.loads(run.load(out / 'run.json'))
+            self.assertEqual(sorted(record['inputs']), sorted(run.FROZEN))
+            prompts = sorted(p.name for p in out.iterdir() if p.name != 'run.json')
+            self.assertEqual(sorted(record['prompts']), prompts)
+            for name, digest in record['prompts'].items():
+                self.assertEqual(run.sha256((out / name).read_bytes()), digest)
+            for field in run.RUN_FIELDS:
+                self.assertIsNone(record[field])
+            # A filled-in record is never overwritten.
+            with self.assertRaises(SystemExit):
+                run.prompts(out)
+        # Nor are replies from a run that predates run.json.
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            run.save(out / 'P01.with.out.md', 'old reply')
+            with self.assertRaises(SystemExit):
+                run.prompts(out)
+
+    def test_grading_refuses_changed_inputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            recorded = run.inputs()
+            run.save(out / 'run.json', json.dumps({'inputs': recorded}))
+            self.report(out)
+            recorded['evals/evals.json'] = 'stale'
+            run.save(out / 'run.json', json.dumps({'inputs': recorded}))
+            for command in (run.preservation, run.sheet):
+                with self.subTest(command=command.__name__), self.assertRaises(SystemExit):
+                    command(out)
+
+    def test_grading_refuses_an_edited_prompt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            with contextlib.redirect_stdout(io.StringIO()):
+                run.prompts(out)
+            name = f"{run.CASES[0]['id']}.with.md"
+            run.save(out / name, run.load(out / name) + 'Also translate it.\n')
+            with self.assertRaises(SystemExit):
+                run.preservation(out)
+
+    def test_results_without_run_json_are_marked_unverified(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            self.assertFalse(self.report(out)['verified'])
+            with contextlib.redirect_stdout(io.StringIO()):
+                run.sheet(out)
+            self.assertTrue(run.load(out / 'sheet.md').startswith('UNVERIFIED'))
+            run.save(out / 'run.json', json.dumps({'inputs': run.inputs()}))
+            self.assertTrue(self.report(out)['verified'])
+
+    def test_sheet_cells_drop_carriage_returns(self):
+        self.assertEqual(run.cell('a\r\nb'), 'a<br>b')
+
     def test_organic_arm_is_reported_only_when_run(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             self.assertNotIn('organic', self.report(out))
-            (out / 'P01.organic.out.md').write_text(run.CASES[0]['before'])
+            run.save(out / 'P01.organic.out.md', run.CASES[0]['before'])
             self.assertIn('organic', self.report(out))
 
 

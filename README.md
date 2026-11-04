@@ -83,9 +83,11 @@ These numbers predate the current evaluation protocol. The baseline arm was
 asked to "Make this less verbose." while the skill arm got `/less`; the runner
 now gives both arms the same task instruction, so only the skill context
 differs. UI checks now also require fixture-specific removals (G8). The numbers
-above have not been remeasured with these changes. Future reports should retain
-model/version settings, raw outputs, grading decisions, and behavior-check
-commands so results can be reproduced.
+above have not been remeasured with these changes. The v0.3.3 runs predate
+`run.json`, so their sampling settings and session isolation were not recorded
+beyond what is stated above. Each future results directory includes a
+`run.json` (written by `run.py prompts`) with input and prompt hashes, the
+model, sampling, session setup, grader, and every attempt.
 
 The current suite adds 14 paired preservation cases and 8 cases that cover
 every remaining rule ID (72 total). See the

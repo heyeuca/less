@@ -15,7 +15,7 @@ BUDGETS = {
 class BudgetTest(unittest.TestCase):
     def test_skill_files_stay_within_word_budget(self):
         for path, limit in BUDGETS.items():
-            words = len((run.ROOT / path).read_text().split())
+            words = len(run.load(run.ROOT / path).split())
             with self.subTest(path=path):
                 self.assertLessEqual(words, limit, f"{path} has {words} words; budget is {limit}")
 

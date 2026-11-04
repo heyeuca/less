@@ -10,7 +10,7 @@ backdrop blur of at least 4px (computed style, not pixels; one already
 see-through before, same tag and about the same place, prints a pre-existing
 note instead), G8 required removals hold. Element and CSS declaration counts print as info only.
 
-    npm ci && npx playwright install chromium
+    npm ci && npx playwright install chromium   # npm test also needs python3 (it runs ../run.py prompts)
     node check.mjs self        # before, after, bad_after vs before
     node check.mjs OUT [ID]    # OUT/<id>.with.out.md (from ../run.py) vs before
 

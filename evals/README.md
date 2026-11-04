@@ -49,6 +49,20 @@ rules keep every heading and every opt-out, so P15 and D21 may fail. They
 measure whether a narrower rule would help. Change a rule only when held-out
 runs show the narrower version removes more without failing P16 or D22.
 
+`prompts` also writes `OUT/run.json`. It holds SHA-256 hashes of the skill,
+runner, cases, and checker, and one for every generated prompt. It also has
+empty fields for the model and version, the sampling settings, the session
+setup (a fresh session per case? file, repo, or tool access?), the grader and
+its instructions, and every failed or retried attempt. Fill these in, and
+publish `run.json` with the results directory. A result without one can't be
+checked. `prompts` refuses a directory that isn't empty.
+`preservation`, `sheet`, and `check.mjs` refuse to grade it once the skill,
+runner, cases, checker, its fixture, or its dependency lockfile differs from
+what was recorded, so new criteria are never applied to old outputs. A
+directory without `run.json` is still graded, but its results are marked
+unverified (`"verified": false`, an `UNVERIFIED` line, `_unverified` in the
+design results). `check.mjs` won't grade a recorded run with `LESS_CASES`.
+
 The new cases are explicitly `tune`: their answers informed the instructions.
 Existing cases are also development/regression evidence, not held-out evidence.
 Before claiming quality gains, freeze the skill and grader, collect unseen
