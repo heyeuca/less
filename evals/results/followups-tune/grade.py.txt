@@ -1,0 +1,19 @@
+import sys,json,subprocess,concurrent.futures
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()/'evals'))
+import protocol,run
+root=Path('/tmp/less-tune-validation');cases={c['id']:c for c in run.CASES}
+rows=[]
+def check(f,k):
+ out=root/f/f'run{k}';out.mkdir(parents=True,exist_ok=True)
+ data={'family':f,'run':k,'prose':{}}
+ for id in ['P15','P16','D21','D22']:
+  text=protocol.load(root/f'{f}-{k}-{id}.md');protocol.save(out/f'{id}.with.out.md',text)
+  if id.startswith('P'):data['prose'][id]=protocol.checks(cases[id],protocol.presentation(cases[id]['before'],text))
+ p=subprocess.run(['node','check.mjs',str(out),'D21','D22'],cwd='evals/design',capture_output=True,text=True)
+ data['design_exit']=p.returncode;protocol.save(out/'checker.log',p.stdout+p.stderr)
+ data['design']=json.loads(protocol.load(out/'design-with.json'))
+ return data
+with concurrent.futures.ThreadPoolExecutor(3) as pool:rows=list(pool.map(lambda a:check(*a),[(f,k) for f in ['claude','codex'] for k in range(1,4)]))
+protocol.save(root/'summary.json',json.dumps(rows,ensure_ascii=False,indent=2))
+print(json.dumps(rows,ensure_ascii=False,indent=2))

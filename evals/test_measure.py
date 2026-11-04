@@ -41,9 +41,9 @@ class MeasureTest(unittest.TestCase):
         measure.CONFIG = {
             "families": {
                 "one": {"generate": [sys.executable, str(fake), "stdout"], "version": [sys.executable, "--version"],
-                        "session": "fake"},
+                        "session": "fake", "model": "fake-stdout-1"},
                 "two": {"generate": [sys.executable, str(fake), "file", "{out}"], "version": [sys.executable, "--version"],
-                        "model_from": "^model: (.+)$", "session": "fake"},
+                        "model_from": "^model: (.+)$", "session": "fake", "model": "fake-stdout-1"},
             },
             "grader_for": {"one": "two", "two": "one"},
             "timeout_seconds": 60,
@@ -61,12 +61,21 @@ class MeasureTest(unittest.TestCase):
         result = self.run_measure()
         self.assertTrue(result["protocol_complete"])
         self.assertTrue(result["absolute_gates_pass"])
+        # A completed unchanged run resumes without replacing recorded provenance.
+        first = protocol.load(self.dir / "root/two/run1/freeze.json")
+        self.assertTrue(self.run_measure()["protocol_complete"])
+        self.assertEqual(first, protocol.load(self.dir / "root/two/run1/freeze.json"))
         freeze = json.loads(protocol.load(self.dir / "root/two/run1/freeze.json"))
         self.assertEqual(freeze["family"], "two")
         self.assertEqual(freeze["model"], "fake-file-1")
         self.assertEqual(freeze["session"], "fake")
         sheet = json.loads(protocol.load(self.dir / "root/two/run1/blind/grades.json"))
         self.assertEqual(sheet["grader"]["family"], "one")
+        first_label = next(iter(sheet["grades"]))
+        sheet["grades"][first_label]["damage"] = True
+        protocol.save(self.dir / "root/two/run1/blind/grades.json", json.dumps(sheet))
+        with self.assertRaises(RuntimeError):
+            protocol.run_report(self.dir / "root/two/run1", "two")
 
     def test_failures_are_recorded_and_a_rerun_resumes(self):
         good = measure.CONFIG["families"]["one"]["generate"]
@@ -77,8 +86,8 @@ class MeasureTest(unittest.TestCase):
         self.assertTrue(freeze["attempts"])
         self.assertTrue(any(self.dir.glob("root/two/run1/*.out.md")))
         measure.CONFIG["families"]["one"]["generate"] = good
-        result = self.run_measure(runs=1)
-        self.assertTrue(result["all_graded"])
+        with self.assertRaises(RuntimeError):
+            self.run_measure(runs=1)
 
     def test_grades_must_be_usable(self):
         with self.assertRaises(ValueError):

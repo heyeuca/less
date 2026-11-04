@@ -1,0 +1,158 @@
+[
+  {
+    "family": "claude",
+    "run": 1,
+    "prose": {
+      "P15": {
+        "missing": false,
+        "preserved": true,
+        "removed": true,
+        "exact_noop": null,
+        "presentation_noop": null
+      },
+      "P16": {
+        "missing": false,
+        "preserved": true,
+        "removed": null,
+        "exact_noop": false,
+        "presentation_noop": true
+      }
+    },
+    "design_exit": 0,
+    "design": {
+      "_unverified": true,
+      "D21": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓",
+      "D22": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓"
+    }
+  },
+  {
+    "family": "claude",
+    "run": 2,
+    "prose": {
+      "P15": {
+        "missing": false,
+        "preserved": true,
+        "removed": true,
+        "exact_noop": null,
+        "presentation_noop": null
+      },
+      "P16": {
+        "missing": false,
+        "preserved": true,
+        "removed": null,
+        "exact_noop": false,
+        "presentation_noop": true
+      }
+    },
+    "design_exit": 0,
+    "design": {
+      "_unverified": true,
+      "D21": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓",
+      "D22": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓"
+    }
+  },
+  {
+    "family": "claude",
+    "run": 3,
+    "prose": {
+      "P15": {
+        "missing": false,
+        "preserved": true,
+        "removed": true,
+        "exact_noop": null,
+        "presentation_noop": null
+      },
+      "P16": {
+        "missing": false,
+        "preserved": true,
+        "removed": null,
+        "exact_noop": false,
+        "presentation_noop": true
+      }
+    },
+    "design_exit": 0,
+    "design": {
+      "_unverified": true,
+      "D21": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓",
+      "D22": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓"
+    }
+  },
+  {
+    "family": "codex",
+    "run": 1,
+    "prose": {
+      "P15": {
+        "missing": false,
+        "preserved": true,
+        "removed": true,
+        "exact_noop": null,
+        "presentation_noop": null
+      },
+      "P16": {
+        "missing": false,
+        "preserved": true,
+        "removed": null,
+        "exact_noop": false,
+        "presentation_noop": true
+      }
+    },
+    "design_exit": 0,
+    "design": {
+      "_unverified": true,
+      "D21": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓",
+      "D22": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓"
+    }
+  },
+  {
+    "family": "codex",
+    "run": 2,
+    "prose": {
+      "P15": {
+        "missing": false,
+        "preserved": true,
+        "removed": true,
+        "exact_noop": null,
+        "presentation_noop": null
+      },
+      "P16": {
+        "missing": false,
+        "preserved": true,
+        "removed": null,
+        "exact_noop": false,
+        "presentation_noop": true
+      }
+    },
+    "design_exit": 0,
+    "design": {
+      "_unverified": true,
+      "D21": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓",
+      "D22": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓"
+    }
+  },
+  {
+    "family": "codex",
+    "run": 3,
+    "prose": {
+      "P15": {
+        "missing": false,
+        "preserved": true,
+        "removed": true,
+        "exact_noop": null,
+        "presentation_noop": null
+      },
+      "P16": {
+        "missing": false,
+        "preserved": true,
+        "removed": null,
+        "exact_noop": false,
+        "presentation_noop": true
+      }
+    },
+    "design_exit": 0,
+    "design": {
+      "_unverified": true,
+      "D21": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓",
+      "D22": "PASS G1✓ G2✓ G3✓ G4✓ G5✓ G6✓ G7✓ G8✓"
+    }
+  }
+]

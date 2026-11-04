@@ -1,0 +1,227 @@
+{
+  "instructions": "Prospective v2 cases, authored before running the candidate. Do not tune on their outputs. Retire them after measurement.",
+  "evals": [
+    {
+      "id": "V01",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "Before we get into the details, the backup runs at 02:15 UTC and retains seven daily snapshots.",
+      "after": "The backup runs at 02:15 UTC and retains seven daily snapshots.",
+      "protected_spans": [
+        "backup runs at 02:15 UTC and retains seven daily snapshots."
+      ],
+      "must_keep": [
+        "backup runs at 02:15 UTC and retains seven daily snapshots."
+      ],
+      "must_remove_spans": [
+        "Before we get into the details,"
+      ],
+      "exact_noop": false,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V02",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "The estimate excludes weekends. Delivery may take between four and six working days.",
+      "after": "The estimate excludes weekends. Delivery may take between four and six working days.",
+      "protected_spans": [
+        "The estimate excludes weekends.",
+        "Delivery may take between four and six working days."
+      ],
+      "must_keep": [
+        "The estimate excludes weekends.",
+        "Delivery may take between four and six working days."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V03",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "결론부터 말씀드리자면, 로그는 14일 뒤 삭제됩니다. 같은 말을 반복하면 로그는 14일 뒤 삭제됩니다.",
+      "after": "로그는 14일 뒤 삭제됩니다.",
+      "protected_spans": [
+        "로그는 14일 뒤 삭제됩니다."
+      ],
+      "must_keep": [
+        "로그는 14일 뒤 삭제됩니다."
+      ],
+      "must_remove_spans": [
+        "결론부터 말씀드리자면,",
+        "같은 말을 반복하면"
+      ],
+      "exact_noop": false,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V04",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "山本様\nご連絡ありがとうございます。火曜11時にお越しいただけますと幸いです。どうぞよろしくお願いいたします。",
+      "after": "山本様\nご連絡ありがとうございます。火曜11時にお越しいただけますと幸いです。どうぞよろしくお願いいたします。",
+      "protected_spans": [
+        "山本様",
+        "お越しいただけますと幸いです。",
+        "どうぞよろしくお願いいたします。"
+      ],
+      "must_keep": [
+        "山本様",
+        "お越しいただけますと幸いです。",
+        "どうぞよろしくお願いいたします。"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V05",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "def enabled(flags):\n    # return the enabled flag\n    return flags.get(\"enabled\", False)\n",
+      "after": "def enabled(flags):\n    return flags.get(\"enabled\", False)\n",
+      "protected_spans": [
+        "def enabled(flags):",
+        "return flags.get(\"enabled\", False)"
+      ],
+      "must_keep": [
+        "def enabled(flags):",
+        "return flags.get(\"enabled\", False)"
+      ],
+      "must_remove_spans": [
+        "# return the enabled flag"
+      ],
+      "exact_noop": false,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V06",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "def cache_key(user):\n    key = user.id.lower()\n    return \"account:\" + key\n",
+      "after": "def cache_key(user):\n    key = user.id.lower()\n    return \"account:\" + key\n",
+      "protected_spans": [
+        "key = user.id.lower()",
+        "return \"account:\" + key"
+      ],
+      "must_keep": [
+        "key = user.id.lower()",
+        "return \"account:\" + key"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V07",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "# Restore\n\n## Restore\n\nRun `vault restore --dry-run` first.\n",
+      "after": "# Restore\n\nRun `vault restore --dry-run` first.\n",
+      "protected_spans": [
+        "# Restore",
+        "Run `vault restore --dry-run` first."
+      ],
+      "must_keep": [
+        "# Restore",
+        "Run `vault restore --dry-run` first."
+      ],
+      "must_remove_spans": [
+        "## Restore"
+      ],
+      "exact_noop": false,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V08",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary material.",
+      "before": "# Reference\n\nSee [Restore](#restore).\n\n## Restore\n\nOnly an owner can restore an archive.\n",
+      "after": "# Reference\n\nSee [Restore](#restore).\n\n## Restore\n\nOnly an owner can restore an archive.\n",
+      "protected_spans": [
+        "[Restore](#restore)",
+        "## Restore",
+        "Only an owner can restore an archive."
+      ],
+      "must_keep": [
+        "[Restore](#restore)",
+        "## Restore",
+        "Only an owner can restore an archive."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V09",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove the decorative entrance animation and unused styles.",
+      "before": "<style>@keyframes reveal{from{opacity:0}to{opacity:1}}article{animation:reveal 1s}@media(prefers-reduced-motion:reduce){article{animation:none}}</style><article>Maintenance starts at 04:00.</article>",
+      "after": "<article>Maintenance starts at 04:00.</article>",
+      "protected_spans": [
+        "<article>Maintenance starts at 04:00.</article>"
+      ],
+      "must_keep": [
+        "<article>Maintenance starts at 04:00.</article>"
+      ],
+      "must_remove_spans": [
+        "@keyframes",
+        "prefers-reduced-motion"
+      ],
+      "exact_noop": false,
+      "rules": [
+        "W3"
+      ]
+    },
+    {
+      "id": "V10",
+      "category": "prospective protocol v2",
+      "split": "heldout",
+      "prompt": "Remove unnecessary styles, keeping the progress animation and accessibility behavior.",
+      "before": "<style>@keyframes pulse{to{opacity:.6}}.progress{animation:pulse 2s infinite}@media(prefers-reduced-motion:reduce){.progress{animation:none}}</style><p class=\"progress\" role=\"status\">Exporting archive</p>",
+      "after": "<style>@keyframes pulse{to{opacity:.6}}.progress{animation:pulse 2s infinite}@media(prefers-reduced-motion:reduce){.progress{animation:none}}</style><p class=\"progress\" role=\"status\">Exporting archive</p>",
+      "protected_spans": [
+        "prefers-reduced-motion",
+        "role=\"status\"",
+        "Exporting archive"
+      ],
+      "must_keep": [
+        "prefers-reduced-motion",
+        "role=\"status\"",
+        "Exporting archive"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "rules": [
+        "W3"
+      ]
+    }
+  ]
+}

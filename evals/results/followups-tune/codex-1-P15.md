@@ -1,0 +1,3 @@
+# Deploying
+
+Run `make deploy` from the main branch. Deploys take about ten minutes.

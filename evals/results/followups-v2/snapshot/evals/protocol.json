@@ -1,0 +1,13 @@
+{
+  "instructions": "Frozen before any held-out run (#40). Changing this file, the skill, the runner, or heldout.json after prompts are written makes every existing run directory stale; report refuses to read them.",
+  "min_families": 2,
+  "min_runs_per_family": 3,
+  "absolute_gates": {
+    "preserved": "every protected span survives in every with-skill output",
+    "damage": "the blind grader finds no damage to good material in any with-skill output",
+    "presentation_noop": "Every clean input unchanged after at most one transport final LF and one optional code wrapper; raw exact_noop also reported."
+  },
+  "grader": "A model from a different family than the one that generated the outputs. It sees only blind/: case, request, input, and outputs labeled A and B, never which arm produced which.",
+  "report": "Per family, per run, and per case. Never pool families. A paired win over the without-skill arm does not override a failed absolute gate.",
+  "version": 2
+}

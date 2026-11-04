@@ -1,0 +1,1733 @@
+{
+  "protocol_complete": true,
+  "all_graded": true,
+  "absolute_gates_pass": false,
+  "families": {
+    "claude": {
+      "run1": {
+        "with": {
+          "summary": {
+            "preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 4,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "damage": {
+              "cases": 1,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "without": {
+          "summary": {
+            "preserved": {
+              "passed": 7,
+              "total": 10
+            },
+            "removed": {
+              "passed": 3,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "damage": {
+              "cases": 9,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            }
+          ]
+        },
+        "gates": {
+          "preserved": false,
+          "presentation_noop": false,
+          "damage": false
+        }
+      },
+      "run2": {
+        "with": {
+          "summary": {
+            "preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 4,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "damage": {
+              "cases": 1,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "without": {
+          "summary": {
+            "preserved": {
+              "passed": 7,
+              "total": 10
+            },
+            "removed": {
+              "passed": 2,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "damage": {
+              "cases": 9,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            }
+          ]
+        },
+        "gates": {
+          "preserved": false,
+          "presentation_noop": false,
+          "damage": false
+        }
+      },
+      "run3": {
+        "with": {
+          "summary": {
+            "preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 4,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "damage": {
+              "cases": 1,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "without": {
+          "summary": {
+            "preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "removed": {
+              "passed": 3,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "damage": {
+              "cases": 9,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": false,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "partial"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": false,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            }
+          ]
+        },
+        "gates": {
+          "preserved": false,
+          "presentation_noop": false,
+          "damage": false
+        }
+      }
+    },
+    "codex": {
+      "run1": {
+        "with": {
+          "summary": {
+            "preserved": {
+              "passed": 8,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "damage": {
+              "cases": 3,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "without": {
+          "summary": {
+            "preserved": {
+              "passed": 5,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "damage": {
+              "cases": 5,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": false,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "gates": {
+          "preserved": false,
+          "presentation_noop": false,
+          "damage": false
+        }
+      },
+      "run2": {
+        "with": {
+          "summary": {
+            "preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 3,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 3,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 10,
+              "total": 10
+            },
+            "damage": {
+              "cases": 2,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "without": {
+          "summary": {
+            "preserved": {
+              "passed": 5,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "damage": {
+              "cases": 5,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": false,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "gates": {
+          "preserved": false,
+          "presentation_noop": false,
+          "damage": false
+        }
+      },
+      "run3": {
+        "with": {
+          "summary": {
+            "preserved": {
+              "passed": 8,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 2,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 9,
+              "total": 10
+            },
+            "damage": {
+              "cases": 3,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": true,
+              "presentation_noop": true,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "n/a"
+            }
+          ]
+        },
+        "without": {
+          "summary": {
+            "preserved": {
+              "passed": 5,
+              "total": 10
+            },
+            "removed": {
+              "passed": 5,
+              "total": 5
+            },
+            "exact_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "presentation_noop": {
+              "passed": 0,
+              "total": 5
+            },
+            "meaning_preserved": {
+              "passed": 6,
+              "total": 10
+            },
+            "damage": {
+              "cases": 5,
+              "graded": true
+            }
+          },
+          "cases": [
+            {
+              "id": "V01",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V02",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V03",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V04",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V05",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V06",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": true,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V07",
+              "missing": false,
+              "preserved": false,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V08",
+              "missing": false,
+              "preserved": false,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            },
+            {
+              "id": "V09",
+              "missing": false,
+              "preserved": true,
+              "removed": true,
+              "exact_noop": null,
+              "presentation_noop": null,
+              "meaning_preserved": true,
+              "damage": false,
+              "removal_quality": "good"
+            },
+            {
+              "id": "V10",
+              "missing": false,
+              "preserved": true,
+              "removed": null,
+              "exact_noop": false,
+              "presentation_noop": false,
+              "meaning_preserved": false,
+              "damage": true,
+              "removal_quality": "none"
+            }
+          ]
+        },
+        "gates": {
+          "preserved": false,
+          "presentation_noop": false,
+          "damage": false
+        }
+      }
+    }
+  }
+}

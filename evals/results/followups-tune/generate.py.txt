@@ -1,0 +1,13 @@
+import sys,json,concurrent.futures
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()/'evals'))
+import measure,run
+out=Path('/tmp/less-tune-validation');out.mkdir(exist_ok=True)
+cases=[c for c in run.CASES if c['id'] in ['P15','P16','D21','D22']]
+def work(family,k,c):
+ name=f'{family}-{k}-{c["id"]}'
+ text,model=measure.call(family,run.task(c,True))
+ (out/(name+'.md')).write_text(text)
+ (out/(name+'.json')).write_text(json.dumps({'model':model,'case':c['id']}))
+with concurrent.futures.ThreadPoolExecutor(4) as pool:
+ list(pool.map(lambda args:work(*args),[(f,k,c) for f in measure.CONFIG['families'] for k in range(1,4) for c in cases]))
