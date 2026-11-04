@@ -199,7 +199,14 @@ const recorded = mode !== 'self' && existsSync(`${mode}/run.json`)
 if (recorded) {
   const root = new URL('../../', import.meta.url);
   const hash = name => existsSync(new URL(name, root)) && createHash('sha256').update(readFileSync(new URL(name, root))).digest('hex');
-  const changed = Object.entries(recorded).filter(([name, digest]) => hash(name) !== digest).map(([name]) => name);
+  // The checker's own inputs must all be recorded, and every recorded input and prompt must still match.
+  const own = ['evals/evals.json', 'evals/design/check.mjs', 'evals/design/fixtures/tailwind.css',
+    'evals/design/package.json', 'evals/design/package-lock.json'];
+  const prompts = JSON.parse(readFileSync(`${mode}/run.json`, 'utf8')).prompts || {};
+  const promptHash = name => existsSync(`${mode}/${name}`) && createHash('sha256').update(readFileSync(`${mode}/${name}`)).digest('hex');
+  const changed = [...own.filter(name => !(name in recorded)),
+    ...Object.entries(recorded).filter(([name, digest]) => hash(name) !== digest).map(([name]) => name),
+    ...Object.entries(prompts).filter(([name, digest]) => promptHash(name) !== digest).map(([name]) => name)];
   const refuse = process.env.LESS_CASES ? 'LESS_CASES would grade a recorded run with other cases'
     : !Object.keys(recorded).length ? `${mode}/run.json records no inputs`
     : changed.length ? `${changed.join(', ')} changed since ${mode}/run.json was written; grade at the commit that wrote it` : '';

@@ -138,8 +138,12 @@ def check_frozen(out):
     if not path.exists():
         print(f"warning: no run.json in {out}; results are marked unverified")
         return False
-    recorded = json.loads(load(path))["inputs"]
+    record = json.loads(load(path))
+    recorded = record["inputs"]
     changed = [name for name, digest in inputs().items() if recorded.get(name) != digest]
+    # The replies answer the prompt files beside them; an edited prompt is a different task.
+    changed += [name for name, digest in record.get("prompts", {}).items()
+                if not (out / name).exists() or sha256((out / name).read_bytes()) != digest]
     if changed:
         raise SystemExit(f"{', '.join(changed)} changed since {path} was written; "
                          "grade at the commit that wrote it")

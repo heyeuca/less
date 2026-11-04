@@ -111,6 +111,22 @@ writeFileSync(`${recordedRun}/run.json`, JSON.stringify(record));
 const [code, said] = status(plain);
 const staleRefused = code === 2 && /^evals\/evals\.json changed since/.test(said.trim());
 const overrideRefused = withOverride[0] === 2 && /LESS_CASES/.test(withOverride[1]);
+// A record missing one of the checker's inputs, or an edited prompt, is refused too.
+const fresh2 = mkdtempSync(tmpdir() + '/less-run-');
+execFileSync('python3', ['../run.py', 'prompts', fresh2], { stdio: 'pipe' });
+const full = JSON.parse(readFileSync(`${fresh2}/run.json`, 'utf8'));
+const statusOf = (dir, env) => { try { execFileSync('node', ['check.mjs', dir, 'NONE'], { env, stdio: 'pipe' }); return [0, '']; }
+  catch (e) { return [e.status, String(e.stdout)]; } };
+const { 'evals/evals.json': _, ...partialInputs } = full.inputs;
+writeFileSync(`${fresh2}/run.json`, JSON.stringify({ ...full, inputs: partialInputs }));
+const partial = statusOf(fresh2, plain);
+writeFileSync(`${fresh2}/run.json`, JSON.stringify(full));
+writeFileSync(`${fresh2}/D01.with.md`, readFileSync(`${fresh2}/D01.with.md`, 'utf8') + 'Also add a hero.\n');
+const edited = statusOf(fresh2, plain);
+const partialRefused = partial[0] === 2 && /^evals\/evals\.json changed/.test(partial[1].trim());
+const editedRefused = edited[0] === 2 && /D01\.with\.md/.test(edited[1]);
+console.log(`recorded-run: partial ${partialRefused ? 'PASS' : 'FAIL'}, edited prompt ${editedRefused ? 'PASS' : 'FAIL'}`);
+ok &&= partialRefused && editedRefused;
 console.log(`recorded-run: fresh ${fresh ? 'PASS' : 'FAIL'}, stale ${staleRefused ? 'PASS' : 'FAIL'}, override ${overrideRefused ? 'PASS' : 'FAIL'}`);
 ok &&= fresh && staleRefused && overrideRefused;
 console.log(ok ? 'self-test PASS'  : 'self-test FAIL');

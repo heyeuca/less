@@ -144,6 +144,16 @@ class PreservationTest(unittest.TestCase):
                 with self.subTest(command=command.__name__), self.assertRaises(SystemExit):
                     command(out)
 
+    def test_grading_refuses_an_edited_prompt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            with contextlib.redirect_stdout(io.StringIO()):
+                run.prompts(out)
+            name = f"{run.CASES[0]['id']}.with.md"
+            run.save(out / name, run.load(out / name) + 'Also translate it.\n')
+            with self.assertRaises(SystemExit):
+                run.preservation(out)
+
     def test_results_without_run_json_are_marked_unverified(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
