@@ -24,10 +24,11 @@ const STATEFUL = /:(hover|focus|focus-visible|focus-within|active|visited)\b/;
 // Smallest backdrop blur (px) that G7 accepts in place of an opaque fill.
 const MIN_BLUR = 4;
 // Rendered-text removals match whole words: "New" must not match "renew" or "news". A boundary applies
-// only at an end that is a letter or digit, so an emoji glued to a word ("🚀Fast") still matches.
+// only at an end that is a word character, so an emoji glued to a word ("🚀Fast") still matches.
 const wordMatch = (text, snippet) => {
-  const esc = snippet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), chars = [...snippet], word = /[\p{L}\p{N}]/u;
-  const pre = word.test(chars[0]) ? '(?<![\\p{L}\\p{N}])' : '', post = word.test(chars.at(-1)) ? '(?![\\p{L}\\p{N}])' : '';
+  // Letters, digits, and combining marks are word characters ("cafe\u0301" must not match "cafe\u0301teria").
+  const esc = snippet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), chars = [...snippet], word = /[\p{L}\p{N}\p{M}]/u;
+  const pre = word.test(chars[0]) ? '(?<![\\p{L}\\p{N}\\p{M}])' : '', post = word.test(chars.at(-1)) ? '(?![\\p{L}\\p{N}\\p{M}])' : '';
   return new RegExp(pre + esc + post, 'u').test(text);
 };
 const norm = s => s.replace(/\s+/g, ' ').replace(/\s*([{}:;,()>])\s*/g, '$1').trim();
