@@ -84,6 +84,24 @@ output, not whether the skill loaded: record loading separately with
 `python3 evals/run.py triggers OUT`, which writes `triggers.md` from
 `triggers.json` for each request run in a fresh session.
 
+## Repository cases
+
+`SKILL.md` asks the agent to inspect callers, exports, and tests before
+removing code, and to run existing checks afterward. Single snippets can't test
+that, so `evals/repos/` holds small projects. Each has a module, a caller or
+export, and tests. `case.json` gives the request, the code that must stay
+(used by a caller or test, or exported), the code that must go, and the test
+command. `after/` holds a reference solution.
+
+```sh
+python3 evals/repos.py prepare OUT   # OUT/<id>/ and OUT/<id>.task.md
+python3 evals/repos.py grade OUT     # kept, removed, tests_pass in repos.json
+```
+
+Run each case in a fresh agent session opened in `OUT/<id>/` with the skill
+installed, and send the request in `OUT/<id>.task.md`. Whether the agent ran
+the tests comes from its transcript; fill in `ran_tests` by hand.
+
 ## Changing the skill
 
 1. Encode a failure as a case before adding prose. Tag it with the rule it

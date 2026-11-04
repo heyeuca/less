@@ -1,0 +1,30 @@
+{
+  "id": "R03",
+  "rules": [
+    "S2",
+    "M10"
+  ],
+  "prompt": "Remove dead code from the dates package.",
+  "why": "parse_range has no caller or test in the repo but is exported in __all__ (public API); _debug_dump is private and unused.",
+  "must_keep": [
+    {
+      "file": "dates/parse.py",
+      "pattern": "def parse_range\\b"
+    },
+    {
+      "file": "dates/__init__.py",
+      "pattern": "\\\"parse_range\\\""
+    }
+  ],
+  "must_remove": [
+    {
+      "file": "dates/parse.py",
+      "pattern": "_debug_dump"
+    }
+  ],
+  "test": [
+    "-m",
+    "unittest",
+    "-q"
+  ]
+}

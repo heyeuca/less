@@ -1,0 +1,26 @@
+{
+  "id": "R02",
+  "rules": [
+    "S2",
+    "M10"
+  ],
+  "prompt": "Delete the unused helpers in slug.py.",
+  "why": "_reset_cache looks unused from slug.py alone but the tests call it (a test seam); _old_slugify has no caller.",
+  "must_keep": [
+    {
+      "file": "slug.py",
+      "pattern": "def _reset_cache\\b"
+    }
+  ],
+  "must_remove": [
+    {
+      "file": "slug.py",
+      "pattern": "_old_slugify"
+    }
+  ],
+  "test": [
+    "-m",
+    "unittest",
+    "-q"
+  ]
+}
