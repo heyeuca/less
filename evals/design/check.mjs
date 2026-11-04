@@ -23,10 +23,12 @@ const INTERACTIVE = /^(button|link|textbox|searchbox|checkbox|radio|combobox|sli
 const STATEFUL = /:(hover|focus|focus-visible|focus-within|active|visited)\b/;
 // Smallest backdrop blur (px) that G7 accepts in place of an opaque fill.
 const MIN_BLUR = 4;
-// Rendered-text removals match whole words: "New" must not match "renew" or "news".
+// Rendered-text removals match whole words: "New" must not match "renew" or "news". A boundary applies
+// only at an end that is a letter or digit, so an emoji glued to a word ("🚀Fast") still matches.
 const wordMatch = (text, snippet) => {
-  const esc = snippet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(?<![\\p{L}\\p{N}])${esc}(?![\\p{L}\\p{N}])`, 'u').test(text);
+  const esc = snippet.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), chars = [...snippet], word = /[\p{L}\p{N}]/u;
+  const pre = word.test(chars[0]) ? '(?<![\\p{L}\\p{N}])' : '', post = word.test(chars.at(-1)) ? '(?![\\p{L}\\p{N}])' : '';
+  return new RegExp(pre + esc + post, 'u').test(text);
 };
 const norm = s => s.replace(/\s+/g, ' ').replace(/\s*([{}:;,()>])\s*/g, '$1').trim();
 
@@ -99,7 +101,8 @@ async function measure(page, src, c) {
         rect = r;
         return t.top < r.bottom && t.bottom > r.top && t.left < r.right && t.right > r.left;
       });
-      const alpha = (s.backgroundColor.match(/rgba\([^)]*,\s*([\d.]+)\)/) || [, 1])[1] * s.opacity;
+      // rgba(r, g, b, a) or modern syntax with a slash alpha, e.g. color(display-p3 1 1 1 / 0.6).
+      const alpha = (s.backgroundColor.match(/(?:rgba\([^)]*,\s*|\/\s*)([\d.]+)\)/) || [, 1])[1] * s.opacity;
       const blur = Math.max(0, ...[...s.backdropFilter.matchAll(/blur\(([\d.]+)px\)/g)].map(m => +m[1]));
       out.push({ key: e.tagName + ' ' + e.innerText.replace(/\s+/g, ' ').trim().slice(0, 40), tag: e.tagName,
         top: rect.top, bottom: rect.bottom, width: rect.width, overlaps, legible: alpha >= 0.99 || blur >= minBlur });
