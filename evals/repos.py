@@ -12,7 +12,8 @@ sessions with the skill installed, not as pasted prompts.
 
   python3 evals/repos.py grade OUT
       Checks each OUT/<id>/: the used helper or option is kept, the unused
-      one is gone, and the tests still pass. Writes OUT/repos.json. Whether
+      one is gone, and the case's original tests (restored first) still pass;
+      a test run over 120 s counts as a failure. Writes OUT/repos.json. Whether
       the agent ran the tests is read from its transcript, not the files, so
       ran_tests is left null for the grader to fill in.
 """
@@ -47,12 +48,20 @@ def found(folder, check):
 def grade_one(case, folder):
     if not folder.is_dir():
         return {"missing": True, "kept": False, "removed": False, "tests_pass": False, "ran_tests": None}
-    tests = subprocess.run([sys.executable, *case["test"]], cwd=folder, capture_output=True, timeout=120)
+    # Grade against the case's own tests: an edited or deleted test can't make a pass.
+    before = ROOT / case["id"] / "before"
+    for test in before.rglob("test_*.py"):
+        shutil.copy2(test, folder / test.relative_to(before))
+    try:
+        passed = subprocess.run([sys.executable, *case["test"]], cwd=folder,
+                                capture_output=True, timeout=120).returncode == 0
+    except subprocess.TimeoutExpired:
+        passed = False
     return {
         "missing": False,
         "kept": all(found(folder, c) for c in case["must_keep"]),
         "removed": not any(found(folder, c) for c in case["must_remove"]),
-        "tests_pass": tests.returncode == 0,
+        "tests_pass": passed,
         "ran_tests": None,
     }
 

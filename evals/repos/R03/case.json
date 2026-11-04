@@ -14,6 +14,10 @@
     {
       "file": "dates/__init__.py",
       "pattern": "\\\"parse_range\\\""
+    },
+    {
+      "file": "dates/__init__.py",
+      "pattern": "from \\.parse import [^\\n]*\\bparse_range\\b"
     }
   ],
   "must_remove": [

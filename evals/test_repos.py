@@ -47,6 +47,41 @@ class RepoCaseTest(unittest.TestCase):
                 row = repos.grade_one(case, folder)
                 self.assertFalse(row["kept"] and row["tests_pass"])
 
+    def test_weakened_tests_are_restored_before_grading(self):
+        case = next(c for c in repos.CASES if c["id"] == "R01")
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / "R01"
+            shutil.copytree(repos.ROOT / "R01" / "before", folder)
+            # Keep the word compact but drop the behavior and the assertion on it.
+            (folder / "report.py").write_text(
+                "def render(rows, *, compact=False):\n"
+                "    return \"\\n\".join(f\"{n:<12}{t:>8}\" for n, t in rows)\n", encoding="utf-8")
+            (folder / "test_report.py").write_text(
+                "import unittest\n\n\nclass T(unittest.TestCase):\n"
+                "    def test_ok(self):\n        pass\n", encoding="utf-8")
+            self.assertFalse(repos.grade_one(case, folder)["tests_pass"])
+
+    def test_dropped_export_import_fails_the_keep(self):
+        case = next(c for c in repos.CASES if c["id"] == "R03")
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / "R03"
+            shutil.copytree(repos.ROOT / "R03" / "before", folder)
+            init = folder / "dates" / "__init__.py"
+            init.write_text(init.read_text(encoding="utf-8").replace(", parse_range", ""), encoding="utf-8")
+            self.assertFalse(repos.grade_one(case, folder)["kept"])
+
+    def test_timeout_is_a_failure_not_a_crash(self):
+        case = dict(repos.CASES[0], test=["-c", "import time; time.sleep(5)"])
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / case["id"]
+            shutil.copytree(repos.ROOT / case["id"] / "before", folder)
+            original = repos.subprocess.run
+            repos.subprocess.run = lambda *a, **k: original(*a, **{**k, "timeout": 0.5})
+            try:
+                self.assertFalse(repos.grade_one(case, folder)["tests_pass"])
+            finally:
+                repos.subprocess.run = original
+
     def test_prepare_then_grade_reports_every_case(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
