@@ -1,6 +1,7 @@
 // Self-tests. G5: the default focus ring passes (after); outline:none with no replacement fails (bad_after).
 // G7: a header already see-through before is a note, not FAIL (T02); a see-through after header fails even
-// when its text changed (T03 bad_after).
+// when its text changed (T03 bad_after). G7 needs a real blur: blur(8px) passes, blur(0) fails (T04). A hover
+// check on one page leaves nothing hovered when the next page is measured (T05).
 // --suffix: OUT mode reads <id>.with.out.md by default and <id>.without.out.md with --suffix without.
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
@@ -18,6 +19,8 @@ const json = s => JSON.parse(readFileSync(`${out}/design-${s}.json`, 'utf8')).T0
 let ok = /T01 after\s+PASS/.test(self) && /T01 bad_after FAIL.*G5✗/.test(self)
   && /T02 after\s+PASS.*note: pre-existing see-through/.test(self)
   && /T03 after\s+PASS/.test(self) && /T03 bad_after FAIL.*G7✗.*see-through HEADER Acme Docs/.test(self)
+  && /T04 after\s+PASS/.test(self) && /T04 bad_after FAIL.*G7✗/.test(self)
+  && /T05 before\s+PASS/.test(self) && /T05 after\s+PASS/.test(self) && /T06 bad_after FAIL.*G7✗/.test(self)
   && json('with').startsWith('PASS') && /^FAIL.*G5✗/.test(json('without'));
 // An unchanged candidate must fail a required removal; an accepted negative
 // fixture must make self mode exit nonzero.
@@ -38,7 +41,7 @@ const design = JSON.parse(readFileSync('../evals.json', 'utf8')).evals;
 const get = id => design.find(row => row.id === id);
 const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11'), d13 = get('D13');
 const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
-const d18 = get('D18');
+const d18 = get('D18'), d14 = get('D14');
 // Custom CSS keeps alternate effects real even when their utility classes are
 // absent from the precompiled Tailwind fixture.
 const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
@@ -69,7 +72,13 @@ const regressions = [
   [d11, 'useful-wrapper', d11.after.replace('<form', '<div><span aria-hidden="true"> / </span><form').replace('</form>', '</form></div>'), true],
   [d11, 'renamed-surfaces', d11.before.replace('✨ Profile', '').replaceAll('rounded-xl', 'rounded-lg'), false],
   [d13, 'renamed-blob', d13.after.replace('</style>', '.orb{position:absolute;width:320px;height:320px;filter:blur(60px);z-index:-1}</style>').replace('<main>', '<main><div class="orb"></div>'), false],
+  [d14, 'renamed-marker', d14.before.replaceAll('class="num"', 'class="n"'), false],
+  [d14, 'glued-marker', d14.before.replace('.num{', '.n{').replaceAll('class="num"', 'class="n"').replaceAll('</span> ', '</span>'), false],
   [d18, 'route-arrow-removed', d18.after.replace('Tokyo → Osaka', 'Tokyo to Osaka'), false, 'G2'],
+  [d13, 'unstuck-header', d13.after.replace('position:sticky;top:0;', ''), false],
+  [d03, 'glued-emoji', d03.after.replace('Fast sync', '🚀Fast sync'), false],
+  [d10, 'split-word', d10.after.replace('<h2>Orders</h2>', '<h2>Orders</h2><p>Ships from our <b>New</b>ark office.</p>'), true],
+  [d10, 'renew-copy', d10.after.replace('<h2>Orders</h2>', '<h2>Orders</h2><p>Renew your plan. See the news.</p>'), true],
   [d13, 'opaque-header', d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {
