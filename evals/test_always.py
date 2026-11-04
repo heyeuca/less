@@ -48,6 +48,18 @@ class AlwaysOnTest(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 always.prompts(out)
 
+    def test_reply_code_blocks_stay_inside_the_sheet_fence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            with contextlib.redirect_stdout(io.StringIO()):
+                always.prompts(out)
+                case = always.CASES[0]["id"]
+                (out / f"{case}.always.out.md").write_bytes("Run:\n\n```sh\ngit branch -d x\n```\n".encode())
+                always.sheet(out)
+            sheet = (out / "always.md").read_bytes().decode("utf-8")
+            self.assertIn("````\nRun:", sheet)
+            self.assertIn("```\n````\n", sheet)
+
 
 if __name__ == "__main__":
     unittest.main()

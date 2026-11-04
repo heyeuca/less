@@ -15,6 +15,7 @@ filler without leaving out what the reader needs.
       must_include and must_not_include item for a grader.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -51,7 +52,9 @@ def sheet(out):
         for arm in ARMS:
             path = out / f"{case['id']}.{arm}.out.md"
             reply = path.read_bytes().decode("utf-8") if path.exists() else "(missing)"
-            lines += [f"## {case['id']} {arm}", "", case["prompt"], "", "```", reply.rstrip("\n"), "```", ""]
+            # A fence longer than any backtick run in the reply, so its own code blocks can't close it.
+            fence = "`" * max(3, 1 + max((len(run) for run in re.findall(r"`+", reply)), default=0))
+            lines += [f"## {case['id']} {arm}", "", case["prompt"], "", fence, reply.rstrip("\n"), fence, ""]
             lines += [f"- [ ] includes: {item}" for item in case["must_include"]]
             lines += [f"- [ ] free of: {item}" for item in case["must_not_include"]]
             lines.append("")

@@ -7,9 +7,13 @@
       "must_include": [
         "the local delete command (git branch -d or -D)",
         "the remote delete command (git push origin --delete <branch>)",
-        "that -D deletes even unmerged work, or that the remote delete affects everyone using it"
+        "if the answer uses -D: that -D deletes the branch even with unmerged work (n/a if it only uses -d)",
+        "that deleting the remote branch affects everyone who uses it"
       ],
-      "must_not_include": ["preamble or restated question", "closing recap or offer of more help"]
+      "must_not_include": [
+        "preamble or restated question",
+        "closing recap or offer of more help"
+      ]
     },
     {
       "id": "A02",
@@ -18,7 +22,11 @@
         "rebasing rewrites commit history",
         "others who based work on the old commits must reconcile it, and pushing needs a force push"
       ],
-      "must_not_include": ["preamble or restated question", "closing recap or offer of more help", "hedges that change nothing"]
+      "must_not_include": [
+        "preamble or restated question",
+        "closing recap or offer of more help",
+        "hedges that change nothing"
+      ]
     },
     {
       "id": "A03",
@@ -27,7 +35,10 @@
         "opens the file and parses it with json",
         "errors from open and json propagate (no bare except that hides them)"
       ],
-      "must_not_include": ["unrequested options such as verbose, encoding, or default parameters", "a wrapper class or factory"]
+      "must_not_include": [
+        "unrequested options such as a verbose flag, a default path, or a fallback value (passing encoding=\"utf-8\" to open is fine)",
+        "a wrapper class or factory"
+      ]
     },
     {
       "id": "A04",
@@ -36,7 +47,10 @@
         "ALTER TABLE ... RENAME COLUMN ... TO ...",
         "views, queries, or application code that use the old name must be updated"
       ],
-      "must_not_include": ["preamble or restated question", "closing recap or offer of more help"]
+      "must_not_include": [
+        "preamble or restated question",
+        "closing recap or offer of more help"
+      ]
     },
     {
       "id": "A05",
@@ -46,7 +60,10 @@
         "type=email and type=password",
         "a submit button"
       ],
-      "must_not_include": ["decorative gradients, badges, or icons", "unrequested sections such as testimonials or a second CTA"]
+      "must_not_include": [
+        "decorative gradients, badges, or icons",
+        "unrequested sections such as testimonials or a second CTA"
+      ]
     },
     {
       "id": "A06",
@@ -56,7 +73,10 @@
         "the reason behind it (for example concurrency, operations, or deployment)",
         "when the other choice would be better"
       ],
-      "must_not_include": ["preamble or restated question", "a closing offer of more help"]
+      "must_not_include": [
+        "preamble or restated question",
+        "a closing offer of more help"
+      ]
     }
   ]
 }
