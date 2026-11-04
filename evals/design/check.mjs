@@ -135,7 +135,9 @@ async function measure(page, src, c) {
       [null, '::before', '::after'].some(pseudo =>
         /(linear|radial|conic)-gradient/i.test(getComputedStyle(el, pseudo).backgroundImage)))));
   }
-  for (const { selector, properties, hover } of c.must_have_styles || []) {
+  for (const { selector, properties, hover, reduced_motion } of c.must_have_styles || []) {
+    // reduced_motion: check the styles a visitor who asked for reduced motion gets.
+    if (reduced_motion) await page.emulateMedia({ reducedMotion: 'reduce' });
     const matches = page.locator(selector);
     removed.push(await matches.count() > 0);
     for (let i = 0; i < await matches.count(); i++) {
@@ -144,6 +146,7 @@ async function measure(page, src, c) {
       removed.push(await el.evaluate((el, properties) => Object.entries(properties).every(
         ([key, expected]) => getComputedStyle(el).getPropertyValue(key) === expected), properties));
     }
+    if (reduced_motion) await page.emulateMedia({ reducedMotion: 'no-preference' });
   }
   if (c.must_remove_nested_surfaces) {
     removed.push(await page.evaluate(() => {

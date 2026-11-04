@@ -2035,6 +2035,19 @@
           "properties": {
             "animation-name": "none"
           }
+        },
+        {
+          "selector": ".spinner",
+          "properties": {
+            "animation-name": "spin"
+          }
+        },
+        {
+          "selector": ".spinner",
+          "properties": {
+            "animation-name": "none"
+          },
+          "reduced_motion": true
         }
       ]
     }
