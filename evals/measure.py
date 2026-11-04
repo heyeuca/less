@@ -2,6 +2,7 @@
 """Run the held-out protocol locally with installed agent CLIs (no API keys).
 
   python3 evals/measure.py ROOT [--runs 3] [--families claude,codex] [--jobs 4] [--seed less]
+                                 [--generate-only]
 
 For every family and run it fills ROOT/<family>/run<k>/:
   1. protocol.py prompts (skipped when freeze.json already exists),
@@ -172,7 +173,7 @@ def grade(out, family, case_id, retries=1):
     return False
 
 
-def measure(root, families, runs, jobs, seed):
+def measure(root, families, runs, jobs, seed, generate_only=False):
     dirs = [(family, root / family / f"run{k}") for family in families for k in range(1, runs + 1)]
     for family, out in dirs:
         if not (out / "freeze.json").exists():
@@ -187,6 +188,9 @@ def measure(root, families, runs, jobs, seed):
         generated = all(f.result() for f in work)
     if not generated:
         raise SystemExit("some replies failed twice; see attempts in freeze.json and rerun to resume")
+    if generate_only:
+        print(f"Generated replies in {root}; rerun without --generate-only to blind, grade, and report")
+        return None
     for family, out in dirs:
         if not (out / "key.json").exists():
             protocol.blind(out, f"{seed}:{family}:{out.name}")
@@ -205,5 +209,7 @@ if __name__ == "__main__":
     parser.add_argument("--families", default=",".join(CONFIG["families"]))
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--seed", default="less")
+    parser.add_argument("--generate-only", action="store_true",
+                        help="stop after the replies, before blinding and grading")
     args = parser.parse_args()
-    measure(args.root, args.families.split(","), args.runs, args.jobs, args.seed)
+    measure(args.root, args.families.split(","), args.runs, args.jobs, args.seed, args.generate_only)
