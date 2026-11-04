@@ -120,8 +120,12 @@ async function measure(page, src, c) {
     removed.push(!norm(src).includes(norm(snippet)));
   // Browser text decodes entities, so markup spelling cannot hide visible copy.
   const text = norm(await page.locator('body').innerText()).toLowerCase();
+  // Also each visible element on its own: CSS spacing doesn't reach innerText, so a styled "01" next to
+  // "Send" would otherwise read as the single word "01send".
+  const pieces = (await page.locator('body *:visible').evaluateAll(els => els.map(e => e.innerText || '')))
+    .map(t => norm(t).toLowerCase());
   for (const snippet of c.must_remove_rendered_text || [])
-    removed.push(!wordMatch(text, norm(snippet).toLowerCase()));
+    removed.push(![text, ...pieces].some(t => wordMatch(t, norm(snippet).toLowerCase())));
   if (c.must_remove_computed_background) {
     removed.push(await page.evaluate(() => ![...document.querySelectorAll('*')].some(el =>
       [null, '::before', '::after'].some(pseudo =>
