@@ -60,6 +60,8 @@ class RepoCaseTest(unittest.TestCase):
                 "import unittest\n\n\nclass T(unittest.TestCase):\n"
                 "    def test_ok(self):\n        pass\n", encoding="utf-8")
             self.assertFalse(repos.grade_one(case, folder)["tests_pass"])
+            # The agent's edits stay visible after grading.
+            self.assertIn("test_ok", (folder / "test_report.py").read_text(encoding="utf-8"))
 
     def test_dropped_export_import_fails_the_keep(self):
         case = next(c for c in repos.CASES if c["id"] == "R03")

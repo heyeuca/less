@@ -22,6 +22,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent / "repos"
@@ -48,15 +49,19 @@ def found(folder, check):
 def grade_one(case, folder):
     if not folder.is_dir():
         return {"missing": True, "kept": False, "removed": False, "tests_pass": False, "ran_tests": None}
-    # Grade against the case's own tests: an edited or deleted test can't make a pass.
+    # Grade against the case's own tests, in a copy: an edited or deleted test can't make a
+    # pass, and the agent's workspace (test edits included) stays as it left it.
     before = ROOT / case["id"] / "before"
-    for test in before.rglob("test_*.py"):
-        shutil.copy2(test, folder / test.relative_to(before))
-    try:
-        passed = subprocess.run([sys.executable, *case["test"]], cwd=folder,
-                                capture_output=True, timeout=120).returncode == 0
-    except subprocess.TimeoutExpired:
-        passed = False
+    with tempfile.TemporaryDirectory() as tmp:
+        copy = Path(tmp) / "repo"
+        shutil.copytree(folder, copy)
+        for test in before.rglob("test_*.py"):
+            shutil.copy2(test, copy / test.relative_to(before))
+        try:
+            passed = subprocess.run([sys.executable, *case["test"]], cwd=copy,
+                                    capture_output=True, timeout=120).returncode == 0
+        except subprocess.TimeoutExpired:
+            passed = False
     return {
         "missing": False,
         "kept": all(found(folder, c) for c in case["must_keep"]),
