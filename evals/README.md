@@ -102,6 +102,19 @@ Run each case in a fresh agent session opened in `OUT/<id>/` with the skill
 installed, and send the request in `OUT/<id>.task.md`. Whether the agent ran
 the tests comes from its transcript; fill in `ran_tests` by hand.
 
+## Always-on cases
+
+[`always-on/AGENTS.md`](../always-on/AGENTS.md) is a separate rule set that
+shapes new output; it isn't the editing skill. Its cases in `always.json` are
+requests for new text, code, or UI. Each lists what the reply must include and
+what it must not include. A missing `must_include` item fails the case,
+whatever filler it avoided.
+
+```sh
+python3 evals/always.py prompts OUT   # OUT/<id>.always.md and OUT/<id>.plain.md
+python3 evals/always.py sheet OUT     # OUT/always.md checklist per case and arm
+```
+
 ## Changing the skill
 
 1. Encode a failure as a case before adding prose. Tag it with the rule it

@@ -59,11 +59,15 @@ Manual: from a clone of this repo, copy `skills/less` into your agent's skills f
 mkdir -p ~/.claude/skills && cp -r skills/less ~/.claude/skills/
 ```
 
-less runs when you ask for it (`/less`, or "cut", "trim", "remove", "strip", "simplify", "tighten", "shorten", "declutter", "too long", "too busy", "looks cluttered", "clean up AI-written output"), on writing, code, and UI code. To keep it always on, add this line to your `AGENTS.md`:
+less runs when you ask for it (`/less`, or "cut", "trim", "remove", "strip", "simplify", "tighten", "shorten", "declutter", "too long", "too busy", "looks cluttered", "clean up AI-written output"), on writing, code, and UI code. It doesn't run while an agent writes a new draft
+or new code.
 
-```md
-Apply the less skill to everything you write: keep only what has a reason to exist.
-```
+To shape everything an agent writes, paste
+[`always-on/AGENTS.md`](always-on/AGENTS.md) into your `AGENTS.md`. It is a
+separate, shorter rule set for new output, not the editing skill. Its main risk
+is leaving out explanation the reader needed, so its cases in
+[`evals/always.json`](evals/always.json) grade that first. It hasn't been
+measured yet. See [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## Results
 
