@@ -63,10 +63,14 @@ class PreservationTest(unittest.TestCase):
             self.assertFalse(rows['P09']['removed'])
 
     def test_annotations_never_enter_generation_prompts(self):
-        case = dict(run.CASES[-1], protected_spans=['SECRET_GOLD_MARKER'])
-        for prompt in (run.task(case, True), run.task(case, False), json.dumps(run.organic(case))):
-            self.assertNotIn('SECRET_GOLD_MARKER', prompt)
-        self.assertTrue(run.task(case, True).endswith(run.task(case, False)))
+        cases = {case['id']: case for case in run.CASES}
+        # P14 is user-authored; E01 is the agent's own answer, a separate organic path.
+        for case_id in ('P14', 'E01'):
+            case = dict(cases[case_id], protected_spans=['SECRET_GOLD_MARKER'])
+            with self.subTest(case=case_id):
+                for prompt in (run.task(case, True), run.task(case, False), json.dumps(run.organic(case))):
+                    self.assertNotIn('SECRET_GOLD_MARKER', prompt)
+                self.assertTrue(run.task(case, True).endswith(run.task(case, False)))
 
     def test_organic_prompts_carry_no_evaluation_framing(self):
         framing = re.compile(r'\b(evals?|tests?|judge|rubric|score|benchmark|candidate|skill)\b', re.I)
