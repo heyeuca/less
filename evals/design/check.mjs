@@ -37,6 +37,9 @@ async function measure(page, src, c) {
     if (!STATEFUL.test(s)) n = await page.evaluate(s => { try { return document.querySelectorAll(s).length; } catch { return null; } }, s);
     sels.push(n === null ? norm(src).includes(norm(s)) : n >= 1);
   }
+  // Visible text that must survive, such as an arrow that is data rather than chrome.
+  const shown = norm(await page.locator('body').innerText()).toLowerCase();
+  for (const s of c.must_keep_rendered_text || []) sels.push(shown.includes(norm(s).toLowerCase()));
   const axe = (await new AxeBuilder({ page }).withTags(TAGS).analyze()).violations
     .flatMap(v => v.nodes.map(n => v.id + ' ' + n.target.join(' ')));
   const nodes = (await page.locator('body').ariaSnapshot()).split('\n')
@@ -181,7 +184,7 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8']) res[k] = (res[k] ?? true) && g[k];
       why.push(...g.why.map(w => `${vp.width}: ${w}`));
       if (!a.roles.every(Boolean)) why.push(`${vp.width}: roles ${JSON.stringify(c.must_keep_roles.filter((_, i) => !a.roles[i]))}`);
-      if (!a.sels.every(Boolean)) why.push(`${vp.width}: selectors ${JSON.stringify(c.must_keep_selectors.filter((_, i) => !a.sels[i]))}`);
+      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || [])].filter((_, i) => !a.sels[i]))}`);
       info.push(`${vp.width}px elements ${b.info.elements}->${a.info.elements} decls ${b.info.decls}->${a.info.decls} axe(before) ${b.axe.length}`);
       await ctx.close();
     }

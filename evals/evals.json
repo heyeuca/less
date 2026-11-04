@@ -316,6 +316,23 @@
       "why_bad": "drops validation at a user-input boundary (error message and behavior change) and the \"why\" comment."
     },
     {
+      "id": "E19",
+      "category": "code · over-cut · unknown purpose",
+      "rules": [
+        "M11",
+        "M10"
+      ],
+      "prompt": "Remove anything unnecessary from this function.",
+      "before": "def notify_all(users):\n    for user in users:\n        send_email(user)\n        time.sleep(0.2)\n",
+      "after": "unchanged",
+      "bad_after": "def notify_all(users):\n    for user in users:\n        send_email(user)\n",
+      "why_bad": "The pause may be a rate limit or a provider requirement; nothing visible shows it is unneeded, so removing it is a guess (M11).",
+      "must_keep": [
+        "time.sleep(0.2) between sends",
+        "or: unchanged with a note asking what the pause is for"
+      ]
+    },
+    {
       "id": "N01",
       "category": "ko prose · preamble/recap",
       "rules": [
@@ -1269,6 +1286,279 @@
           }
         }
       ]
+    },
+    {
+      "id": "D14",
+      "category": "design · fake sequence markers + keep list semantics",
+      "rules": [
+        "C5",
+        "K2"
+      ],
+      "format": "html",
+      "prompt": "Clean up this features block.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.num{font-weight:700;color:#6b7280;margin-right:.5rem}</style></head><body><main><h2>Why Ledgerly</h2><ul><li><span class=\"num\">01</span>Send invoices</li><li><span class=\"num\">02</span>Track payments</li><li><span class=\"num\">03</span>Export reports</li></ul></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Why Ledgerly</h2><ul><li>Send invoices</li><li>Track payments</li><li>Export reports</li></ul></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Why Ledgerly</h2><div><div>Send invoices</div><div>Track payments</div><div>Export reports</div></div></main></body></html>",
+      "why_bad": "Drops the markers but flattens the list into divs, so screen readers lose the list and its item count (K2, WCAG 1.3.1).",
+      "must_keep": [
+        "heading 'Why Ledgerly'",
+        "the three features as list items"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Why Ledgerly"
+        ],
+        [
+          "list",
+          ""
+        ],
+        [
+          "listitem",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "ul li"
+      ],
+      "must_remove_hint": [
+        "01/02/03 markers: the features have no order"
+      ],
+      "must_remove_selectors": [
+        ".num"
+      ],
+      "must_remove_rendered_text": [
+        "01",
+        "02",
+        "03"
+      ]
+    },
+    {
+      "id": "D15",
+      "category": "design · over-cut · real sequence",
+      "rules": [
+        "C5",
+        "K2"
+      ],
+      "format": "html",
+      "prompt": "Remove any clutter from this setup page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Setup</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Set up sync</h2><ol><li>Install the CLI</li><li>Run ledgerly login</li><li>Run ledgerly sync</li></ol></main></body></html>",
+      "after": "unchanged",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Setup</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Set up sync</h2><ul><li>Install the CLI</li><li>Run ledgerly login</li><li>Run ledgerly sync</li></ul></main></body></html>",
+      "why_bad": "The steps must run in order; turning the ordered list into bullets drops the numbering readers follow (C5 is for fake sequences only).",
+      "must_keep": [
+        "ordered list with the three steps in order"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Set up sync"
+        ],
+        [
+          "list",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "ol li"
+      ],
+      "must_remove_hint": []
+    },
+    {
+      "id": "D16",
+      "category": "design · duplicate labels",
+      "rules": [
+        "C10",
+        "C4"
+      ],
+      "format": "html",
+      "prompt": "This pricing card feels busy. Simplify it.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:#4b5563;margin:0}</style></head><body><main><section><p class=\"eyebrow\">Pricing</p><h2>Pricing</h2><p>$12 per user per month.</p><button title=\"Download price list\">Download price list</button></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><section><h2>Pricing</h2><p>$12 per user per month.</p><button>Download price list</button></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><section><h2>Pricing</h2><p>$12 per user per month.</p></section></main></body></html>",
+      "why_bad": "Removes the button itself, not just its duplicate tooltip.",
+      "must_keep": [
+        "heading 'Pricing'",
+        "price text",
+        "button 'Download price list'"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Pricing"
+        ],
+        [
+          "button",
+          "Download price list"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "eyebrow repeating the heading",
+        "title repeating the button text"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow",
+        "[title]"
+      ]
+    },
+    {
+      "id": "D17",
+      "category": "design · over-cut · icon button name",
+      "rules": [
+        "C10",
+        "K1"
+      ],
+      "format": "html",
+      "prompt": "Remove anything redundant from this invoice row.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoice</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font-size:20px;min-width:44px;min-height:44px}</style></head><body><main><p>Invoice #1042 · $240</p><button aria-label=\"Delete invoice 1042\" title=\"Delete invoice 1042\">🗑</button></main></body></html>",
+      "after": "unchanged",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoice</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font-size:20px;min-width:44px;min-height:44px}</style></head><body><main><p>Invoice #1042 · $240</p><button>🗑</button></main></body></html>",
+      "why_bad": "The icon has no visible text, so the label and tooltip are the button's only name; removing them leaves an unlabeled delete button (K1, WCAG 4.1.2).",
+      "must_keep": [
+        "button named 'Delete invoice 1042'",
+        "invoice number and amount ('#1042 · $240' is data, not chrome)"
+      ],
+      "must_keep_roles": [
+        [
+          "button",
+          "Delete invoice 1042"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": []
+    },
+    {
+      "id": "D18",
+      "category": "design · appended arrows + route arrow + link cue",
+      "rules": [
+        "C11",
+        "K7"
+      ],
+      "format": "html",
+      "prompt": "Clean up this trips page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Trips</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}a{color:#1d4ed8;text-decoration:underline}p{color:#111}</style></head><body><main><h2>Trips</h2><p>Your trip: Tokyo → Osaka, Friday 9:40.</p><p>Need to change it? See <a href=\"/policy\">the change policy</a> before you book.</p><ul><li><a href=\"/trips/1\">Tokyo trip details →</a></li><li><a href=\"/trips/2\">Kyoto trip details →</a></li></ul></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Trips</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}a{color:#1d4ed8;text-decoration:underline}p{color:#111}</style></head><body><main><h2>Trips</h2><p>Your trip: Tokyo → Osaka, Friday 9:40.</p><p>Need to change it? See <a href=\"/policy\">the change policy</a> before you book.</p><ul><li><a href=\"/trips/1\">Tokyo trip details</a></li><li><a href=\"/trips/2\">Kyoto trip details</a></li></ul></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Trips</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}a{color:#1d4ed8;text-decoration:none}p{color:#111}</style></head><body><main><h2>Trips</h2><p>Your trip: Tokyo → Osaka, Friday 9:40.</p><p>Need to change it? See <a href=\"/policy\">the change policy</a> before you book.</p><ul><li><a href=\"/trips/1\">Tokyo trip details</a></li><li><a href=\"/trips/2\">Kyoto trip details</a></li></ul></main></body></html>",
+      "why_bad": "Removes the arrows but also the underline, so the inline link differs from body text by color alone (K7, WCAG 1.4.1).",
+      "must_keep": [
+        "'Tokyo → Osaka' (the arrow is the route)",
+        "inline link to the change policy, visibly a link",
+        "both trip links"
+      ],
+      "must_keep_roles": [
+        [
+          "link",
+          "the change policy"
+        ]
+      ],
+      "must_keep_selectors": [
+        "a[href='/trips/1']",
+        "a[href='/trips/2']"
+      ],
+      "must_remove_hint": [
+        "arrows appended to the 'Tokyo trip details →' and 'Kyoto trip details →' links"
+      ],
+      "must_remove_text": [
+        "details →"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "p a",
+          "properties": {
+            "text-decoration-line": "underline"
+          }
+        }
+      ],
+      "must_keep_rendered_text": [
+        "Tokyo → Osaka"
+      ]
+    },
+    {
+      "id": "D19",
+      "category": "design · overridden CSS + responsive rule",
+      "rules": [
+        "C12",
+        "K9"
+      ],
+      "format": "html",
+      "prompt": "Tidy up the CSS on this plans page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.row{display:flex;gap:16px}.row>div{flex:0 0 200px}.price{font-weight:400}.price{font-weight:700}@media (max-width:600px){.row{flex-direction:column}}</style></head><body><main><h2>Plans</h2><div class=\"row\"><div><h3>Solo</h3><p class=\"price\">$8</p></div><div><h3>Team</h3><p class=\"price\">$12</p></div><div><h3>Business</h3><p class=\"price\">$20</p></div></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.row{display:flex;gap:16px}.row>div{flex:0 0 200px}.price{font-weight:700}@media (max-width:600px){.row{flex-direction:column}}</style></head><body><main><h2>Plans</h2><div class=\"row\"><div><h3>Solo</h3><p class=\"price\">$8</p></div><div><h3>Team</h3><p class=\"price\">$12</p></div><div><h3>Business</h3><p class=\"price\">$20</p></div></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.row{display:flex;gap:16px}.row>div{flex:0 0 200px}.price{font-weight:700}</style></head><body><main><h2>Plans</h2><div class=\"row\"><div><h3>Solo</h3><p class=\"price\">$8</p></div><div><h3>Team</h3><p class=\"price\">$12</p></div><div><h3>Business</h3><p class=\"price\">$20</p></div></div></main></body></html>",
+      "why_bad": "Treats the media query as a repeat of .row and deletes it; at 320px the three 200px plans overflow sideways (K9, WCAG 1.4.10).",
+      "must_keep": [
+        "the max-width:600px media query that stacks the plans",
+        "bold prices"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Plans"
+        ],
+        [
+          "heading",
+          "Solo"
+        ],
+        [
+          "heading",
+          "Team"
+        ],
+        [
+          "heading",
+          "Business"
+        ]
+      ],
+      "must_keep_selectors": [
+        "@media (max-width:600px)"
+      ],
+      "must_remove_hint": [
+        ".price{font-weight:400}, overridden by the next rule"
+      ],
+      "must_remove_text": [
+        "font-weight:400"
+      ],
+      "must_have_styles": [
+        {
+          "selector": ".price",
+          "properties": {
+            "font-weight": "700"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D20",
+      "category": "design · gradient wash under white text",
+      "rules": [
+        "C1",
+        "K3"
+      ],
+      "format": "html",
+      "prompt": "Remove the decorative gradient from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.hero{padding:2rem;color:#eef2ff;background:linear-gradient(135deg,#1e3a8a,#312e81)}.hero a{color:#eef2ff}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p><a href=\"/signup\">Start free</a></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.hero{padding:2rem;color:#eef2ff;background:#1e3a8a}.hero a{color:#eef2ff}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p><a href=\"/signup\">Start free</a></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.hero{padding:2rem;color:#eef2ff}.hero a{color:#eef2ff}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p><a href=\"/signup\">Start free</a></section></main></body></html>",
+      "why_bad": "Deletes the background along with the gradient, leaving white text on a white page (K3, WCAG 1.4.3).",
+      "must_keep": [
+        "hero text readable: replace the gradient with a solid fill (for example its first stop) or dark text",
+        "heading, copy, and signup link"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "link",
+          "Start free"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "linear-gradient wash"
+      ],
+      "must_remove_computed_background": true
     },
     {
       "id": "P01",
