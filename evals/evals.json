@@ -1,6 +1,6 @@
 {
   "skill_name": "less",
-  "invocation": "Every case is invoked with `/less` on `before`; a `prompt` is the user's original request or cue, given as context. `after` is the reference; grade against `must_keep`, not exact match.",
+  "invocation": "Both arms receive the same removal request and original prompt; only skill context differs. Grade meaning against must_keep. protected_spans must remain verbatim; must_remove_spans must disappear. exact_noop requires byte-for-byte equality with before. after is otherwise illustrative.",
   "evals": [
     {
       "id": "E01",
@@ -200,9 +200,9 @@
     {
       "id": "E17",
       "category": "code · unrequested options + impossible defense",
-      "prompt": "Simplify this. It only needs to read config.json and return the parsed data.",
+      "prompt": "Simplify this. Remove the path, encoding, and verbose options; it only needs to read config.json as UTF-8 and return the parsed data.",
       "before": "def load_config(path=\"config.json\", encoding=\"utf-8\", verbose=False):\n    if verbose:\n        print(\"loading\", path)\n    with open(path, encoding=encoding) as f:\n        text = f.read()\n    if text is None:  # f.read() never returns None\n        return {}\n    return json.loads(text)\n",
-      "after": "def load_config(path=\"config.json\"):\n    with open(path, encoding=\"utf-8\") as f:\n        return json.load(f)\n",
+      "after": "def load_config():\n    with open(\"config.json\", encoding=\"utf-8\") as f:\n        text = f.read()\n    return json.loads(text)\n",
       "must_keep": [
         "reads config.json by default (dropping the `path` parameter is fine: the user said it only reads config.json; behavior and errors must match `before`)",
         "the file read and parse",
@@ -278,7 +278,7 @@
       "category": "ja prose · over-cut · keigo",
       "prompt": "もっと短くして",
       "before": "山田様、いつも大変お世話になっております。誠に恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。何卒よろしくお願い申し上げます。",
-      "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までに請求書をお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。よろしくお願い申し上げます。",
       "bad_after": "山田さん、11月10日までに請求書を送ってください。",
       "why_bad": "drops 様, the opening greeting, and keigo; to a client this reads as rude, which changes meaning.",
       "must_keep": [
@@ -471,7 +471,7 @@
       "category": "code · positive · AI bloat",
       "prompt": "this AI-written code is bloated, cut it down",
       "before": "from typing import List\n\nclass SumStrategy:\n    def apply(self, values: List[int]) -> int:\n        # sum the values\n        total = 0\n        for v in values:\n            total += v\n        return total\n\ndef total(values: List[int]) -> int:\n    return SumStrategy().apply(values)\n",
-      "after": "def total(values: list[int]) -> int:\n    return sum(values)\n",
+      "after": "from typing import List\n\ndef total(values: List[int]) -> int:\n    total = 0\n    for v in values:\n        total += v\n    return total\n",
       "must_keep": [
         "total(values) name and signature",
         "same results incl. empty list -> 0"
@@ -504,7 +504,11 @@
       ],
       "must_remove_hint": [
         "nested .card"
-      ]
+      ],
+      "must_remove_selectors": [
+        ".card .card"
+      ],
+      "must_remove_nested_surfaces": true
     },
     {
       "id": "D02",
@@ -535,7 +539,14 @@
       "must_remove_hint": [
         "linear-gradient",
         ".orb"
-      ]
+      ],
+      "must_remove_selectors": [
+        ".orb"
+      ],
+      "must_remove_text": [
+        "linear-gradient"
+      ],
+      "must_remove_computed_background": true
     },
     {
       "id": "D03",
@@ -564,6 +575,14 @@
       "must_remove_hint": [
         "eyebrow span",
         "emoji"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow"
+      ],
+      "must_remove_rendered_text": [
+        "🚀",
+        "🔒",
+        "✨"
       ]
     },
     {
@@ -599,6 +618,13 @@
       "must_remove_hint": [
         "Trusted by section",
         "testimonial"
+      ],
+      "must_remove_rendered_text": [
+        "Trusted by",
+        "\"Best tool ever!\" — Happy Customer"
+      ],
+      "must_remove_selectors": [
+        "img[alt=\"Logo\"]"
       ]
     },
     {
@@ -632,6 +658,9 @@
       ],
       "must_remove_hint": [
         "slogan paragraph"
+      ],
+      "must_remove_rendered_text": [
+        "Empower your team to connect, collaborate, and create. We're here for you, every step of the way."
       ]
     },
     {
@@ -668,6 +697,19 @@
         "@keyframes up",
         "transition:all",
         ".card:hover"
+      ],
+      "must_remove_text": [
+        "@keyframes up",
+        "transition:all",
+        ".card:hover"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "body *",
+          "properties": {
+            "animation-name": "none"
+          }
+        }
       ]
     },
     {
@@ -700,6 +742,18 @@
       "must_remove_hint": [
         ".panel box-shadow",
         ".panel border"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "form",
+          "properties": {
+            "border-top-width": "0px",
+            "border-right-width": "0px",
+            "border-bottom-width": "0px",
+            "border-left-width": "0px",
+            "box-shadow": "none"
+          }
+        }
       ]
     },
     {
@@ -764,6 +818,12 @@
       ],
       "must_remove_hint": [
         "eyebrow span"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow"
+      ],
+      "must_remove_rendered_text": [
+        "Heads up"
       ]
     },
     {
@@ -796,6 +856,12 @@
       ],
       "must_remove_hint": [
         "'New' badge"
+      ],
+      "must_remove_selectors": [
+        ".badge"
+      ],
+      "must_remove_rendered_text": [
+        "New"
       ]
     },
     {
@@ -836,7 +902,11 @@
       "must_remove_hint": [
         "nested card div",
         "eyebrow span"
-      ]
+      ],
+      "must_remove_rendered_text": [
+        "✨ Profile"
+      ],
+      "must_remove_nested_surfaces": true
     },
     {
       "id": "D12",
@@ -874,6 +944,40 @@
         "transition-all",
         "hover:scale-105",
         "bg-gradient-to-r"
+      ],
+      "must_remove_text": [
+        "shadow-lg",
+        "transition-all",
+        "hover:scale-105",
+        "bg-gradient-to-r"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "nav",
+          "properties": {
+            "background-image": "none"
+          }
+        },
+        {
+          "selector": "button",
+          "properties": {
+            "box-shadow": "none",
+            "transition-duration": "0s",
+            "transform": "none",
+            "scale": "none"
+          },
+          "hover": false
+        },
+        {
+          "selector": "button",
+          "properties": {
+            "box-shadow": "none",
+            "transition-duration": "0s",
+            "transform": "none",
+            "scale": "none"
+          },
+          "hover": true
+        }
       ]
     },
     {
@@ -921,7 +1025,223 @@
         ".pill",
         "box-shadow:0 10px 30px",
         "emoji in headings"
+      ],
+      "must_remove_rendered_text": [
+        "✨",
+        "🚀",
+        "New"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "main *",
+          "properties": {
+            "filter": "none",
+            "box-shadow": "none"
+          }
+        }
       ]
+    },
+    {
+      "id": "P01",
+      "category": "paired preservation · certainty",
+      "pair_id": "certainty",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "분명히 말하자면, 배포는 금요일입니다.",
+      "after": "배포는 금요일입니다.",
+      "must_keep": [
+        "배포는 금요일입니다."
+      ],
+      "protected_spans": [
+        "배포는 금요일입니다."
+      ],
+      "must_remove_spans": [
+        "분명히 말하자면,"
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P02",
+      "category": "paired preservation · certainty",
+      "pair_id": "certainty",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "배포는 아마 금요일일 것입니다.",
+      "after": "배포는 아마 금요일일 것입니다.",
+      "must_keep": [
+        "배포는 아마 금요일일 것입니다."
+      ],
+      "protected_spans": [
+        "배포는 아마 금요일일 것입니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "배포는 금요일입니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P03",
+      "category": "paired preservation · scope",
+      "pair_id": "scope",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "참고로 말씀드리면, 일부 환경에서 약 50%의 요청이 실패할 수 있습니다.",
+      "after": "일부 환경에서 약 50%의 요청이 실패할 수 있습니다.",
+      "must_keep": [
+        "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
+      ],
+      "protected_spans": [
+        "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
+      ],
+      "must_remove_spans": [
+        "참고로 말씀드리면,"
+      ],
+      "exact_noop": false,
+      "bad_after": "50%의 요청이 실패합니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P04",
+      "category": "paired preservation · scope",
+      "pair_id": "scope",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "이 결과는 시험 환경에만 해당합니다. 약 50%의 요청이 실패했습니다. 재시도는 최대 3회 허용됩니다.",
+      "after": "이 결과는 시험 환경에만 해당합니다. 약 50%의 요청이 실패했습니다. 재시도는 최대 3회 허용됩니다.",
+      "must_keep": [
+        "이 결과는 시험 환경에만 해당합니다.",
+        "약 50%의 요청이 실패했습니다.",
+        "재시도는 최대 3회 허용됩니다."
+      ],
+      "protected_spans": [
+        "이 결과는 시험 환경에만 해당합니다.",
+        "약 50%의 요청이 실패했습니다.",
+        "재시도는 최대 3회 허용됩니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "50%의 요청이 실패했습니다. 재시도는 3회 허용됩니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P05",
+      "category": "paired preservation · ending",
+      "pair_id": "ending",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "캐시는 60초 후 만료됩니다. 여기까지 읽으셨다면 이제 캐시가 60초 후 만료된다는 점을 이해하셨을 것입니다.",
+      "after": "캐시는 60초 후 만료됩니다.",
+      "must_keep": [
+        "캐시는 60초 후 만료됩니다."
+      ],
+      "protected_spans": [
+        "캐시는 60초 후 만료됩니다."
+      ],
+      "must_remove_spans": [
+        "여기까지 읽으셨다면 이제 캐시가 60초 후 만료된다는 점을 이해하셨을 것입니다."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P06",
+      "category": "paired preservation · ending",
+      "pair_id": "ending",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "캐시는 60초 후 만료됩니다. 따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요.",
+      "after": "캐시는 60초 후 만료됩니다. 따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요.",
+      "must_keep": [
+        "캐시는 60초 후 만료됩니다.",
+        "따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요."
+      ],
+      "protected_spans": [
+        "캐시는 60초 후 만료됩니다.",
+        "따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "캐시는 60초 후 만료됩니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P07",
+      "category": "paired preservation · causality",
+      "pair_id": "causality",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "이 대목에서 잠시 시야를 넓혀 볼 필요가 있습니다. 지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "after": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "must_keep": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "protected_spans": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "must_remove_spans": [
+        "이 대목에서 잠시 시야를 넓혀 볼 필요가 있습니다."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P08",
+      "category": "paired preservation · causality",
+      "pair_id": "causality",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "after": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "must_keep": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "protected_spans": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "지연 증가가 재시도 증가의 원인입니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P09",
+      "category": "paired preservation · obligation",
+      "pair_id": "obligation",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "For completeness: All inputs must be validated. Secrets must never appear in logs.",
+      "after": "All inputs must be validated. Secrets must never appear in logs.",
+      "must_keep": [
+        "Secrets must never appear in logs.",
+        "all inputs must be validated: preserve universal scope and obligation"
+      ],
+      "protected_spans": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "must_remove_spans": [
+        "For completeness:"
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P10",
+      "category": "paired preservation · obligation",
+      "pair_id": "obligation",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "All inputs must be validated. Secrets must never appear in logs.",
+      "after": "All inputs must be validated. Secrets must never appear in logs.",
+      "must_keep": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "protected_spans": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Inputs should be validated. Secrets should not appear in logs.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
     }
   ]
 }

@@ -6,6 +6,10 @@
       Paste each into a fresh session of any model; save the reply as
       OUT/<id>.with.out.md or OUT/<id>.without.out.md.
 
+  python3 evals/run.py preservation OUT
+      Checks annotated spans and exact no-ops in both arms; writes preservation.json.
+      Does not replace semantic grading.
+
   python3 evals/run.py sheet OUT
       Writes OUT/sheet.md: one row per case with the must-keep checklist,
       both outputs, and empty pass/fail columns for a human or model grader.
@@ -28,7 +32,7 @@ def task(case, with_skill):
         parts.append("Use this skill:\n\n<skill>\n" + skill + "</skill>\n")
     if case.get("prompt"):
         parts.append("The user's original request:\n\n" + case["prompt"] + "\n")
-    command = "/less" if with_skill else "Make this less verbose."
+    command = "Remove unnecessary material while preserving meaning, behavior, and requested constraints."
     parts.append(command + "\n\n" + case["before"] + "\n")
     return "\n".join(parts)
 
@@ -47,6 +51,37 @@ def cell(text):
 
 def read(path):
     return path.read_text() if path.exists() else "(missing)"
+
+
+def preservation(out):
+    """Exact regression backstops, not a semantic quality score."""
+    reports = {}
+    for suffix in ("with", "without"):
+        rows = []
+        for case in CASES:
+            if not any(k in case for k in ("protected_spans", "must_remove_spans", "exact_noop")):
+                continue
+            path = out / f"{case['id']}.{suffix}.out.md"
+            # Preserve line endings and final newlines for exact no-op checks.
+            output = path.read_bytes().decode("utf-8") if path.exists() else None
+            rows.append({
+                "id": case["id"],
+                "missing": output is None,
+                "preserved": (output is not None and all(
+                    span in output for span in case["protected_spans"]))
+                    if case.get("protected_spans") else None,
+                "removed": (output is not None and all(
+                    span not in output for span in case["must_remove_spans"]))
+                    if case.get("must_remove_spans") else None,
+                "exact_noop": output == case["before"] if case.get("exact_noop") else None,
+            })
+        summary = {}
+        for metric in ("preserved", "removed", "exact_noop"):
+            applicable = [row[metric] for row in rows if row[metric] is not None]
+            summary[metric] = {"passed": sum(applicable), "total": len(applicable)}
+        reports[suffix] = {"summary": summary, "cases": rows}
+    (out / "preservation.json").write_text(json.dumps(reports, indent=2) + "\n")
+    print(f"Wrote {out / 'preservation.json'}")
 
 
 def sheet(out):
@@ -73,9 +108,18 @@ def sheet(out):
         ]) + " |")
     (out / "sheet.md").write_text("\n".join(rows) + "\n")
     print(f"Wrote {out / 'sheet.md'}")
+    quality = [
+        "| id | arm | removal quality | meaning / behavior preserved | damage to good material | evidence |",
+        "|---|---|---|---|---|---|",
+    ]
+    for case in CASES:
+        for suffix in ("with", "without"):
+            quality.append(f"| {case['id']} | {suffix} | | | | |")
+    (out / "quality.md").write_text("\n".join(quality) + "\n")
+    print(f"Wrote {out / 'quality.md'}")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3 or sys.argv[1] not in ("prompts", "sheet"):
+    if len(sys.argv) != 3 or sys.argv[1] not in ("prompts", "sheet", "preservation"):
         sys.exit(__doc__)
-    {"prompts": prompts, "sheet": sheet}[sys.argv[1]](Path(sys.argv[2]))
+    {"prompts": prompts, "sheet": sheet, "preservation": preservation}[sys.argv[1]](Path(sys.argv[2]))
