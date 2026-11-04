@@ -1,0 +1,62 @@
+{
+  "instructions": "Always-on cases for always-on/AGENTS.md. Each request asks for new output, not an edit. The risk here is the opposite of the editing skill's: leaving out explanation the reader needed. A grader marks each must_include item present or missing and each must_not_include item absent or present. A missing must_include fails the case whatever else it gains.",
+  "cases": [
+    {
+      "id": "A01",
+      "prompt": "How do I delete a Git branch both locally and on the remote?",
+      "must_include": [
+        "the local delete command (git branch -d or -D)",
+        "the remote delete command (git push origin --delete <branch>)",
+        "that -D deletes even unmerged work, or that the remote delete affects everyone using it"
+      ],
+      "must_not_include": ["preamble or restated question", "closing recap or offer of more help"]
+    },
+    {
+      "id": "A02",
+      "prompt": "Why is rebasing a shared branch risky?",
+      "must_include": [
+        "rebasing rewrites commit history",
+        "others who based work on the old commits must reconcile it, and pushing needs a force push"
+      ],
+      "must_not_include": ["preamble or restated question", "closing recap or offer of more help", "hedges that change nothing"]
+    },
+    {
+      "id": "A03",
+      "prompt": "Write a Python function that reads a JSON file and returns the parsed data.",
+      "must_include": [
+        "opens the file and parses it with json",
+        "errors from open and json propagate (no bare except that hides them)"
+      ],
+      "must_not_include": ["unrequested options such as verbose, encoding, or default parameters", "a wrapper class or factory"]
+    },
+    {
+      "id": "A04",
+      "prompt": "PostgreSQL에서 테이블 컬럼 이름을 바꾸는 방법 알려줘.",
+      "must_include": [
+        "ALTER TABLE ... RENAME COLUMN ... TO ...",
+        "views, queries, or application code that use the old name must be updated"
+      ],
+      "must_not_include": ["preamble or restated question", "closing recap or offer of more help"]
+    },
+    {
+      "id": "A05",
+      "prompt": "Write the HTML for a sign-up form with an email and a password field.",
+      "must_include": [
+        "a visible label for each field",
+        "type=email and type=password",
+        "a submit button"
+      ],
+      "must_not_include": ["decorative gradients, badges, or icons", "unrequested sections such as testimonials or a second CTA"]
+    },
+    {
+      "id": "A06",
+      "prompt": "We're choosing between SQLite and PostgreSQL for a small internal tool with five users. Which should we pick?",
+      "must_include": [
+        "a recommendation",
+        "the reason behind it (for example concurrency, operations, or deployment)",
+        "when the other choice would be better"
+      ],
+      "must_not_include": ["preamble or restated question", "a closing offer of more help"]
+    }
+  ]
+}
