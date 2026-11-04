@@ -13,6 +13,8 @@
       Also writes OUT/run.json: SHA-256 hashes of the skill, runner, cases,
       checker, and every prompt, plus empty fields for the model, sampling,
       session setup, grader, and attempts. Fill those in before publishing.
+      Refuses a directory that already has run.json; preservation, sheet, and
+      check.mjs refuse to grade it once a recorded input has changed.
 
   python3 evals/run.py triggers OUT
       Writes OUT/triggers.md from triggers.json: each request, whether the skill
@@ -53,7 +55,8 @@ ORGANIC_REQUEST = "Tighten this up."
 ORGANIC_FOLLOWUP = "Tighten your last answer."
 # Files whose content decides what a run measured.
 FROZEN = ["skills/less/SKILL.md", "skills/less/references/design.md",
-          "evals/run.py", "evals/evals.json", "evals/design/check.mjs"]
+          "evals/run.py", "evals/evals.json", "evals/design/check.mjs",
+          "evals/design/fixtures/tailwind.css"]
 # What a published run must state; prompts leaves these for the operator.
 RUN_FIELDS = {
     "model": "model ID and version for each arm",
@@ -97,6 +100,9 @@ def organic(case):
 
 
 def prompts(out):
+    # A filled-in run.json can't be regenerated; never overwrite one.
+    if (out / "run.json").exists():
+        raise SystemExit(f"{out} already has run.json; use a new output directory")
     out.mkdir(parents=True, exist_ok=True)
     written = {}
     for case in CASES:
@@ -107,7 +113,7 @@ def prompts(out):
     for name, text in written.items():
         save(out / name, text)
     record = {
-        "inputs": {name: sha256((ROOT / name).read_bytes()) for name in FROZEN},
+        "inputs": inputs(),
         "prompts": {name: sha256(text.encode("utf-8")) for name, text in written.items()},
         **{field: None for field in RUN_FIELDS},
         "fill_in": RUN_FIELDS,
@@ -118,6 +124,22 @@ def prompts(out):
 
 def sha256(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def inputs():
+    return {name: sha256((ROOT / name).read_bytes()) for name in FROZEN}
+
+
+def check_frozen(out):
+    """Grade only with the inputs the prompts were made from."""
+    path = out / "run.json"
+    if not path.exists():
+        return
+    recorded = json.loads(load(path))["inputs"]
+    changed = [name for name, digest in inputs().items() if recorded.get(name) != digest]
+    if changed:
+        raise SystemExit(f"{', '.join(changed)} changed since {path} was written; "
+                         "grade at the commit that wrote it")
 
 
 def triggers(out):
@@ -131,7 +153,8 @@ def triggers(out):
 
 
 def cell(text):
-    return text.strip().replace("|", "\\|").replace("\n", "<br>") if text else ""
+    # Display only: CRLF from a saved reply would otherwise leave a stray \r in the table.
+    return text.strip().replace("\r\n", "\n").replace("|", "\\|").replace("\n", "<br>") if text else ""
 
 
 def read(path):
@@ -140,6 +163,7 @@ def read(path):
 
 def preservation(out):
     """Exact regression backstops, not a semantic quality score."""
+    check_frozen(out)
     reports = {}
     arms = ["with", "without"]
     if any(out.glob("*.organic.out.md")):
@@ -173,6 +197,7 @@ def preservation(out):
 
 
 def sheet(out):
+    check_frozen(out)
     rows = [
         "| id | category | must keep | bad after | with skill | without skill | with pass? | without pass? |",
         "|---|---|---|---|---|---|---|---|",

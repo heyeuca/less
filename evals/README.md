@@ -55,7 +55,10 @@ empty fields for the model and version, the sampling settings, the session
 setup (a fresh session per case? file, repo, or tool access?), the grader and
 its instructions, and every failed or retried attempt. Fill these in, and
 publish `run.json` with the results directory. A result without one can't be
-checked.
+checked. `prompts` refuses a directory that already has a `run.json`.
+`preservation`, `sheet`, and `check.mjs` refuse to grade it once the skill,
+runner, cases, checker, or Tailwind fixture differs from what was recorded, so
+new criteria are never applied to old outputs.
 
 The new cases are explicitly `tune`: their answers informed the instructions.
 Existing cases are also development/regression evidence, not held-out evidence.

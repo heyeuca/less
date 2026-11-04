@@ -96,5 +96,14 @@ for (const [, name, , expected, gate = 'G8'] of regressions) {
   console.log(`${name}: ${correct ? 'PASS' : 'FAIL'} (${results[name]})`);
   ok &&= correct;
 }
+// OUT mode refuses to grade once a recorded input has changed since run.py prompts.
+const stale = mkdtempSync(tmpdir() + '/less-');
+writeFileSync(`${stale}/run.json`, JSON.stringify({ inputs: { 'evals/evals.json': 'stale' } }));
+const { LESS_CASES, ...plain } = process.env;
+let refused = false;
+try { execFileSync('node', ['check.mjs', stale], { env: plain, stdio: 'pipe' }); }
+catch (e) { refused = e.status === 2 && /changed since/.test(e.stdout); }
+console.log(`stale-inputs: ${refused ? 'PASS' : 'FAIL'}`);
+ok &&= refused;
 console.log(ok ? 'self-test PASS'  : 'self-test FAIL');
 process.exit(ok ? 0 : 1);

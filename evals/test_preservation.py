@@ -122,6 +122,24 @@ class PreservationTest(unittest.TestCase):
                 self.assertEqual(run.sha256((out / name).read_bytes()), digest)
             for field in run.RUN_FIELDS:
                 self.assertIsNone(record[field])
+            # A filled-in record is never overwritten.
+            with self.assertRaises(SystemExit):
+                run.prompts(out)
+
+    def test_grading_refuses_changed_inputs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp)
+            recorded = run.inputs()
+            run.save(out / 'run.json', json.dumps({'inputs': recorded}))
+            self.report(out)
+            recorded['evals/evals.json'] = 'stale'
+            run.save(out / 'run.json', json.dumps({'inputs': recorded}))
+            for command in (run.preservation, run.sheet):
+                with self.subTest(command=command.__name__), self.assertRaises(SystemExit):
+                    command(out)
+
+    def test_sheet_cells_drop_carriage_returns(self):
+        self.assertEqual(run.cell('a\r\nb'), 'a<br>b')
 
     def test_organic_arm_is_reported_only_when_run(self):
         with tempfile.TemporaryDirectory() as tmp:

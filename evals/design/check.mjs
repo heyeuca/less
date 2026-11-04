@@ -4,6 +4,7 @@
 //   against before and writes OUT/design-<suffix>.json, which run.py sheet shows in the pass columns
 // Gates decide PASS/FAIL; element and CSS declaration counts are printed for reference only.
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 import { AxeBuilder } from '@axe-core/playwright';
 
@@ -191,6 +192,17 @@ const suffix = si >= 0 ? argv.splice(si, 2)[1] : 'with';
 const [mode, ...ids] = argv;
 const results = {};
 if (!mode) { console.log('usage: node check.mjs self | OUT [ID...]'); process.exit(2); }
+// Grade only with the inputs the prompts were made from (run.py prompts records them in OUT/run.json).
+if (mode !== 'self' && !process.env.LESS_CASES && existsSync(`${mode}/run.json`)) {
+  const recorded = JSON.parse(readFileSync(`${mode}/run.json`, 'utf8')).inputs || {};
+  const root = new URL('../../', import.meta.url);
+  const changed = ['evals/evals.json', 'evals/design/check.mjs', 'evals/design/fixtures/tailwind.css'].filter(name =>
+    recorded[name] !== createHash('sha256').update(readFileSync(new URL(name, root))).digest('hex'));
+  if (changed.length) {
+    console.log(`${changed.join(', ')} changed since ${mode}/run.json was written; grade at the commit that wrote it`);
+    process.exit(2);
+  }
+}
 const browser = await chromium.launch();
 let failed = 0;
 for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
