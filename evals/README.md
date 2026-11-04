@@ -160,6 +160,24 @@ fail on any single output, and a paired win over the baseline doesn't override
 them. Don't change the skill based on held-out results. Encode the lesson as a
 new `tune` case and write fresh held-out cases for the next measurement.
 
+## Running it locally
+
+`measure.py` runs the held-out protocol with locally installed, logged-in
+agent CLIs, so no API keys are needed. The commands are in `measure.json`
+(by default `claude -p` and `codex exec`). Each prompt runs in a fresh process
+in an empty directory, with tools, skills, and user config off. Each family's
+outputs are graded by the other family's CLI. The grader sees only the blind
+copy.
+
+```sh
+python3 evals/measure.py evals/results/<version>-heldout --runs 3
+```
+
+It records the CLI version, model, session setup, and every failed attempt in
+each `freeze.json`. Rerunning resumes from finished replies and grades.
+`--generate-only` stops before blinding, for example while one CLI needs to
+log in.
+
 ## Changing the skill
 
 1. Encode a failure as a case before adding prose. Tag it with the rule it

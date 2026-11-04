@@ -1,0 +1,113 @@
+{
+  "grader": {
+    "family": "codex",
+    "model": "gpt-6.1-sol"
+  },
+  "scale": {
+    "meaning_preserved": "true/false",
+    "damage": "true if good material was lost or changed",
+    "removal_quality": "good / partial / none / n/a for clean inputs"
+  },
+  "grades": {
+    "H01.A": {
+      "meaning_preserved": true,
+      "damage": true,
+      "removal_quality": "good"
+    },
+    "H01.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H02.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H02.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "none"
+    },
+    "H03.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H03.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H04.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "none"
+    },
+    "H04.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H05.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H05.B": {
+      "meaning_preserved": true,
+      "damage": true,
+      "removal_quality": "good"
+    },
+    "H06.A": {
+      "meaning_preserved": false,
+      "damage": true,
+      "removal_quality": "partial"
+    },
+    "H06.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "none"
+    },
+    "H07.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "n/a"
+    },
+    "H07.B": {
+      "meaning_preserved": false,
+      "damage": true,
+      "removal_quality": "none"
+    },
+    "H08.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H08.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H09.A": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H09.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    },
+    "H10.A": {
+      "meaning_preserved": true,
+      "damage": true,
+      "removal_quality": "partial"
+    },
+    "H10.B": {
+      "meaning_preserved": true,
+      "damage": false,
+      "removal_quality": "good"
+    }
+  }
+}

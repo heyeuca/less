@@ -1,0 +1,85 @@
+{
+  "H01": {
+    "request": "How do I check which Node version I have?",
+    "input": "Great question! To check your Node version, run `node --version`. It prints something like v22.11.0. Hope this helps, and let me know if you need anything else!",
+    "must_keep": [
+      "run `node --version`",
+      "It prints something like v22.11.0."
+    ]
+  },
+  "H02": {
+    "request": "Trim this.",
+    "input": "The migration may take up to two hours. Writes are blocked while it runs, so schedule it outside business hours.",
+    "must_keep": [
+      "The migration may take up to two hours.",
+      "Writes are blocked while it runs, so schedule it outside business hours."
+    ]
+  },
+  "H03": {
+    "request": "배포 일정이랑 롤백 방법 알려줘.",
+    "input": "말씀하신 내용 잘 확인했습니다. 배포는 목요일 오후 3시에 진행합니다. 롤백이 필요하면 `deploy rollback` 명령을 실행하세요. 추가로 궁금하신 점 있으시면 언제든 말씀해 주세요.",
+    "must_keep": [
+      "배포는 목요일 오후 3시에 진행합니다.",
+      "롤백이 필요하면 `deploy rollback` 명령을 실행하세요."
+    ]
+  },
+  "H04": {
+    "request": "短くして",
+    "input": "佐藤様\n\nお世話になっております。来週の打ち合わせを木曜14時に変更していただけますでしょうか。\n\nよろしくお願いいたします。",
+    "must_keep": [
+      "佐藤様",
+      "お世話になっております。",
+      "木曜14時",
+      "よろしくお願いいたします。"
+    ]
+  },
+  "H05": {
+    "request": "Clean this up.",
+    "input": "def total(prices):\n    # sum the prices\n    return sum(prices)  # return the sum\n",
+    "must_keep": [
+      "def total(prices):",
+      "return sum(prices)"
+    ]
+  },
+  "H06": {
+    "request": "Remove anything unnecessary.",
+    "input": "def read_port(env):\n    # PORT arrives as a string from the environment; int() raises on \"\".\n    raw = env.get(\"PORT\", \"8080\")\n    return int(raw)\n",
+    "must_keep": [
+      "# PORT arrives as a string from the environment; int() raises on \"\".",
+      "env.get(\"PORT\", \"8080\")"
+    ]
+  },
+  "H07": {
+    "request": "Shorten this README.",
+    "input": "## Install\n\nRun `pip install tally`.\n\n## Usage\n\nRun `tally report` to print totals.\n",
+    "must_keep": [
+      "## Install",
+      "## Usage",
+      "Run `pip install tally`.",
+      "Run `tally report` to print totals."
+    ]
+  },
+  "H08": {
+    "request": "Tighten this.",
+    "input": "Back up the database before upgrading. The upgrade rewrites every table. Make sure you have a backup before you start the upgrade.",
+    "must_keep": [
+      "Back up the database before upgrading.",
+      "The upgrade rewrites every table."
+    ]
+  },
+  "H09": {
+    "request": "How do I temporarily set aside my uncommitted changes in Git?",
+    "input": "Use `git stash` to set aside uncommitted changes. Note that there are many other version control systems besides Git, such as Mercurial. Run `git stash pop` to bring them back.",
+    "must_keep": [
+      "Use `git stash` to set aside uncommitted changes.",
+      "Run `git stash pop` to bring them back."
+    ]
+  },
+  "H10": {
+    "request": "Tighten this.",
+    "input": "Basically, this change should reduce latency by roughly 20% for most users.",
+    "must_keep": [
+      "should reduce latency by roughly 20% for most users."
+    ]
+  }
+}

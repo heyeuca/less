@@ -1,0 +1,3 @@
+```html
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></head><body><main><section class="hero"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class="spinner" role="status" aria-label="Loading invoices"></div></main></body></html>
+```
