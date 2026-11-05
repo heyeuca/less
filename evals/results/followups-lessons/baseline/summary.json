@@ -443,12 +443,12 @@
       "family": "codex",
       "run": 3,
       "case": "P22",
-      "missing": true,
-      "preserved": false,
+      "missing": false,
+      "preserved": true,
       "removed": null,
       "exact_noop": null,
       "presentation_noop": null,
-      "passed": false
+      "passed": true
     }
   ]
 }
