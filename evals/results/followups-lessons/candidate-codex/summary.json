@@ -1,0 +1,81 @@
+{
+  "cli": "codex-cli 0.160.0",
+  "rule": "Keep the code you don't remove as written: don't inline its variables,\nrename, or reformat.\n",
+  "rows": [
+    {
+      "run": 1,
+      "case": "P21",
+      "passed": true
+    },
+    {
+      "run": 1,
+      "case": "P22",
+      "passed": true
+    },
+    {
+      "run": 1,
+      "case": "E16",
+      "passed": true
+    },
+    {
+      "run": 1,
+      "case": "E17",
+      "passed": true
+    },
+    {
+      "run": 1,
+      "case": "N18",
+      "passed": true
+    },
+    {
+      "run": 2,
+      "case": "P21",
+      "passed": true
+    },
+    {
+      "run": 2,
+      "case": "P22",
+      "passed": true
+    },
+    {
+      "run": 2,
+      "case": "E16",
+      "passed": true
+    },
+    {
+      "run": 2,
+      "case": "E17",
+      "passed": true
+    },
+    {
+      "run": 2,
+      "case": "N18",
+      "passed": true
+    },
+    {
+      "run": 3,
+      "case": "P21",
+      "passed": true
+    },
+    {
+      "run": 3,
+      "case": "P22",
+      "passed": true
+    },
+    {
+      "run": 3,
+      "case": "E16",
+      "passed": true
+    },
+    {
+      "run": 3,
+      "case": "E17",
+      "passed": true
+    },
+    {
+      "run": 3,
+      "case": "N18",
+      "passed": true
+    }
+  ]
+}

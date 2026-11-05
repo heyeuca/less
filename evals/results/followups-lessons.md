@@ -40,7 +40,7 @@ exactly one いただけますでしょうか.
 | P19 | clean keigo email | 3/3 | 3/3 |
 | P20 | drop a repeated keigo request | 3/3 | 3/3 |
 | P21 | clean code with a local variable | 0/3 | 0/3 |
-| P22 | same code plus a restating comment | 1/3 | 1/2 |
+| P22 | same code plus a restating comment | 1/3 | 2/3 |
 
 - **P17/P18:** codex drops "A successful response looks like Python 3.12.8."
   in every run, reproducing H01. Claude keeps the sentence; its two P17 misses
@@ -51,29 +51,35 @@ exactly one いただけますでしょうか.
 - **P21/P22:** both families inline `raw = env.get(...)` into the return,
   reproducing H06. Nothing in S1–S4 or M10 tells the model to leave kept code
   as written. This fails on both families, so a rule change is warranted.
-- codex P22 run 3 has no reply: the codex workspace ran out of credits
-  (`codex-3-P22.error.json`). No further codex calls were possible.
+- codex P22 run 3 first failed because the codex workspace ran out of
+  credits (`codex-3-P22.error.json`). It was rerun with the same skill and
+  cases once credits returned, and passed.
 
-## Candidate rule (Claude only, not adopted)
+## Candidate rule (adopted)
 
 One added sentence after S4:
 
 > Keep the code you don't remove as written: don't inline its variables,
 > rename, or reformat.
 
-[`followups-lessons/candidate-claude/`](followups-lessons/candidate-claude/)
-ran it on P21/P22 and on the helper-removal cases E16, E17, and N18, to check
-that the new sentence doesn't block S1–S4. One N18 call timed out twice at
-600 seconds and passed on the third try.
+[`candidate-claude/`](followups-lessons/candidate-claude/) and
+[`candidate-codex/`](followups-lessons/candidate-codex/) ran it on P21/P22 and
+on the helper-removal cases E16, E17, and N18, to check that the new sentence
+doesn't block S1–S4. One Claude N18 call timed out twice at 600 seconds and
+passed on the third try. The codex run came later, after credits returned,
+with the same skill, cases, and probe script (`candidate_probe.py.txt`, now
+taking the family as its second argument).
 
-| Case | Check | Baseline claude | Candidate claude |
-|---|---|---|---|
-| P21 | `raw` kept | 0/3 | 3/3 |
-| P22 | `raw` kept, comment removed | 1/3 | 3/3 |
-| E16 | helper and comments removed | — | 3/3 |
-| E17 | option and impossible check removed | — | 3/3 |
-| N18 | strategy class removed | — | 3/3 |
+| Case | Check | Baseline claude | Candidate claude | Baseline codex | Candidate codex |
+|---|---|---|---|---|---|
+| P21 | `raw` kept | 0/3 | 3/3 | 0/3 | 3/3 |
+| P22 | `raw` kept, comment removed | 1/3 | 3/3 | 2/3 | 3/3 |
+| E16 | helper and comments removed | — | 3/3 | — | 3/3 |
+| E17 | option and impossible check removed | — | 3/3 | — | 3/3 |
+| N18 | strategy class removed | — | 3/3 | — | 3/3 |
 
-The shipping skill is unchanged. The evaluation guide requires a rule change
-to pass on both families, and codex could not run. Adopt the sentence only
-after the same check passes on codex.
+Codex's E16, E17, and N18 replies match each case's reference `after`. The
+sentence passes on both families, so it is now in `SKILL.md` after S4, exactly
+as measured (971/1000 words). These are `tune` cases, so this is regression
+evidence, not a held-out gain. The next held-out measurement should include
+fresh clean-code cases.

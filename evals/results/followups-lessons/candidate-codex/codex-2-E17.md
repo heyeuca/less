@@ -1,0 +1,6 @@
+```python
+def load_config():
+    with open("config.json", encoding="utf-8") as f:
+        text = f.read()
+    return json.loads(text)
+```

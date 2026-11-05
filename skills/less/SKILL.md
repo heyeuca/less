@@ -60,6 +60,8 @@ Code:
 - S3. Unrequested options, flags, config.
 - S4. Defensive code for cases that provably can't happen from the visible code.
   Otherwise keep it.
+Keep the code you don't remove as written: don't inline its variables,
+rename, or reformat.
 
 Before removing code or options, inspect available callers, exports, and
 relevant tests. Preserve externally used signatures and behavior unless the
