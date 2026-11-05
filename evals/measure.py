@@ -76,6 +76,7 @@ def call(family, prompt):
         work.mkdir()
         argv = [arg.replace("{out}", str(out)) for arg in spec["generate"]]
         done = subprocess.run(argv, input=prompt.encode("utf-8"), cwd=work, capture_output=True,
+                              env={**os.environ, **spec.get("env", {})},
                               timeout=CONFIG.get("timeout_seconds", 600))
         stdout = done.stdout.decode("utf-8", "replace")
         stderr = done.stderr.decode("utf-8", "replace")

@@ -60,6 +60,15 @@ and superseded before publication. Its temporary files are not treated as
 held-out evidence. The V corpus was authored before its candidate outputs were
 viewed and has now been consumed; retire it before the next optimization claim.
 
+## Session isolation
+
+Claude runs here loaded the account's MCP servers, settings files, and
+auto memory: `--tools ""` removed the built-in tools only. One reply
+(followups-v2 claude run1 V01 without) mentions an available browser.
+`measure.json` now adds `--strict-mcp-config`, `--setting-sources ""`, and
+`CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`; account-level organization
+instructions still apply. See `followups-lessons.md`.
+
 ## Engineering verification
 
 Python unit tests, including whitespace-sensitive normalization and execution

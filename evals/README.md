@@ -44,7 +44,8 @@ new deletion rule; use the same approach for code and UI regressions.
 P15–P16 and D21–D22 test two absolute keep rules from the other side (#34).
 P15 has a heading that only repeats the title, and D21 has a reduced-motion
 rule left with nothing to turn off. Their pairs, P16 and D22, keep headings a
-contents list links to and an opt-out that still covers a spinner. The narrowed candidate was evaluated but not adopted: the fresh measurement
+contents list links to and an opt-out that still covers a spinner. A narrower
+candidate wording was measured but not adopted, because the fresh measurement
 failed its absolute gates. See `results/followups-v2.md` and the archived
 candidate snapshot. P16 and D22 remain protection cases.
 
@@ -210,6 +211,8 @@ the grader prompt, and the implementation before work starts. Each call records
 model identity, CLI version, session description, and prompt/reply hashes.
 Unknown or changed model identities are rejected, and resume validates both
 configuration and cached replies. A changed execution requires a new directory;
-existing evidence is never silently re-labelled. Successful grader responses
+existing evidence is never silently re-labelled. The Claude command also
+skips MCP servers, settings files, and auto memory (`--strict-mcp-config`,
+`--setting-sources ""`, and the `env` entry); earlier Claude runs did not. Successful grader responses
 are retained as `grade-ID.json`. Run-level model names are summaries, not the
 source of per-output provenance.

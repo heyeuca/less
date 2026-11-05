@@ -112,8 +112,14 @@ and exact no-op checks. The completed v0.3.4 measurement above used ten distinct
 cases, repeated three times per family; repetitions are not independent cases.
 A [protocol-v2 candidate experiment](evals/results/followups-v2.md) is also
 complete, with failed absolute gates; its rule changes were not adopted. The
-next optimization claim requires fresh cases and frozen execution provenance.
-Organic installed-skill and always-on measurements remain outstanding. Historical v0.3.3 figures use a different protocol.
+[lesson cases](evals/results/followups-lessons.md) reproduce two of the three
+v0.3.4 misses with the shipping rules. A candidate sentence for one of them
+passes on Claude but has not run on codex, so it is not adopted. The Claude
+runs in all three measurements loaded the account's MCP servers and memory;
+`measure.json` now isolates them. The next optimization claim requires fresh
+cases and frozen execution provenance. Organic installed-skill and always-on
+measurements remain outstanding. Historical v0.3.3 figures use a different
+protocol.
 
 ## License
 

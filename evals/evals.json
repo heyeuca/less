@@ -2060,7 +2060,8 @@
         "W2",
         "M3"
       ],
-      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "author": "assistant",
+      "prompt": "How do I check which Python version is installed?",
       "before": "Good question! Run `python --version`. A successful response looks like Python 3.12.8. Happy to help!",
       "after": "Run `python --version`. A successful response looks like Python 3.12.8.",
       "must_keep": [
@@ -2078,7 +2079,8 @@
       "rules": [
         "M3"
       ],
-      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "author": "assistant",
+      "prompt": "How do I check which Python version is installed?",
       "before": "Run `python --version`. A successful response looks like Python 3.12.8.",
       "after": "Run `python --version`. A successful response looks like Python 3.12.8.",
       "must_keep": [
@@ -2112,17 +2114,20 @@
       "category": "paired preservation · held-out lesson",
       "split": "tune",
       "rules": [
-        "W3",
+        "W4",
         "M9"
       ],
       "prompt": "Remove unnecessary material; keep meaning and voice.",
-      "before": "田中様、念のため申し添えますが、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
-      "after": "田中様、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "before": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。金曜までに資料をお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
       "must_keep": [
-        "田中様、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+        "the request in its original register (いただけますでしょうか)",
+        "the greeting and sign-off"
       ],
       "protected_spans": [
-        "田中様、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+        "田中様、お世話になっております。",
+        "お送りいただけますでしょうか",
+        "よろしくお願いいたします。"
       ],
       "exact_noop": false
     },

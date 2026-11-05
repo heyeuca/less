@@ -1,0 +1,43 @@
+"""Claude-only check of a candidate code rule on P21/P22 and helper-removal cases E16/E17/N18."""
+import json
+import sys
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+sys.path.insert(0, "evals")
+import measure  # noqa: E402
+import protocol  # noqa: E402
+import run  # noqa: E402
+
+ANCHOR = "  Otherwise keep it.\n"
+RULE = "Keep the code you don't remove as written: don't inline its variables,\nrename, or reformat.\n"
+assert ANCHOR in run.SKILL
+run.SKILL = run.SKILL.replace(ANCHOR, ANCHOR + RULE, 1)
+ROOT = Path(sys.argv[1]); ROOT.mkdir(parents=True, exist_ok=True)
+protocol.save(ROOT / "candidate-rule.txt", RULE)
+cases = {c["id"]: c for c in run.CASES}
+CHECK = {
+    "P21": lambda t: 'raw = env.get("RETRIES", "4")' in t and "return int(raw)" in t,
+    "P22": lambda t: 'raw = env.get("RETRIES", "4")' in t and "return int(raw)" in t and "# read retries" not in t,
+    "E16": lambda t: "def _is_even" not in t and "#" not in t and "n % 2 == 0" in t,
+    "E17": lambda t: "verbose" not in t and "is None" not in t and "json.loads" in t,
+    "N18": lambda t: "SumStrategy" not in t and "def total" in t,
+}
+
+
+def one(k, cid):
+    target = ROOT / f"claude-{k}-{cid}.md"
+    if target.exists():
+        return
+    text, model = measure.call("claude", run.task(cases[cid], True))
+    protocol.save(target, text)
+    protocol.save(ROOT / f"claude-{k}-{cid}.json", json.dumps({"case": cid, "run": k, "model": model}) + "\n")
+
+
+with ThreadPoolExecutor(4) as pool:
+    list(pool.map(lambda a: one(*a), [(k, c) for k in (1, 2, 3) for c in CHECK]))
+rows = [{"run": k, "case": c, "passed": CHECK[c](protocol.load(ROOT / f"claude-{k}-{c}.md"))}
+        for k in (1, 2, 3) for c in CHECK]
+protocol.save(ROOT / "summary.json", json.dumps({"cli": measure.version("claude"), "rule": RULE, "rows": rows}, indent=2) + "\n")
+for c in CHECK:
+    print(c, f"{sum(r['passed'] for r in rows if r['case'] == c)}/3")
