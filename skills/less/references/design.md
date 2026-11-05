@@ -7,9 +7,8 @@ The test comes first: does this element have a clear reason to exist for this
 user's request? A signal below only nominates a candidate. Check every
 candidate against "Never remove" before removing it.
 
-Reduce only: remove, consolidate, and restructure what is there. No new
-colors, fonts, spacing values, components, or sections; reuse values already
-in the code. Change markup and styles only; keep handlers, form `name`/`type`,
+Reduce only: remove, consolidate, and repair what is there. No new colors,
+fonts, spacing values, components, or sections; reuse the code's own values. Change markup and styles only; keep handlers, form `name`/`type`,
 `href`, test ids, and component APIs.
 
 Figma files, screenshots, and other visual inputs: return them unchanged plus
@@ -32,8 +31,8 @@ one line: "less edits code or text it can return."
    `transition: all` (C9).
 6. **R6 Cleanup:** utility classes or selectors that cancel or repeat each
    other (C12), or match nothing (C13).
-7. **R7 Restructure:** collapse a grid, column, or sidebar left without a job,
-   so the remaining content uses its space (C15).
+7. **R7 Repair:** fix what removals broke (C15). Restructure further only
+   on request, within the sections the user names.
 8. **R8 Consolidate:** values that serve one role become one value the code
    already uses for it (C14).
 
@@ -55,7 +54,7 @@ one line: "less edits code or text it can return."
 | C12 | Classes that cancel or repeat each other | conflicting padding/margin selectors |
 | C13 | Selectors that match nothing | classes no markup or script uses; not state selectors |
 | C14 | Many values for one role | body text in `#333`, `#2f2f2f`, `#383838`; 15px and 16px body; two families. Brand, state, emphasis, and heading levels are separate roles |
-| C15 | Layout left without a job | a column or sidebar emptied by removals; a multi-column grid holding one item |
+| C15 | Layout broken by removals | an emptied column or track; a multi-column grid or row with one item; padding, margin, or a width limit kept for a removed element |
 
 ## Never remove
 

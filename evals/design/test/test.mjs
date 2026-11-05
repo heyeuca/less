@@ -43,6 +43,7 @@ const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d1
 const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
 const d18 = get('D18'), d14 = get('D14'), d22 = get('D22');
 const d27 = get('D27'), d28 = get('D28'), d29 = get('D29'), d30 = get('D30'), d31 = get('D31');
+const d34 = get('D34'), d35 = get('D35');
 // Custom CSS keeps alternate effects real even when their utility classes are
 // absent from the precompiled Tailwind fixture.
 const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
@@ -94,6 +95,9 @@ const regressions = [
   [d31, 'repeated-names-before', d31.before.replace('<div class="layout">', '<a href="/help">Help</a> <a href="/help#faq">Help</a><div class="layout">'), true],
   [d31, 'filter-out-of-tab-order', d31.before.replace('<select id="status"', '<select tabindex="-1" id="status"').replace('<div class="layout">', '<a href="/status">Status</a><div class="layout">'), false, 'G2'],
   [d31, 'status-text-and-moved-filter', d31.before.replace(/<form[\s\S]*<\/form>/, '').replace('</section></div>', '</section>' + d31.before.match(/<form[\s\S]*<\/form>/)[0].replace('<select id', '<select tabindex="1" id') + '</div>').replace('<li><a href="/invoices/1042">', '<li>Status changed today</li><li><a href="/invoices/1042">'), false, 'G2'],
+  // R7: repairs may take other forms, and a layout request may restructure the section it names.
+  [d34, 'row-dropped-measure-kept', d34.after.replace('.hero{display:flex;gap:2rem;align-items:center}', ''), true],
+  [d35, 'pricing-stacked', d35.after.replace('</style>', '.plans{grid-template-columns:1fr}</style>'), true],
   [d13, 'opaque-header',d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {
