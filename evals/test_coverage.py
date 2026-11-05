@@ -24,7 +24,7 @@ class CoverageTest(unittest.TestCase):
     def test_rule_ids_are_parsed(self):
         self.assertEqual(len([i for i in SKILL_IDS if i[0] == "W"]), 7)
         self.assertEqual(len([i for i in SKILL_IDS if i[0] == "S"]), 4)
-        self.assertEqual(len([i for i in DESIGN_IDS if i[0] == "C"]), 12)
+        self.assertEqual(len([i for i in DESIGN_IDS if i[0] == "C"]), 15)
 
     def test_cases_cite_known_rules(self):
         for case in run.CASES:

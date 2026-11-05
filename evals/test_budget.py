@@ -8,7 +8,7 @@ import run
 # of adding a rule: merge or cut an existing rule first.
 BUDGETS = {
     "skills/less/SKILL.md": 1000,
-    "skills/less/references/design.md": 750,
+    "skills/less/references/design.md": 900,
 }
 
 

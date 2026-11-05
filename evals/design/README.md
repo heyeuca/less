@@ -53,6 +53,16 @@ fixture-specific assertions, not a general visual quality score. In `self`
 mode, `before` checks preservation only; `after` must pass all gates and
 `bad_after` must fail at least one gate, otherwise the command exits nonzero.
 
+Four requirements accept any way of meeting them. `must_separate`
+(`{selector, min}`, K14): every match after the first starts at least `min` px
+below the nearest text above it in its column, whether the space comes from
+gap, margin, or padding. `must_share` (`{selector, properties}`, C14): all
+matches have one computed value per property; the edit picks which. `must_span`
+(`{selector, min_ratio}`, C15): each match fills at least that share of
+`main`'s content width. These three count toward G8. `must_keep_order` (K15):
+its texts appear in that order in the visible text; it counts toward G2.
+`npm test` includes passing and failing alternatives for each.
+
 Use `must_remove_rendered_text` for visible content (body innerText, with HTML
 entities decoded by the browser, matched case-insensitively as whole words, so
 "New" doesn't match "renew" or "news"). Keep `must_remove_text` for source-only

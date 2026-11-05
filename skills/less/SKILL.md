@@ -73,8 +73,9 @@ Keep every heading and its TOC entry unless the whole section is cut; never
 merge a section into the intro.
 
 Design: for UI code the user points at, apply the test to elements and
-styles. Remove only after checking [references/design.md](references/design.md)
-(removal order and never-remove list). Unrequested content there means what
+styles. Act only after checking [references/design.md](references/design.md)
+(order and never-remove list), which also allows consolidating styles and
+restructuring a layout left without a job. Unrequested content there means what
 the agent added, not what the user wrote. Change markup and styles only; no new
 aesthetic. Not for building new UI, screenshots, or Figma files.
 

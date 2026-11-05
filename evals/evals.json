@@ -2052,6 +2052,440 @@
       ]
     },
     {
+      "id": "D23",
+      "category": "design · selectors that match nothing + keep focus style",
+      "rules": [
+        "C13",
+        "K5"
+      ],
+      "format": "html",
+      "prompt": "Strip the leftover CSS from this page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Export</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font:inherit;padding:.5rem 1rem;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:4px;outline:none}button:focus-visible{outline:2px solid #111;outline-offset:2px}.promo-banner{padding:2rem;background:linear-gradient(90deg,#eef2ff,#e0f2fe)}.testimonial-card{box-shadow:0 4px 12px rgba(0,0,0,.1);border-radius:12px}</style></head><body><main><h2>Export invoices</h2><p>Download every invoice from this year as a CSV file.</p><button type=\"button\">Download CSV</button></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Export</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font:inherit;padding:.5rem 1rem;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:4px;outline:none}button:focus-visible{outline:2px solid #111;outline-offset:2px}</style></head><body><main><h2>Export invoices</h2><p>Download every invoice from this year as a CSV file.</p><button type=\"button\">Download CSV</button></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Export</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font:inherit;padding:.5rem 1rem;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:4px;outline:none}</style></head><body><main><h2>Export invoices</h2><p>Download every invoice from this year as a CSV file.</p><button type=\"button\">Download CSV</button></main></body></html>",
+      "why_bad": "Treats button:focus-visible as unmatched because no element is focused in the markup; with outline:none left on the button, keyboard focus becomes invisible (K5, WCAG 2.4.7).",
+      "must_keep": [
+        "heading, copy, and Download CSV button",
+        "the button's focus-visible outline"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Export invoices"
+        ],
+        [
+          "button",
+          "Download CSV"
+        ]
+      ],
+      "must_keep_selectors": [
+        "button:focus-visible"
+      ],
+      "must_remove_hint": [
+        ".promo-banner and .testimonial-card: no element on the page uses them"
+      ],
+      "must_remove_text": [
+        ".promo-banner",
+        ".testimonial-card"
+      ]
+    },
+    {
+      "id": "D24",
+      "category": "design · over-cut · state class added by script",
+      "rules": [
+        "C13",
+        "K8"
+      ],
+      "format": "html",
+      "prompt": "Remove the unused CSS from this signup form.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Newsletter</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}form{display:grid;gap:.5rem;max-width:20rem}label{font-weight:600}input{font:inherit;padding:.4rem;border:1px solid #6b7280;border-radius:4px}button{font:inherit;padding:.5rem 1rem;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:4px}.error{display:none;color:#b91c1c;margin:0}form.is-invalid .error{display:block}form.is-invalid input{border-color:#b91c1c}</style></head><body><main><h2>Newsletter</h2><form novalidate><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required aria-describedby=\"email-error\"><p id=\"email-error\" class=\"error\">Enter a valid email address.</p><button type=\"submit\">Subscribe</button></form></main><script>document.querySelector('form').addEventListener('submit',e=>{const f=e.currentTarget;if(!f.checkValidity()){e.preventDefault();f.classList.add('is-invalid')}})</script></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Newsletter</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}form{display:grid;gap:.5rem;max-width:20rem}label{font-weight:600}input{font:inherit;padding:.4rem;border:1px solid #6b7280;border-radius:4px}button{font:inherit;padding:.5rem 1rem;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:4px}.error{display:none;color:#b91c1c;margin:0}</style></head><body><main><h2>Newsletter</h2><form novalidate><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required aria-describedby=\"email-error\"><p id=\"email-error\" class=\"error\">Enter a valid email address.</p><button type=\"submit\">Subscribe</button></form></main><script>document.querySelector('form').addEventListener('submit',e=>{const f=e.currentTarget;if(!f.checkValidity()){e.preventDefault();f.classList.add('is-invalid')}})</script></body></html>",
+      "why_bad": "Deletes the form.is-invalid rules because no element has that class in the markup; the script adds it on a failed submit, so the error message can never appear (K8, WCAG 3.3.1).",
+      "must_keep": [
+        "every rule: .is-invalid is added by the submit handler",
+        "email field, label, error message, and Subscribe button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Newsletter"
+        ],
+        [
+          "textbox",
+          "Email"
+        ],
+        [
+          "button",
+          "Subscribe"
+        ]
+      ],
+      "must_keep_selectors": [
+        "form.is-invalid .error{display:block}",
+        "form.is-invalid input{border-color:#b91c1c}"
+      ],
+      "must_remove_hint": [],
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Newsletter</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}form{display:grid;gap:.5rem;max-width:20rem}label{font-weight:600}input{font:inherit;padding:.4rem;border:1px solid #6b7280;border-radius:4px}button{font:inherit;padding:.5rem 1rem;border:1px solid #1d4ed8;background:#1d4ed8;color:#fff;border-radius:4px}.error{display:none;color:#b91c1c;margin:0}form.is-invalid .error{display:block}form.is-invalid input{border-color:#b91c1c}</style></head><body><main><h2>Newsletter</h2><form novalidate><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required aria-describedby=\"email-error\"><p id=\"email-error\" class=\"error\">Enter a valid email address.</p><button type=\"submit\">Subscribe</button></form></main><script>document.querySelector('form').addEventListener('submit',e=>{const f=e.currentTarget;if(!f.checkValidity()){e.preventDefault();f.classList.add('is-invalid')}})</script></body></html>"
+    },
+    {
+      "id": "D25",
+      "category": "design · stacked shadow and border + keep current-page emphasis",
+      "rules": [
+        "C2",
+        "K13"
+      ],
+      "format": "html",
+      "prompt": "Remove the extra shadows and borders from this nav.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Billing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}nav ul{display:flex;gap:.5rem;list-style:none;margin:0;padding:0}nav a{display:block;padding:.5rem 1rem;color:#111;text-decoration:none;border-radius:6px}nav a{border:1px solid #e5e7eb;box-shadow:0 2px 6px rgba(0,0,0,.08)}nav a[aria-current=page]{background:#1d4ed8;color:#fff}</style></head><body><main><nav aria-label=\"Account\"><ul><li><a href=\"/profile\">Profile</a></li><li><a href=\"/billing\" aria-current=\"page\">Billing</a></li><li><a href=\"/team\">Team</a></li></ul></nav><h2>Billing</h2><p>Your plan renews on 1 December.</p></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Billing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}nav ul{display:flex;gap:.5rem;list-style:none;margin:0;padding:0}nav a{display:block;padding:.5rem 1rem;color:#111;text-decoration:none;border-radius:6px}nav a[aria-current=page]{background:#1d4ed8;color:#fff}</style></head><body><main><nav aria-label=\"Account\"><ul><li><a href=\"/profile\">Profile</a></li><li><a href=\"/billing\" aria-current=\"page\">Billing</a></li><li><a href=\"/team\">Team</a></li></ul></nav><h2>Billing</h2><p>Your plan renews on 1 December.</p></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Billing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}nav ul{display:flex;gap:.5rem;list-style:none;margin:0;padding:0}nav a{display:block;padding:.5rem 1rem;color:#111;text-decoration:none;border-radius:6px}</style></head><body><main><nav aria-label=\"Account\"><ul><li><a href=\"/profile\">Profile</a></li><li><a href=\"/billing\" aria-current=\"page\">Billing</a></li><li><a href=\"/team\">Team</a></li></ul></nav><h2>Billing</h2><p>Your plan renews on 1 December.</p></main></body></html>",
+      "why_bad": "Strips the aria-current styling along with the shadows, so sighted users can no longer see which page they are on (K13).",
+      "must_keep": [
+        "the three account links",
+        "the filled background on the current page link"
+      ],
+      "must_keep_roles": [
+        [
+          "navigation",
+          "Account"
+        ],
+        [
+          "link",
+          "Profile"
+        ],
+        [
+          "link",
+          "Billing"
+        ],
+        [
+          "link",
+          "Team"
+        ]
+      ],
+      "must_keep_selectors": [
+        "nav a[aria-current=page]"
+      ],
+      "must_remove_hint": [
+        "the border and shadow repeated on every nav link"
+      ],
+      "must_remove_text": [
+        "box-shadow"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "nav a",
+          "properties": {
+            "box-shadow": "none",
+            "border-top-style": "none"
+          }
+        },
+        {
+          "selector": "nav a[aria-current=page]",
+          "properties": {
+            "background-color": "rgb(29, 78, 216)",
+            "color": "rgb(255, 255, 255)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D26",
+      "category": "design · over-cut · primary destructive action",
+      "rules": [
+        "K3",
+        "K13"
+      ],
+      "format": "html",
+      "prompt": "Remove the decoration from this dialog.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Delete project</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}footer{display:flex;gap:.5rem;justify-content:flex-end}button{font:inherit;padding:.5rem 1rem;border-radius:4px;border:1px solid #6b7280;background:#fff;color:#111}.danger{background:#b91c1c;border-color:#b91c1c;color:#fff}</style></head><body><main><section aria-labelledby=\"t\"><h2 id=\"t\">Delete project?</h2><p>This permanently deletes Atlas and its 214 invoices. This cannot be undone.</p><footer><button type=\"button\">Cancel</button><button type=\"button\" class=\"danger\">Delete project</button></footer></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Delete project</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}footer{display:flex;gap:.5rem;justify-content:flex-end}button{font:inherit;padding:.5rem 1rem;border-radius:4px;border:1px solid #6b7280;background:#fff;color:#111}.danger{color:#fff}</style></head><body><main><section aria-labelledby=\"t\"><h2 id=\"t\">Delete project?</h2><p>This permanently deletes Atlas and its 214 invoices. This cannot be undone.</p><footer><button type=\"button\">Cancel</button><button type=\"button\" class=\"danger\">Delete project</button></footer></section></main></body></html>",
+      "why_bad": "Treats the red fill as decoration; Delete project then looks like Cancel and its white text loses contrast (K13, WCAG 1.4.3).",
+      "must_keep": [
+        "warning copy with the 214 invoices",
+        "Cancel and Delete project buttons",
+        "the filled red style that sets Delete project apart"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Delete project?"
+        ],
+        [
+          "button",
+          "Cancel"
+        ],
+        [
+          "button",
+          "Delete project"
+        ]
+      ],
+      "must_keep_selectors": [
+        ".danger"
+      ],
+      "must_remove_hint": [],
+      "must_have_styles": [
+        {
+          "selector": ".danger",
+          "properties": {
+            "background-color": "rgb(185, 28, 28)"
+          }
+        }
+      ],
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Delete project</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}footer{display:flex;gap:.5rem;justify-content:flex-end}button{font:inherit;padding:.5rem 1rem;border-radius:4px;border:1px solid #6b7280;background:#fff;color:#111}.danger{background:#b91c1c;border-color:#b91c1c;color:#fff}</style></head><body><main><section aria-labelledby=\"t\"><h2 id=\"t\">Delete project?</h2><p>This permanently deletes Atlas and its 214 invoices. This cannot be undone.</p><footer><button type=\"button\">Cancel</button><button type=\"button\" class=\"danger\">Delete project</button></footer></section></main></body></html>"
+    },
+    {
+      "id": "D27",
+      "category": "design · flatten cards + keep separation",
+      "rules": [
+        "C2",
+        "K14"
+      ],
+      "format": "html",
+      "prompt": "Flatten these cards into a plain list.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2,h3,p{margin:0}h2{margin-bottom:1rem}.plan{border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:1rem;margin-bottom:1rem;background:#fff}</style></head><body><main><h2>Plans</h2><div class=\"plan\"><h3>Starter</h3><p>¥980 per month for 1 user.</p></div><div class=\"plan\"><h3>Team</h3><p>¥4,800 per month for up to 10 users.</p></div><div class=\"plan\"><h3>Business</h3><p>¥12,000 per month for up to 50 users.</p></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2,h3,p{margin:0}h2{margin-bottom:1rem}.plan{margin-bottom:1rem}</style></head><body><main><h2>Plans</h2><div class=\"plan\"><h3>Starter</h3><p>¥980 per month for 1 user.</p></div><div class=\"plan\"><h3>Team</h3><p>¥4,800 per month for up to 10 users.</p></div><div class=\"plan\"><h3>Business</h3><p>¥12,000 per month for up to 50 users.</p></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2,h3,p{margin:0}h2{margin-bottom:1rem}</style></head><body><main><h2>Plans</h2><div class=\"plan\"><h3>Starter</h3><p>¥980 per month for 1 user.</p></div><div class=\"plan\"><h3>Team</h3><p>¥4,800 per month for up to 10 users.</p></div><div class=\"plan\"><h3>Business</h3><p>¥12,000 per month for up to 50 users.</p></div></main></body></html>",
+      "why_bad": "Drops the whole card rule, margin included; with headings and paragraphs reset to no margin, each plan's price runs straight into the next plan's name (K14).",
+      "must_keep": [
+        "three plans with names and prices",
+        "space between plans, from a value the page already uses"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Plans"
+        ],
+        [
+          "heading",
+          "Starter"
+        ],
+        [
+          "heading",
+          "Team"
+        ],
+        [
+          "heading",
+          "Business"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the card border, radius, shadow, padding, and background"
+      ],
+      "must_remove_text": [
+        "box-shadow",
+        "border-radius"
+      ],
+      "must_separate": [
+        {
+          "selector": "h3",
+          "min": 12
+        }
+      ]
+    },
+    {
+      "id": "D28",
+      "category": "design · consolidate one role's values + keep state color",
+      "rules": [
+        "C14",
+        "K8"
+      ],
+      "format": "html",
+      "prompt": "Tidy up the styles on this page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Payouts</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2{font-size:24px;margin:0 0 .75rem}a{color:#1d4ed8}.intro{color:#333;font-size:16px}.detail{color:#2f2f2f;font-size:15px;font-family:Georgia,serif}.note{color:#383838;font-size:16px}.error{color:#b91c1c;font-weight:600}</style></head><body><main><h2>Payouts</h2><p class=\"intro\">Payouts go to your bank account every Friday.</p><p class=\"detail\">Payments received after Wednesday move to the following week.</p><p class=\"note\">A ¥250 fee applies to each payout.</p><p class=\"error\" role=\"alert\">Your bank account needs verification. <a href=\"/verify\">Verify account</a></p></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Payouts</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2{font-size:24px;margin:0 0 .75rem}a{color:#1d4ed8}p{color:#333;font-size:16px}.error{color:#b91c1c;font-weight:600}</style></head><body><main><h2>Payouts</h2><p class=\"intro\">Payouts go to your bank account every Friday.</p><p class=\"detail\">Payments received after Wednesday move to the following week.</p><p class=\"note\">A ¥250 fee applies to each payout.</p><p class=\"error\" role=\"alert\">Your bank account needs verification. <a href=\"/verify\">Verify account</a></p></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Payouts</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2{font-size:24px;margin:0 0 .75rem}a{color:#1d4ed8}p{color:#333;font-size:16px}.error{font-weight:600}</style></head><body><main><h2>Payouts</h2><p class=\"intro\">Payouts go to your bank account every Friday.</p><p class=\"detail\">Payments received after Wednesday move to the following week.</p><p class=\"note\">A ¥250 fee applies to each payout.</p><p class=\"error\" role=\"alert\">Your bank account needs verification. <a href=\"/verify\">Verify account</a></p></main></body></html>",
+      "why_bad": "Folds the error color into the body color too; the verification error then reads like any other paragraph (K8, C14: state is its own role).",
+      "must_keep": [
+        "all four paragraphs and the Verify account link",
+        "red error text",
+        "24px heading",
+        "blue link"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Payouts"
+        ],
+        [
+          "alert",
+          ""
+        ],
+        [
+          "link",
+          "Verify account"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "#333, #2f2f2f, #383838, 15px/16px, and Georgia all style body copy: one value each"
+      ],
+      "must_share": [
+        {
+          "selector": "p:not([role=alert])",
+          "properties": [
+            "color",
+            "font-size",
+            "font-family"
+          ]
+        }
+      ],
+      "must_have_styles": [
+        {
+          "selector": "[role=alert]",
+          "properties": {
+            "color": "rgb(185, 28, 28)"
+          }
+        },
+        {
+          "selector": "h2",
+          "properties": {
+            "font-size": "24px"
+          }
+        },
+        {
+          "selector": "a",
+          "properties": {
+            "color": "rgb(29, 78, 216)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D29",
+      "category": "design · over-cut · state colors are separate roles",
+      "rules": [
+        "C14",
+        "K8"
+      ],
+      "format": "html",
+      "prompt": "There are too many colors here. Tidy them up.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sync status</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.alert{padding:.75rem 1rem;border-left:4px solid;margin:0 0 .5rem}.alert-error{border-color:#b91c1c;color:#7f1d1d;background:#fef2f2}.alert-warning{border-color:#b45309;color:#78350f;background:#fffbeb}.alert-success{border-color:#15803d;color:#14532d;background:#f0fdf4}</style></head><body><main><h2>Sync status</h2><p class=\"alert alert-error\">Error: 3 invoices failed to sync.</p><p class=\"alert alert-warning\">Warning: your API key expires in 7 days.</p><p class=\"alert alert-success\">Done: 214 invoices synced.</p></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sync status</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.alert{padding:.75rem 1rem;border-left:4px solid #6b7280;margin:0 0 .5rem;color:#111;background:#f9fafb}</style></head><body><main><h2>Sync status</h2><p class=\"alert alert-error\">Error: 3 invoices failed to sync.</p><p class=\"alert alert-warning\">Warning: your API key expires in 7 days.</p><p class=\"alert alert-success\">Done: 214 invoices synced.</p></main></body></html>",
+      "why_bad": "Merges error, warning, and success into one gray; the colors were the states, not variation (C14, K8).",
+      "must_keep": [
+        "three alerts and their text",
+        "a distinct border color for each state"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Sync status"
+        ]
+      ],
+      "must_keep_rendered_text": [
+        "3 invoices failed to sync",
+        "expires in 7 days",
+        "214 invoices synced"
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [],
+      "must_have_styles": [
+        {
+          "selector": ".alert-error",
+          "properties": {
+            "border-left-color": "rgb(185, 28, 28)"
+          }
+        },
+        {
+          "selector": ".alert-warning",
+          "properties": {
+            "border-left-color": "rgb(180, 83, 9)"
+          }
+        },
+        {
+          "selector": ".alert-success",
+          "properties": {
+            "border-left-color": "rgb(21, 128, 61)"
+          }
+        }
+      ],
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sync status</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.alert{padding:.75rem 1rem;border-left:4px solid;margin:0 0 .5rem}.alert-error{border-color:#b91c1c;color:#7f1d1d;background:#fef2f2}.alert-warning{border-color:#b45309;color:#78350f;background:#fffbeb}.alert-success{border-color:#15803d;color:#14532d;background:#f0fdf4}</style></head><body><main><h2>Sync status</h2><p class=\"alert alert-error\">Error: 3 invoices failed to sync.</p><p class=\"alert alert-warning\">Warning: your API key expires in 7 days.</p><p class=\"alert alert-success\">Done: 214 invoices synced.</p></main></body></html>"
+    },
+    {
+      "id": "D30",
+      "category": "design · remove sidebar + restructure the emptied column",
+      "rules": [
+        "C7",
+        "C15"
+      ],
+      "format": "html",
+      "prompt": "Remove the testimonial sidebar.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2{margin:0 0 .75rem}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.5rem;border-bottom:1px solid #d1d5db}@media (max-width:600px){.layout{grid-template-columns:1fr}}.layout{display:grid;grid-template-columns:1fr 16rem;gap:2rem}aside{padding:1rem;background:#f9fafb;border-radius:8px}aside blockquote{margin:0 0 .5rem;font-style:italic}</style></head><body><main><div class=\"layout\"><section><h2>Invoices</h2><table><thead><tr><th>Invoice</th><th>Client</th><th>Amount</th></tr></thead><tbody><tr><td>#1042</td><td>Atlas</td><td>¥48,000</td></tr><tr><td>#1043</td><td>Kite</td><td>¥12,500</td></tr></tbody></table></section><aside><blockquote>\"Ledgerly saved us hours every week.\"</blockquote><p>Loved by 10,000 teams</p></aside></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2{margin:0 0 .75rem}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.5rem;border-bottom:1px solid #d1d5db}@media (max-width:600px){.layout{grid-template-columns:1fr}}.layout{display:grid;gap:2rem}</style></head><body><main><div class=\"layout\"><section><h2>Invoices</h2><table><thead><tr><th>Invoice</th><th>Client</th><th>Amount</th></tr></thead><tbody><tr><td>#1042</td><td>Atlas</td><td>¥48,000</td></tr><tr><td>#1043</td><td>Kite</td><td>¥12,500</td></tr></tbody></table></section></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h2{margin:0 0 .75rem}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:.5rem;border-bottom:1px solid #d1d5db}@media (max-width:600px){.layout{grid-template-columns:1fr}}.layout{display:grid;grid-template-columns:1fr 16rem;gap:2rem}</style></head><body><main><div class=\"layout\"><section><h2>Invoices</h2><table><thead><tr><th>Invoice</th><th>Client</th><th>Amount</th></tr></thead><tbody><tr><td>#1042</td><td>Atlas</td><td>¥48,000</td></tr><tr><td>#1043</td><td>Kite</td><td>¥12,500</td></tr></tbody></table></section></div></main></body></html>",
+      "why_bad": "Removes the sidebar but keeps the 1fr 16rem grid, so the table stays squeezed beside an empty 16rem track (C15).",
+      "must_keep": [
+        "Invoices heading and table rows",
+        "the 600px breakpoint"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices"
+        ],
+        [
+          "table",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the testimonial sidebar and the column that held it"
+      ],
+      "must_remove_selectors": [
+        "aside"
+      ],
+      "must_remove_rendered_text": [
+        "10,000 teams"
+      ],
+      "must_span": [
+        {
+          "selector": "table",
+          "min_ratio": 0.9
+        }
+      ]
+    },
+    {
+      "id": "D31",
+      "category": "design · over-cut · sidebar with a job + reading order",
+      "rules": [
+        "C15",
+        "K15"
+      ],
+      "format": "html",
+      "prompt": "This layout feels heavy. Simplify it.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.layout{display:grid;grid-template-columns:14rem 1fr;gap:2rem}@media (max-width:600px){.layout{grid-template-columns:1fr}}label{display:block;font-weight:600;margin-bottom:.25rem}select{font:inherit;padding:.25rem}h2{margin:0 0 .75rem}ul{margin:0;padding-left:1.25rem}</style></head><body><main><div class=\"layout\"><form role=\"search\" aria-label=\"Filter invoices\"><label for=\"status\">Status</label><select id=\"status\" name=\"status\"><option>All</option><option>Paid</option><option>Overdue</option></select></form><section><h2>Results</h2><ul><li>#1042 · Atlas · Paid</li><li>#1043 · Kite · Overdue</li></ul></section></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}label{display:block;font-weight:600;margin-bottom:.25rem}select{font:inherit;padding:.25rem}h2{margin:0 0 .75rem}ul{margin:0;padding-left:1.25rem}</style></head><body><main><section><h2>Results</h2><ul><li>#1042 · Atlas · Paid</li><li>#1043 · Kite · Overdue</li></ul></section><form role=\"search\" aria-label=\"Filter invoices\"><label for=\"status\">Status</label><select id=\"status\" name=\"status\"><option>All</option><option>Paid</option><option>Overdue</option></select></form></main></body></html>",
+      "why_bad": "Flattens to one column but moves the filter below the results it controls, so reading and focus order no longer match its job (K15, WCAG 1.3.2, 2.4.3).",
+      "must_keep": [
+        "status filter before the results",
+        "results list",
+        "search landmark"
+      ],
+      "must_keep_roles": [
+        [
+          "search",
+          "Filter invoices"
+        ],
+        [
+          "combobox",
+          "Status"
+        ],
+        [
+          "heading",
+          "Results"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_keep_order": [
+        "Status",
+        "Results",
+        "#1042"
+      ],
+      "must_remove_hint": [],
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.layout{display:grid;grid-template-columns:14rem 1fr;gap:2rem}@media (max-width:600px){.layout{grid-template-columns:1fr}}label{display:block;font-weight:600;margin-bottom:.25rem}select{font:inherit;padding:.25rem}h2{margin:0 0 .75rem}ul{margin:0;padding-left:1.25rem}</style></head><body><main><div class=\"layout\"><form role=\"search\" aria-label=\"Filter invoices\"><label for=\"status\">Status</label><select id=\"status\" name=\"status\"><option>All</option><option>Paid</option><option>Overdue</option></select></form><section><h2>Results</h2><ul><li>#1042 · Atlas · Paid</li><li>#1043 · Kite · Overdue</li></ul></section></div></main></body></html>"
+    },
+    {
       "id": "P17",
       "category": "paired preservation · held-out lesson",
       "split": "tune",
