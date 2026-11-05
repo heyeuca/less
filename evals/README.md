@@ -76,7 +76,10 @@ broke is repaired: D32 drops the 50% basis the text kept for a removed
 illustration, and D33 drops the padding that cleared removed icons. D34 keeps
 a 36rem line-length limit that never depended on the illustration. D35 asks to
 simplify one section's layout, and the FAQ section it didn't name keeps its
-grid. None of C13–C15 or K13–K15 has been measured yet.
+grid. D36 drops the 28rem min-height that gave a removed illustration its
+size, so the copy doesn't sit in an empty band. D37 keeps a banner's
+min-height when only its badge goes. None of C13–C15 or K13–K15 has been
+measured yet.
 
 `prompts` also writes `OUT/run.json`. It holds SHA-256 hashes of the skill,
 runner, cases, and checker, and one for every generated prompt. It also has

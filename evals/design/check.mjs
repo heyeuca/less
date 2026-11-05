@@ -234,6 +234,29 @@ async function measure(page, src, c) {
       return els.length > 0 && els.every(e => e.getBoundingClientRect().width >= ratio * width);
     }, [selector, min_ratio]));
   }
+  // Repair (C15): each match is at most `max_gap` px taller than the visible text and media inside it, so a
+  // height kept for removed content doesn't stay as an empty band, on the match or on a wrapper inside it,
+  // however the edit drops it.
+  for (const { selector, max_gap } of c.must_hug || []) {
+    removed.push(await page.evaluate(([selector, gap]) => {
+      const els = [...document.querySelectorAll(selector)];
+      return els.length > 0 && els.every(e => {
+        const rects = [];
+        const walker = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(n);
+          rects.push(...range.getClientRects());
+        }
+        for (const m of e.querySelectorAll('img,svg,video,canvas,iframe,input,select,textarea')) rects.push(m.getBoundingClientRect());
+        const seen = rects.filter(r => r.width > 0 && r.height > 0);
+        if (!seen.length) return false;
+        const content = Math.max(...seen.map(r => r.bottom)) - Math.min(...seen.map(r => r.top));
+        return e.getBoundingClientRect().height - content <= gap;
+      });
+    }, [selector, max_gap]));
+  }
   if (c.must_remove_nested_surfaces) {
     removed.push(await page.evaluate(() => {
       const surface = el => {

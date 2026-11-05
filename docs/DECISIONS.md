@@ -63,3 +63,21 @@ Cases D32–D35 encode this; D34 and D35 are protection cases.
 
 **Revisit when** design cases are measured. Narrow C15 to the emptied-track
 case if D34 or D35 fails in either family.
+
+## 2026-11-05: C15 covers a height kept for removed content
+
+**Context.** In a demo run on a generated bakery page, the skill removed a
+hero's illustration, tagline, and button but kept the `min-height` the hero
+had been sized to. One heading was left centered in a 620px band. C15 named
+padding, margin, and width limits, not heights, so the edit followed the
+rule and still left the layout broken.
+
+**Decision.** C15 now names a width or height limit kept for a removed
+element. D36 encodes the failure with a reserve that gave an illustration its
+size. D37 is its protection case: a banner keeps its min-height when only a
+badge goes. The checker gains `must_hug`, which measures the gap between a
+section and the visible text and media inside it, so a reserve moved onto a
+wrapper still fails. Not measured yet.
+
+**Revisit when** design cases are measured. Drop "or height" if D37 fails in
+either family.
