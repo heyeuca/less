@@ -234,6 +234,48 @@ async function measure(page, src, c) {
       return els.length > 0 && els.every(e => e.getBoundingClientRect().width >= ratio * width);
     }, [selector, min_ratio]));
   }
+  // Repair (C15): each match has at most `max_gap` px of its height not covered by visible text and media
+  // inside it, so a height kept for removed content doesn't stay as an empty band, on the match or on a
+  // wrapper inside it, however the edit drops it. Only what a visitor sees counts: content hidden by
+  // visibility or opacity, clipped by an overflow ancestor, or outside the match's box doesn't cover anything,
+  // and space between pieces of content (justify-content: space-between) counts as empty like space around it.
+  for (const { selector, max_gap } of c.must_hug || []) {
+    removed.push(await page.evaluate(([selector, gap]) => {
+      const els = [...document.querySelectorAll(selector)];
+      return els.length > 0 && els.every(e => {
+        const box = e.getBoundingClientRect();
+        const spans = [];
+        const add = (r, el) => {
+          if (!r.width || !r.height || !el.checkVisibility({ opacityProperty: true, visibilityProperty: true })) return;
+          let top = Math.max(r.top, box.top), bottom = Math.min(r.bottom, box.bottom);
+          for (let a = el; a && a !== e; a = a.parentElement) {
+            const s = getComputedStyle(a);
+            if (s.overflowX !== 'visible' || s.overflowY !== 'visible') {
+              const c = a.getBoundingClientRect();
+              top = Math.max(top, c.top); bottom = Math.min(bottom, c.bottom);
+            }
+          }
+          if (bottom > top) spans.push([top, bottom]);
+        };
+        const walker = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+        for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+          if (!n.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(n);
+          for (const r of range.getClientRects()) add(r, n.parentElement);
+        }
+        for (const m of e.querySelectorAll('img,svg,video,canvas,iframe,input,select,textarea')) add(m.getBoundingClientRect(), m);
+        if (!spans.length) return false;
+        spans.sort((x, y) => x[0] - y[0]);
+        let covered = 0, [top, bottom] = spans[0];
+        for (const [t, b] of spans.slice(1)) {
+          if (t > bottom) { covered += bottom - top; [top, bottom] = [t, b]; } else bottom = Math.max(bottom, b);
+        }
+        covered += bottom - top;
+        return box.height - covered <= gap;
+      });
+    }, [selector, max_gap]));
+  }
   if (c.must_remove_nested_surfaces) {
     removed.push(await page.evaluate(() => {
       const surface = el => {

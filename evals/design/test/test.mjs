@@ -43,7 +43,7 @@ const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d1
 const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
 const d18 = get('D18'), d14 = get('D14'), d22 = get('D22');
 const d27 = get('D27'), d28 = get('D28'), d29 = get('D29'), d30 = get('D30'), d31 = get('D31');
-const d32 = get('D32'), d34 = get('D34'), d35 = get('D35');
+const d32 = get('D32'), d34 = get('D34'), d35 = get('D35'), d36 = get('D36'), d37 = get('D37');
 // Custom CSS keeps alternate effects real even when their utility classes are
 // absent from the precompiled Tailwind fixture.
 const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
@@ -100,6 +100,17 @@ const regressions = [
   [d35, 'pricing-stacked', d35.after.replace('</style>', '.plans{grid-template-columns:1fr}</style>'), true],
   [d35, 'faq-one-column', d35.after.replace('</style>', '.faq{grid-template-columns:1fr}</style>'), false, 'G2'],
   [d32, 'measure-dropped', d32.after.replace('main{max-width:48rem}', ''), false],
+  // C15 height: any way of dropping the reserve passes; a smaller reserve, or one moved onto a wrapper, doesn't.
+  [d36, 'reserve-overridden', d36.bad_after.replace('</style>', '.hero{min-height:0}</style>'), true],
+  [d36, 'reserve-shrunk', d36.bad_after.replace('min-height:28rem', 'min-height:20rem'), false],
+  [d36, 'reserve-on-wrapper', d36.after.replace('</style>', '.hero-text{min-height:28rem;display:flex;flex-direction:column;justify-content:center}</style>'), false],
+  [d37, 'banner-height-kept', d37.after, true],
+  // Content a visitor doesn't see inside the band, or text placed outside it, doesn't cover the reserve.
+  [d36, 'reserve-filled-by-hidden-text', d36.bad_after.replace('</style>', '.hero{position:relative}.ghost{position:absolute;top:0;left:0;margin:0;font-size:6rem;line-height:1;visibility:hidden}</style>').replace('</div></section>', '</div><p class="ghost">x<br>x<br>x<br>x<br>x</p></section>'), false],
+  [d36, 'reserve-filled-by-transparent-text', d36.bad_after.replace('</style>', '.hero{position:relative}.ghost{position:absolute;top:0;left:0;margin:0;font-size:6rem;line-height:1;opacity:0}</style>').replace('</div></section>', '</div><p class="ghost">x<br>x<br>x<br>x<br>x</p></section>'), false],
+  [d36, 'reserve-filled-by-clipped-text', d36.bad_after.replace('</style>', '.hero{position:relative}.clip{position:absolute;top:0;left:0;right:0;height:1px;overflow:hidden}.clip p{margin:0;font-size:6rem;line-height:1}</style>').replace('</div></section>', '</div><div class="clip"><p>x<br>x<br>x<br>x<br>x</p></div></section>'), false],
+  [d36, 'reserve-spanned-by-outside-text', d36.bad_after.replace('</style>', '.hero{position:relative}.far{position:absolute;top:-40rem}</style>').replace('</div></section>', '</div><p class="far">Fresh daily</p></section>'), false],
+  [d36, 'reserve-split-by-space-between', d36.after.replace('</style>', '.hero-text{min-height:28rem;display:flex;flex-direction:column;justify-content:space-between}</style>'), false],
   [d13, 'opaque-header',d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {

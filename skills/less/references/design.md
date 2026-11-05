@@ -54,7 +54,7 @@ one line: "less edits code or text it can return."
 | C12 | Classes that cancel or repeat each other | conflicting padding/margin selectors |
 | C13 | Selectors that match nothing | classes no markup or script uses; not state selectors |
 | C14 | Many values for one role | body text in `#333`, `#2f2f2f`, `#383838`; 15px and 16px body; two families. Brand, state, emphasis, and heading levels are separate roles |
-| C15 | Layout broken by removals | an emptied column or track; a multi-column grid or row with one item; padding, margin, or a width limit kept for a removed element |
+| C15 | Layout broken by removals | an emptied column or track; a multi-column grid or row with one item; padding, margin, or a width or height limit kept for a removed element |
 
 ## Never remove
 
