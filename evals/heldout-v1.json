@@ -1,0 +1,247 @@
+{
+  "instructions": "Held-out cases for remeasurement (#40). They were written after the skill was frozen and were never used to tune it. Do not edit SKILL.md or references/design.md based on their results; add any lesson to evals.json as a new tune case instead, and write new held-out cases for the next measurement.",
+  "evals": [
+    {
+      "id": "H01",
+      "category": "prose · preamble and closing offer",
+      "rules": [
+        "W1",
+        "W2"
+      ],
+      "author": "assistant",
+      "prompt": "How do I check which Node version I have?",
+      "before": "Great question! To check your Node version, run `node --version`. It prints something like v22.11.0. Hope this helps, and let me know if you need anything else!",
+      "after": "To check your Node version, run `node --version`. It prints something like v22.11.0.",
+      "protected_spans": [
+        "run `node --version`",
+        "It prints something like v22.11.0."
+      ],
+      "must_remove_spans": [
+        "Great question!",
+        "Hope this helps"
+      ],
+      "split": "heldout",
+      "exact_noop": false,
+      "must_keep": [
+        "run `node --version`",
+        "It prints something like v22.11.0."
+      ]
+    },
+    {
+      "id": "H02",
+      "category": "prose · clean · uncertainty and consequence",
+      "rules": [
+        "M1",
+        "M2"
+      ],
+      "prompt": "Trim this.",
+      "before": "The migration may take up to two hours. Writes are blocked while it runs, so schedule it outside business hours.",
+      "after": "unchanged",
+      "protected_spans": [
+        "The migration may take up to two hours.",
+        "Writes are blocked while it runs, so schedule it outside business hours."
+      ],
+      "exact_noop": true,
+      "split": "heldout",
+      "must_remove_spans": [],
+      "must_keep": [
+        "The migration may take up to two hours.",
+        "Writes are blocked while it runs, so schedule it outside business hours."
+      ]
+    },
+    {
+      "id": "H03",
+      "category": "ko prose · opener and closing offer",
+      "rules": [
+        "W1",
+        "W2",
+        "M9"
+      ],
+      "author": "assistant",
+      "prompt": "배포 일정이랑 롤백 방법 알려줘.",
+      "before": "말씀하신 내용 잘 확인했습니다. 배포는 목요일 오후 3시에 진행합니다. 롤백이 필요하면 `deploy rollback` 명령을 실행하세요. 추가로 궁금하신 점 있으시면 언제든 말씀해 주세요.",
+      "after": "배포는 목요일 오후 3시에 진행합니다. 롤백이 필요하면 `deploy rollback` 명령을 실행하세요.",
+      "protected_spans": [
+        "배포는 목요일 오후 3시에 진행합니다.",
+        "롤백이 필요하면 `deploy rollback` 명령을 실행하세요."
+      ],
+      "must_remove_spans": [
+        "말씀하신 내용 잘 확인했습니다.",
+        "추가로 궁금하신 점"
+      ],
+      "split": "heldout",
+      "exact_noop": false,
+      "must_keep": [
+        "배포는 목요일 오후 3시에 진행합니다.",
+        "롤백이 필요하면 `deploy rollback` 명령을 실행하세요."
+      ]
+    },
+    {
+      "id": "H04",
+      "category": "ja email · clean · keigo, greeting, sign-off",
+      "rules": [
+        "M8",
+        "M9"
+      ],
+      "prompt": "短くして",
+      "before": "佐藤様\n\nお世話になっております。来週の打ち合わせを木曜14時に変更していただけますでしょうか。\n\nよろしくお願いいたします。",
+      "after": "unchanged",
+      "protected_spans": [
+        "佐藤様",
+        "お世話になっております。",
+        "木曜14時",
+        "よろしくお願いいたします。"
+      ],
+      "exact_noop": true,
+      "split": "heldout",
+      "must_remove_spans": [],
+      "must_keep": [
+        "佐藤様",
+        "お世話になっております。",
+        "木曜14時",
+        "よろしくお願いいたします。"
+      ]
+    },
+    {
+      "id": "H05",
+      "category": "code · comments that restate the code",
+      "rules": [
+        "S1"
+      ],
+      "prompt": "Clean this up.",
+      "before": "def total(prices):\n    # sum the prices\n    return sum(prices)  # return the sum\n",
+      "after": "def total(prices):\n    return sum(prices)\n",
+      "protected_spans": [
+        "def total(prices):",
+        "return sum(prices)"
+      ],
+      "must_remove_spans": [
+        "# sum the prices",
+        "# return the sum"
+      ],
+      "split": "heldout",
+      "exact_noop": false,
+      "must_keep": [
+        "def total(prices):",
+        "return sum(prices)"
+      ]
+    },
+    {
+      "id": "H06",
+      "category": "code · clean · why comment at a boundary",
+      "rules": [
+        "S1",
+        "M10"
+      ],
+      "prompt": "Remove anything unnecessary.",
+      "before": "def read_port(env):\n    # PORT arrives as a string from the environment; int() raises on \"\".\n    raw = env.get(\"PORT\", \"8080\")\n    return int(raw)\n",
+      "after": "unchanged",
+      "protected_spans": [
+        "# PORT arrives as a string from the environment; int() raises on \"\".",
+        "env.get(\"PORT\", \"8080\")"
+      ],
+      "exact_noop": true,
+      "split": "heldout",
+      "must_remove_spans": [],
+      "must_keep": [
+        "# PORT arrives as a string from the environment; int() raises on \"\".",
+        "env.get(\"PORT\", \"8080\")"
+      ]
+    },
+    {
+      "id": "H07",
+      "category": "doc · clean · headings readers navigate by",
+      "rules": [
+        "W6"
+      ],
+      "prompt": "Shorten this README.",
+      "before": "## Install\n\nRun `pip install tally`.\n\n## Usage\n\nRun `tally report` to print totals.\n",
+      "after": "unchanged",
+      "protected_spans": [
+        "## Install",
+        "## Usage",
+        "Run `pip install tally`.",
+        "Run `tally report` to print totals."
+      ],
+      "exact_noop": true,
+      "split": "heldout",
+      "must_remove_spans": [],
+      "must_keep": [
+        "## Install",
+        "## Usage",
+        "Run `pip install tally`.",
+        "Run `tally report` to print totals."
+      ]
+    },
+    {
+      "id": "H08",
+      "category": "prose · duplicate point in the user's text",
+      "rules": [
+        "W4",
+        "M7"
+      ],
+      "prompt": "Tighten this.",
+      "before": "Back up the database before upgrading. The upgrade rewrites every table. Make sure you have a backup before you start the upgrade.",
+      "after": "Back up the database before upgrading. The upgrade rewrites every table.",
+      "protected_spans": [
+        "Back up the database before upgrading.",
+        "The upgrade rewrites every table."
+      ],
+      "must_remove_spans": [
+        "Make sure you have a backup before you start the upgrade."
+      ],
+      "split": "heldout",
+      "exact_noop": false,
+      "must_keep": [
+        "Back up the database before upgrading.",
+        "The upgrade rewrites every table."
+      ]
+    },
+    {
+      "id": "H09",
+      "category": "prose · unrequested aside",
+      "rules": [
+        "W5"
+      ],
+      "author": "assistant",
+      "prompt": "How do I temporarily set aside my uncommitted changes in Git?",
+      "before": "Use `git stash` to set aside uncommitted changes. Note that there are many other version control systems besides Git, such as Mercurial. Run `git stash pop` to bring them back.",
+      "after": "Use `git stash` to set aside uncommitted changes. Run `git stash pop` to bring them back.",
+      "protected_spans": [
+        "Use `git stash` to set aside uncommitted changes.",
+        "Run `git stash pop` to bring them back."
+      ],
+      "must_remove_spans": [
+        "Mercurial"
+      ],
+      "split": "heldout",
+      "exact_noop": false,
+      "must_keep": [
+        "Use `git stash` to set aside uncommitted changes.",
+        "Run `git stash pop` to bring them back."
+      ]
+    },
+    {
+      "id": "H10",
+      "category": "prose · filler next to load-bearing qualifiers",
+      "rules": [
+        "W3",
+        "M2"
+      ],
+      "prompt": "Tighten this.",
+      "before": "Basically, this change should reduce latency by roughly 20% for most users.",
+      "after": "This change should reduce latency by roughly 20% for most users.",
+      "protected_spans": [
+        "should reduce latency by roughly 20% for most users."
+      ],
+      "must_remove_spans": [
+        "Basically"
+      ],
+      "split": "heldout",
+      "exact_noop": false,
+      "must_keep": [
+        "should reduce latency by roughly 20% for most users."
+      ]
+    }
+  ]
+}

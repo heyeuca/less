@@ -1,0 +1,1 @@
+Run `python --version`. A successful response looks like Python 3.12.8.

@@ -1,12 +1,13 @@
 {
-  "instructions": "Local CLIs that measure.py drives. Each command reads the prompt on stdin and runs in a fresh empty directory. {out} is a file path the CLI writes its last message to; without it, stdout is the reply. 'json': true means stdout is Claude Code's --output-format json. Each family's outputs are graded by grader_for[family].",
+  "instructions": "Local CLIs that measure.py drives. Each command reads the prompt on stdin and runs in a fresh empty directory. {out} is a file path the CLI writes its last message to; without it, stdout is the reply. 'env' adds environment variables. 'json': true means stdout is Claude Code's --output-format json. Each family's outputs are graded by grader_for[family].",
   "families": {
     "claude": {
       "generate": ["claude", "-p", "--output-format", "json", "--disable-slash-commands", "--tools", "",
-                   "--no-session-persistence"],
+                   "--strict-mcp-config", "--setting-sources", "", "--no-session-persistence"],
+      "env": {"CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"},
       "json": true,
       "version": ["claude", "--version"],
-      "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling"
+      "session": "claude -p in an empty temp dir per prompt: no tools or MCP servers, no settings files or auto memory, skills and slash commands disabled, no session persistence, CLI default model and sampling; account-level organization instructions still apply"
     },
     "codex": {
       "generate": ["codex", "exec", "--ephemeral", "--ignore-user-config", "--ignore-rules", "-s", "read-only",

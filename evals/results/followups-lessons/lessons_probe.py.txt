@@ -1,0 +1,78 @@
+"""Run P17-P22 (#53) with the shipping skill through both local CLIs, 3 runs each, and check spans/no-ops."""
+import json
+import sys
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+
+sys.path.insert(0, "evals")
+import measure  # noqa: E402
+import protocol  # noqa: E402
+import run  # noqa: E402
+
+ROOT = Path(sys.argv[1])
+IDS = ["P17", "P18", "P19", "P20", "P21", "P22"]
+FAMILIES = ["claude", "codex"]
+cases = {c["id"]: c for c in run.CASES}
+ROOT.mkdir(parents=True, exist_ok=True)
+
+
+def one(family, k, cid):
+    target = ROOT / f"{family}-{k}-{cid}.md"
+    if target.exists():
+        return
+    prompt = run.task(cases[cid], True)
+    protocol.save(ROOT / f"{cid}.prompt.md", prompt)
+    errors = []
+    for attempt in range(2):
+        try:
+            text, model = measure.call(family, prompt)
+            protocol.save(target, text)
+            protocol.save(ROOT / f"{family}-{k}-{cid}.json", json.dumps(
+                {"case": cid, "family": family, "run": k, "model": model, "errors": errors,
+                 "prompt_sha256": protocol.digest(prompt.encode("utf-8")),
+                 "output_sha256": protocol.digest(text.encode("utf-8"))}) + "\n")
+            return
+        except Exception as error:  # record and retry once
+            errors.append(str(error)[-400:])
+    protocol.save(ROOT / f"{family}-{k}-{cid}.error.json", json.dumps(errors) + "\n")
+
+
+with ThreadPoolExecutor(4) as pool:
+    list(pool.map(lambda a: one(*a), [(f, k, i) for f in FAMILIES for k in (1, 2, 3) for i in IDS]))
+
+REMOVE = {"P17": ["Good question!", "Happy to help!"], "P22": ["# read retries"]}
+
+
+def passed(case, text):
+    if text is None:
+        return False
+    if not all(span in text for span in case["protected_spans"]):
+        return False
+    if case["exact_noop"]:
+        return protocol.presentation(case["before"], text) == protocol.presentation(case["before"], case["before"])
+    if case["id"] == "P20":
+        return text.count("いただけますでしょうか") == 1
+    return not any(span in text for span in REMOVE[case["id"]])
+
+
+rows = []
+for f in FAMILIES:
+    for k in (1, 2, 3):
+        for cid in IDS:
+            path = ROOT / f"{f}-{k}-{cid}.md"
+            text = protocol.load(path) if path.exists() else None
+            case = {**cases[cid], "must_remove_spans": []}
+            rows.append({"family": f, "run": k, "case": cid, **protocol.checks(case, text),
+                         "passed": passed(case, text)})
+summary = {"cli": {f: measure.version(f) for f in FAMILIES},
+           "families": {f: measure.CONFIG["families"][f] for f in FAMILIES},
+           "skill_sha256": protocol.digest((protocol.ROOT / "skills/less/SKILL.md").read_bytes()),
+           "cases_sha256": protocol.digest((protocol.ROOT / "evals/evals.json").read_bytes()),
+           "pass_rule": "protected spans kept; no-op cases unchanged after transport normalization; "
+                        "P17/P22 lose their filler, P20 keeps exactly one いただけますでしょうか",
+           "rows": rows}
+protocol.save(ROOT / "summary.json", json.dumps(summary, ensure_ascii=False, indent=2) + "\n")
+for f in FAMILIES:
+    for cid in IDS:
+        n = sum(r["passed"] for r in rows if r["family"] == f and r["case"] == cid)
+        print(f, cid, f"{n}/3")

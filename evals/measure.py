@@ -76,6 +76,7 @@ def call(family, prompt):
         work.mkdir()
         argv = [arg.replace("{out}", str(out)) for arg in spec["generate"]]
         done = subprocess.run(argv, input=prompt.encode("utf-8"), cwd=work, capture_output=True,
+                              env={**os.environ, **spec.get("env", {})},
                               timeout=CONFIG.get("timeout_seconds", 600))
         stdout = done.stdout.decode("utf-8", "replace")
         stderr = done.stderr.decode("utf-8", "replace")
@@ -119,14 +120,65 @@ def update_freeze(out, **fields):
         protocol.save(path, json.dumps(freeze, indent=2, ensure_ascii=False) + "\n")
 
 
+def execution():
+    return {"config": CONFIG, "grader_prompt": GRADER_PROMPT,
+            "implementation": protocol.digest(Path(__file__).read_bytes())}
+
+
+def validate_execution(out):
+    with LOCK:
+        freeze = json.loads(protocol.load(out / "freeze.json"))
+    if freeze["inputs"] != protocol.inputs():
+        raise RuntimeError("frozen inputs changed; start a new run")
+    expected = execution()
+    if freeze.get("execution") != expected:
+        raise RuntimeError("execution or grader configuration changed; start a new run")
+
+
+def recorded_call(out, family, name, prompt):
+    """Record successful and rejected calls, including exact model identity."""
+    validate_execution(out)
+    text, model = call(family, prompt)
+    model = model or CONFIG["families"][family].get("model")
+    with LOCK:
+        path = out / "freeze.json"
+        freeze = json.loads(protocol.load(path))
+        pins = freeze.setdefault("models", {})
+        entry = {"family": family, "model": model,
+                 "prompt_sha256": protocol.digest(prompt.encode("utf-8")),
+                 "output_sha256": protocol.digest(text.encode("utf-8")),
+                 "cli": version(family), "session": CONFIG["families"][family]["session"]}
+        accepted = bool(model) and (family not in pins or pins[family] == model)
+        entry["accepted"] = accepted
+        freeze.setdefault("calls", {}).setdefault(name, []).append(entry)
+        if accepted:
+            pins[family] = model
+            if not name.startswith("grade:"):
+                freeze["model"] = model
+        protocol.save(path, json.dumps(freeze, indent=2) + "\n")
+    if not accepted:
+        raise RuntimeError("unknown or changed model identity")
+    return text, model
+
+
+def validate_reply(out, name, text, prompt):
+    with LOCK:
+        freeze = json.loads(protocol.load(out / "freeze.json"))
+    records = freeze.get("calls", {}).get(name, [])
+    if not records or not records[-1]["accepted"] or records[-1]["output_sha256"] != protocol.digest(text.encode("utf-8")) or records[-1]["prompt_sha256"] != protocol.digest(prompt.encode("utf-8")):
+        raise RuntimeError("reply has no matching accepted provenance")
+
+
 def generate(out, family, name, retries=1):
     target = out / name.replace(".md", ".out.md")
-    if target.exists():
-        return True
+    validate_execution(out)
     prompt = protocol.load(out / name)
+    if target.exists():
+        validate_reply(out, name, protocol.load(target), prompt)
+        return True
     for attempt in range(retries + 1):
         try:
-            text, model = call(family, prompt)
+            text, model = recorded_call(out, family, name, prompt)
             protocol.save(target, text)
             update_freeze(out, model=model)
             return True
@@ -149,15 +201,21 @@ def grade(out, family, case_id, retries=1):
     path = out / "blind/grades.json"
     with LOCK:
         sheet = json.loads(protocol.load(path))
-    if all(protocol.valid(sheet["grades"][f"{case_id}.{label}"]) for label in "AB"):
-        return True
+    validate_execution(out)
     case = json.loads(protocol.load(out / "blind/cases.json"))[case_id]
     prompt = GRADER_PROMPT.format(
         request=case["request"] or "(none)", input=case["input"], must_keep="; ".join(case["must_keep"]),
         a=protocol.load(out / f"blind/{case_id}.A.out.md"), b=protocol.load(out / f"blind/{case_id}.B.out.md"))
+    if all(protocol.valid(sheet["grades"][f"{case_id}.{label}"]) for label in "AB"):
+        receipt = out / f"grade-{case_id}.json"
+        validate_reply(out, "grade:" + case_id, protocol.load(receipt), prompt)
+        if parse_grade(protocol.load(receipt)) != {label: sheet["grades"][f"{case_id}.{label}"] for label in "AB"}:
+            raise RuntimeError("grades differ from recorded response")
+        return True
     for attempt in range(retries + 1):
         try:
-            text, model = call(grader, prompt)
+            text, model = recorded_call(out, grader, "grade:" + case_id, prompt)
+            protocol.save(out / f"grade-{case_id}.json", text)
             grades = parse_grade(text)
         except (RuntimeError, ValueError, subprocess.TimeoutExpired, OSError) as error:
             update_freeze(out, attempt={"grade": case_id, "grader": grader, "try": attempt + 1,
@@ -178,6 +236,8 @@ def measure(root, families, runs, jobs, seed, generate_only=False):
     for family, out in dirs:
         if not (out / "freeze.json").exists():
             protocol.prompts(out)
+            update_freeze(out, execution=execution())
+        validate_execution(out)
         update_freeze(out, family=family, cli=version(family), sampling="CLI default",
                       session=CONFIG["families"][family]["session"],
                       runner={name: protocol.digest((protocol.ROOT / name).read_bytes())

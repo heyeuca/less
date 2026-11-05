@@ -44,10 +44,10 @@ new deletion rule; use the same approach for code and UI regressions.
 P15–P16 and D21–D22 test two absolute keep rules from the other side (#34).
 P15 has a heading that only repeats the title, and D21 has a reduced-motion
 rule left with nothing to turn off. Their pairs, P16 and D22, keep headings a
-contents list links to and an opt-out that still covers a spinner. The current
-rules keep every heading and every opt-out, so P15 and D21 may fail. They
-measure whether a narrower rule would help. Change a rule only when held-out
-runs show the narrower version removes more without failing P16 or D22.
+contents list links to and an opt-out that still covers a spinner. A narrower
+candidate wording was measured but not adopted, because the fresh measurement
+failed its absolute gates. See `results/followups-v2.md` and the archived
+candidate snapshot. P16 and D22 remain protection cases.
 
 `prompts` also writes `OUT/run.json`. It holds SHA-256 hashes of the skill,
 runner, cases, and checker, and one for every generated prompt. It also has
@@ -195,3 +195,24 @@ The encode-first, one-change-per-measurement, and organic-prompt practices
 follow [pstack](https://github.com/cursor/plugins/tree/c742dd61706fbacc1b95f1a20b7b988cf096ce6c/pstack)
 (its encode-lessons-in-structure principle and its eval and hillclimb
 playbooks). Its style rewrites are not adopted.
+
+## Protocol v2 notes
+
+Protocol v2 retains `exact_noop` as the raw byte metric and adds
+`presentation_noop` for the clean-input gate. Only one terminal LF and one
+optional outer code fence are ignored; spaces, extra blank lines, indentation,
+and Markdown hard breaks remain significant. This does not normalize semantic
+edits. New V cases replace the retired H corpus, archived in `heldout-v1.json`.
+Historical reports must be replayed at their recorded commit; they are not
+regraded under v2.
+
+The measurement freezes the effective configuration (including an override),
+the grader prompt, and the implementation before work starts. Each call records
+model identity, CLI version, session description, and prompt/reply hashes.
+Unknown or changed model identities are rejected, and resume validates both
+configuration and cached replies. A changed execution requires a new directory;
+existing evidence is never silently re-labelled. The Claude command also
+skips MCP servers, settings files, and auto memory (`--strict-mcp-config`,
+`--setting-sources ""`, and the `env` entry); earlier Claude runs did not. Successful grader responses
+are retained as `grade-ID.json`. Run-level model names are summaries, not the
+source of per-output provenance.

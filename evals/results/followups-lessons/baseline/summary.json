@@ -1,0 +1,454 @@
+{
+  "cli": {
+    "claude": "2.1.287 (Claude Code)",
+    "codex": "codex-cli 0.160.0"
+  },
+  "families": {
+    "claude": {
+      "generate": [
+        "claude",
+        "-p",
+        "--output-format",
+        "json",
+        "--disable-slash-commands",
+        "--tools",
+        "",
+        "--strict-mcp-config",
+        "--setting-sources",
+        "",
+        "--no-session-persistence"
+      ],
+      "env": {
+        "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"
+      },
+      "json": true,
+      "version": [
+        "claude",
+        "--version"
+      ],
+      "session": "claude -p in an empty temp dir per prompt: no tools or MCP servers, no settings files or auto memory, skills and slash commands disabled, no session persistence, CLI default model and sampling; account-level organization instructions still apply"
+    },
+    "codex": {
+      "generate": [
+        "codex",
+        "exec",
+        "--ephemeral",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "-s",
+        "read-only",
+        "--skip-git-repo-check",
+        "-o",
+        "{out}",
+        "-"
+      ],
+      "version": [
+        "codex",
+        "--version"
+      ],
+      "model_from": "^model: (.+)$",
+      "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling"
+    }
+  },
+  "skill_sha256": "68370eff217fa41dadd56d7e214c3a634ecb42c6943b36f4e7cac9f8e3805183",
+  "cases_sha256": "2c02918e0a16725eb9092f371afc38dba6291e9e1921115fa88e82056b5051a5",
+  "pass_rule": "protected spans kept; no-op cases unchanged after transport normalization; P17/P22 lose their filler, P20 keeps exactly one いただけますでしょうか",
+  "rows": [
+    {
+      "family": "claude",
+      "run": 1,
+      "case": "P17",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 1,
+      "case": "P18",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 1,
+      "case": "P19",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 1,
+      "case": "P20",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 1,
+      "case": "P21",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 1,
+      "case": "P22",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 2,
+      "case": "P17",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 2,
+      "case": "P18",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 2,
+      "case": "P19",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 2,
+      "case": "P20",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 2,
+      "case": "P21",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 2,
+      "case": "P22",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 3,
+      "case": "P17",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 3,
+      "case": "P18",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 3,
+      "case": "P19",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 3,
+      "case": "P20",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "claude",
+      "run": 3,
+      "case": "P21",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "claude",
+      "run": 3,
+      "case": "P22",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 1,
+      "case": "P17",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 1,
+      "case": "P18",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 1,
+      "case": "P19",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 1,
+      "case": "P20",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 1,
+      "case": "P21",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 1,
+      "case": "P22",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 2,
+      "case": "P17",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 2,
+      "case": "P18",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 2,
+      "case": "P19",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 2,
+      "case": "P20",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 2,
+      "case": "P21",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 2,
+      "case": "P22",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 3,
+      "case": "P17",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 3,
+      "case": "P18",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 3,
+      "case": "P19",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": true,
+      "presentation_noop": true,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 3,
+      "case": "P20",
+      "missing": false,
+      "preserved": true,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": true
+    },
+    {
+      "family": "codex",
+      "run": 3,
+      "case": "P21",
+      "missing": false,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": false,
+      "presentation_noop": false,
+      "passed": false
+    },
+    {
+      "family": "codex",
+      "run": 3,
+      "case": "P22",
+      "missing": true,
+      "preserved": false,
+      "removed": null,
+      "exact_noop": null,
+      "presentation_noop": null,
+      "passed": false
+    }
+  ]
+}

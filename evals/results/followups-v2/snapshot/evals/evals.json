@@ -1,0 +1,2169 @@
+{
+  "skill_name": "less",
+  "invocation": "Both arms receive the same removal request, original prompt, and context; only skill context differs. author \"assistant\" marks the agent's own earlier answer to prompt; otherwise the content is the user's. context is supporting material, never the request. Grade meaning against must_keep. protected_spans must remain verbatim; must_remove_spans must disappear. exact_noop requires byte-for-byte equality with before. after is otherwise illustrative.",
+  "evals": [
+    {
+      "id": "E01",
+      "category": "own answer · preamble/recap",
+      "rules": [
+        "W1",
+        "W2"
+      ],
+      "author": "assistant",
+      "prompt": "How do I undo my last Git commit but keep my changes?",
+      "before": "Great question! You're asking how to undo the last Git commit. To undo it while keeping your changes, run `git reset --soft HEAD~1`. I hope this helps! Let me know if you have other questions.",
+      "after": "To undo the last commit and keep your changes, run `git reset --soft HEAD~1`.",
+      "must_keep": [
+        "the command",
+        "\"keep your changes\""
+      ]
+    },
+    {
+      "id": "E02",
+      "category": "own answer · hedges · confirmed source",
+      "rules": [
+        "W3",
+        "M1"
+      ],
+      "author": "assistant",
+      "prompt": "When is the team sync?",
+      "context": "Source (calendar invite): \"Team sync: Thursday 3 PM. Confirmed.\"",
+      "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
+      "after": "The meeting is Thursday at 3 PM.",
+      "must_keep": [
+        "Thursday",
+        "3 PM",
+        "no hedge (the source confirms the time)"
+      ],
+      "bad_after": "The meeting is probably Thursday at 3 PM.",
+      "why_bad": "keeps a hedge the source contradicts; the time is confirmed."
+    },
+    {
+      "id": "E02b",
+      "category": "own answer · hedges · tentative source",
+      "rules": [
+        "W3",
+        "M2"
+      ],
+      "author": "assistant",
+      "prompt": "When is the team sync?",
+      "context": "Source (calendar note): \"Team sync: tentatively Thursday 3 PM, not confirmed yet.\"",
+      "before": "I think it's basically worth noting that the meeting is, in general, probably going to be on Thursday at 3 PM.",
+      "after": "The meeting is probably Thursday at 3 PM.",
+      "must_keep": [
+        "Thursday",
+        "3 PM",
+        "\"probably\" (the source marks the time as tentative)"
+      ],
+      "bad_after": "The meeting is Thursday at 3 PM.",
+      "why_bad": "drops the only hedge; states a tentative time as confirmed."
+    },
+    {
+      "id": "E03",
+      "category": "own answer · duplicates",
+      "rules": [
+        "W4"
+      ],
+      "author": "assistant",
+      "prompt": "My Wi-Fi keeps dropping. What should I try first?",
+      "before": "Restart the router. This often fixes connection issues. Turning the router off and on again is a common fix. Restarting usually resolves the problem.",
+      "after": "Restart the router. This often fixes connection issues.",
+      "must_keep": [
+        "the action"
+      ]
+    },
+    {
+      "id": "E04",
+      "category": "own answer · decoration",
+      "rules": [
+        "W6"
+      ],
+      "author": "assistant",
+      "prompt": "Can I use match statements in Python 3.12?",
+      "before": "## Answer\n\n**Yes.** \n\n- Python 3.12 supports this.",
+      "after": "Yes, Python 3.12 supports this.",
+      "must_keep": [
+        "version number"
+      ]
+    },
+    {
+      "id": "E05",
+      "category": "own answer · unrequested alternatives",
+      "rules": [
+        "W5"
+      ],
+      "author": "assistant",
+      "prompt": "How do I convert a PNG to JPG on macOS?",
+      "before": "Open it in Preview, choose File > Export, and pick JPEG. Alternatively, you could use GIMP, Photoshop, an online converter, or ImageMagick, each with its own pros and cons.",
+      "after": "Open it in Preview, choose File > Export, and pick JPEG.",
+      "must_keep": [
+        "all three steps"
+      ]
+    },
+    {
+      "id": "E06",
+      "category": "user text · tighten, keep voice",
+      "rules": [
+        "W3",
+        "W7",
+        "M7"
+      ],
+      "prompt": "less:",
+      "before": "honestly i'm kinda gonna be late tmrw, like super sorry, the train thing is a mess again, so like maybe 10 min late??",
+      "after": "honestly i'm gonna be late tmrw, super sorry, the train thing is a mess again, so maybe 10 min late??",
+      "must_keep": [
+        "casual lowercase voice",
+        "\"10 min\"",
+        "apology",
+        "Not rewritten into formal English."
+      ]
+    },
+    {
+      "id": "E07",
+      "category": "user text · email draft",
+      "rules": [
+        "W7",
+        "M8"
+      ],
+      "before": "Hi Dana, I just wanted to reach out and touch base to let you know that I've attached the Q3 invoice for your review. Please feel free to let me know if you have any questions at all. Thanks so much!",
+      "after": "Hi Dana, I've attached the Q3 invoice for your review. Let me know if you have any questions. Thanks!",
+      "must_keep": [
+        "greeting",
+        "Q3 invoice",
+        "an invitation to ask questions (it's the user's draft, so it is their call to keep)"
+      ]
+    },
+    {
+      "id": "E08",
+      "category": "over-cut · negation",
+      "rules": [
+        "M1"
+      ],
+      "author": "assistant",
+      "prompt": "When can I run the migration?",
+      "before": "Do not run the migration until the backup has finished. Running it earlier can corrupt the table.",
+      "after": "unchanged, or \"Don't run the migration until the backup finishes; running it earlier can corrupt the table.\"",
+      "must_keep": [
+        "Do not run the migration until the backup has finished",
+        "can corrupt the table"
+      ],
+      "bad_after": "Run the migration. It can corrupt the table.",
+      "why_bad": "drops \"do not … until\", inverting the instruction."
+    },
+    {
+      "id": "E09",
+      "category": "over-cut · safety warning",
+      "rules": [
+        "W5",
+        "M4"
+      ],
+      "author": "assistant",
+      "prompt": "How do I free up disk space on my Mac?",
+      "before": "To free space, delete the `~/Library/Caches` folder contents. Don't delete `~/Library` itself; that removes app settings and can't be undone. This is usually safe and pretty easy.",
+      "after": "To free space, delete the contents of `~/Library/Caches`. Don't delete `~/Library` itself; that removes app settings and can't be undone.",
+      "must_keep": [
+        "Don't delete `~/Library` itself",
+        "can't be undone"
+      ],
+      "bad_after": "To free space, delete the contents of `~/Library/Caches`.",
+      "why_bad": "drops an irreversible-loss warning."
+    },
+    {
+      "id": "E10",
+      "category": "over-cut · required step",
+      "rules": [
+        "M3"
+      ],
+      "author": "assistant",
+      "prompt": "The app keeps showing old data. How do I fix it?",
+      "before": "First, sign out of the app. Then, and this is important, clear the cache in Settings > Storage. After that, sign back in, and you should be all set.",
+      "after": "Sign out, clear the cache in Settings > Storage, then sign back in.",
+      "must_keep": [
+        "clear the cache in Settings > Storage"
+      ],
+      "bad_after": "Sign out, then sign back in.",
+      "why_bad": "drops the step that actually fixes the problem."
+    },
+    {
+      "id": "E11",
+      "category": "over-cut · requested format",
+      "rules": [
+        "W6",
+        "M5"
+      ],
+      "author": "assistant",
+      "prompt": "Give me 3 bullet points on why to use SSH keys.",
+      "before": "- It's worth mentioning that SSH keys are much harder to brute-force than passwords.\n- Another thing to keep in mind is that you don't have to type a password every time.\n- Last but not least, keys can be revoked per machine.",
+      "after": "the same 3 bullets with the lead-ins removed.",
+      "must_keep": [
+        "3 bullets",
+        "all three points"
+      ],
+      "bad_after": "SSH keys resist brute force, skip password typing, and can be revoked per machine.",
+      "why_bad": "the user asked for 3 bullets."
+    },
+    {
+      "id": "E12",
+      "category": "over-cut · exception/condition",
+      "rules": [
+        "W5",
+        "M1"
+      ],
+      "author": "assistant",
+      "prompt": "What's your refund policy?",
+      "before": "Refunds are available within 30 days of purchase, except for gift cards, which are non-refundable.",
+      "after": "unchanged.",
+      "must_keep": [
+        "except for gift cards",
+        "non-refundable"
+      ],
+      "bad_after": "Refunds are available within 30 days.",
+      "why_bad": "drops the exception."
+    },
+    {
+      "id": "E13",
+      "category": "no change · already tight",
+      "rules": [
+        "W3"
+      ],
+      "author": "assistant",
+      "prompt": "Why did my build fail?",
+      "before": "The build failed because `node` 18 is required; you have 16. Run `nvm install 18`.",
+      "after": "unchanged.",
+      "must_keep": [
+        "text unchanged"
+      ]
+    },
+    {
+      "id": "E14",
+      "category": "no change · exclusion",
+      "rules": [],
+      "prompt": "less this",
+      "before": "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND…",
+      "before_note": "(MIT license clause)",
+      "after": "text unchanged, plus one line: \"Left as is: license text must stay verbatim.\"",
+      "must_keep": [
+        "text unchanged",
+        "one line naming the exclusion (license or legal text kept verbatim); any wording"
+      ]
+    },
+    {
+      "id": "E15",
+      "category": "citation survives",
+      "rules": [
+        "W3",
+        "M6"
+      ],
+      "author": "assistant",
+      "prompt": "How much exercise should adults get each week?",
+      "before": "As many experts have often pointed out over the years, and according to the WHO's 2023 report, adults should, generally speaking, aim for at least 150 minutes of moderate activity a week.",
+      "after": "According to the WHO's 2023 report, adults should aim for at least 150 minutes of moderate activity a week.",
+      "must_keep": [
+        "WHO 2023 attribution",
+        "\"at least 150 minutes\"",
+        "\"moderate\"",
+        "\"a week\""
+      ],
+      "note": "E15's facts are input text for the case, not claims made by this spec."
+    },
+    {
+      "id": "E16",
+      "category": "code · restating comments + single-use helper",
+      "rules": [
+        "S1",
+        "S2"
+      ],
+      "prompt": "This AI-written function is bloated. Clean it up.",
+      "before": "def _is_even(n):\n    # check if n is even\n    return n % 2 == 0\n\ndef evens(nums):\n    # loop over nums and keep evens\n    return [n for n in nums if _is_even(n)]\n",
+      "after": "def evens(nums):\n    return [n for n in nums if n % 2 == 0]\n",
+      "must_keep": [
+        "`evens(nums)` name and signature",
+        "same results"
+      ]
+    },
+    {
+      "id": "E17",
+      "category": "code · unrequested options + impossible defense",
+      "rules": [
+        "S3",
+        "S4"
+      ],
+      "prompt": "Simplify this. Remove the path, encoding, and verbose options; it only needs to read config.json as UTF-8 and return the parsed data.",
+      "before": "def load_config(path=\"config.json\", encoding=\"utf-8\", verbose=False):\n    if verbose:\n        print(\"loading\", path)\n    with open(path, encoding=encoding) as f:\n        text = f.read()\n    if text is None:  # f.read() never returns None\n        return {}\n    return json.loads(text)\n",
+      "after": "def load_config():\n    with open(\"config.json\", encoding=\"utf-8\") as f:\n        text = f.read()\n    return json.loads(text)\n",
+      "must_keep": [
+        "reads config.json by default (dropping the `path` parameter is fine: the user said it only reads config.json; behavior and errors must match `before`)",
+        "the file read and parse",
+        "the errors `open` and `json` raise (boundary; see Never remove)"
+      ]
+    },
+    {
+      "id": "E18",
+      "category": "code · over-cut · boundary validation and \"why\" comment",
+      "rules": [
+        "S1",
+        "M10"
+      ],
+      "prompt": "simplify this",
+      "before": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    age = int(raw)  # convert to int\n    return age\n",
+      "after": "def set_age(raw):\n    # The form sends strings; int() raises on \"\", so validate first.\n    if not raw.isdigit():\n        raise ValueError(\"age must be a whole number\")\n    return int(raw)\n",
+      "must_keep": [
+        "# The form sends strings; int() raises on \"\", so validate first.",
+        "if not raw.isdigit():",
+        "raise ValueError(\"age must be a whole number\")"
+      ],
+      "bad_after": "def set_age(raw):\n    return int(raw)\n",
+      "why_bad": "drops validation at a user-input boundary (error message and behavior change) and the \"why\" comment."
+    },
+    {
+      "id": "E19",
+      "category": "code · over-cut · unknown purpose",
+      "rules": [
+        "M11",
+        "M10"
+      ],
+      "prompt": "Remove anything unnecessary from this function.",
+      "before": "def notify_all(users):\n    for user in users:\n        send_email(user)\n        time.sleep(0.2)\n",
+      "after": "unchanged",
+      "bad_after": "def notify_all(users):\n    for user in users:\n        send_email(user)\n",
+      "why_bad": "The pause may be a rate limit or a provider requirement; nothing visible shows it is unneeded, so removing it is a guess (M11).",
+      "must_keep": [
+        "time.sleep(0.2) between sends",
+        "or: unchanged with a note asking what the pause is for"
+      ]
+    },
+    {
+      "id": "N01",
+      "category": "ko prose · preamble/recap",
+      "rules": [
+        "W1",
+        "W2"
+      ],
+      "author": "assistant",
+      "prompt": "배포는 언제 해요? 롤백은 어떻게 하죠?",
+      "before": "좋은 질문이에요! 요약하자면, 배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요. 도움이 되었길 바라요!",
+      "after": "배포는 금요일 오후 3시에 해요. 롤백 스크립트는 `deploy/rollback.sh`예요.",
+      "must_keep": [
+        "금요일 오후 3시",
+        "`deploy/rollback.sh`",
+        "해요체"
+      ]
+    },
+    {
+      "id": "N02",
+      "category": "ko prose · over-cut · negation",
+      "rules": [
+        "M1",
+        "M9"
+      ],
+      "author": "assistant",
+      "prompt": "결제 확인 전에 주문을 취소해도 되나요?",
+      "before": "사실 이건 꼭 말씀드려야 할 것 같은데요, 결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
+      "after": "결제 확인 전에는 절대 주문을 취소하지 마세요. 중복 환불이 생길 수 있어요.",
+      "bad_after": "주문을 취소하세요. 중복 환불이 생길 수 있어요.",
+      "why_bad": "drops '전에는 절대 … 마세요', inverting the instruction.",
+      "must_keep": [
+        "'결제 확인 전에는'",
+        "'절대 … 마세요'",
+        "중복 환불 위험"
+      ]
+    },
+    {
+      "id": "N03",
+      "category": "ko prose · user voice · honorific",
+      "rules": [
+        "W7",
+        "M7",
+        "M9"
+      ],
+      "prompt": "이거 좀 줄여 줘",
+      "before": "팀장님, 혹시 시간 괜찮으시면, 정말 죄송하지만 내일 회의를 오후 2시로 옮겨 주실 수 있으실까요? 혹시 어려우시면 말씀 주세요.",
+      "after": "팀장님, 죄송하지만 내일 회의를 오후 2시로 옮겨 주실 수 있을까요? 어려우시면 말씀 주세요.",
+      "bad_after": "내일 회의 2시로 옮겨 주세요.",
+      "why_bad": "drops the addressee and honorifics; the request becomes a command to a superior.",
+      "must_keep": [
+        "'팀장님'",
+        "존댓말 (-시-, -ㄹ까요)",
+        "내일 오후 2시",
+        "alternative offer"
+      ]
+    },
+    {
+      "id": "N04",
+      "category": "ja prose · filler",
+      "rules": [
+        "W1",
+        "W2",
+        "M9"
+      ],
+      "author": "assistant",
+      "prompt": "APIキーを再発行するにはどうすればいいですか？",
+      "before": "ご質問ありがとうございます。結論から申し上げますと、APIキーは管理画面の「設定 > API」から再発行できます。何かあればお気軽にお尋ねください。",
+      "after": "APIキーは管理画面の「設定 > API」から再発行できます。",
+      "must_keep": [
+        "「設定 > API」",
+        "再発行できます",
+        "です・ます調"
+      ]
+    },
+    {
+      "id": "N05",
+      "category": "ja prose · over-cut · keigo",
+      "rules": [
+        "W1",
+        "M8",
+        "M9"
+      ],
+      "prompt": "もっと短くして",
+      "before": "山田様、いつも大変お世話になっております。誠に恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。何卒よろしくお願い申し上げます。",
+      "after": "山田様、いつもお世話になっております。恐れ入りますが、11月10日までにご請求書をお送りいただけますでしょうか。よろしくお願い申し上げます。",
+      "bad_after": "山田さん、11月10日までに請求書を送ってください。",
+      "why_bad": "drops 様, the opening greeting, and keigo; to a client this reads as rude, which changes meaning.",
+      "must_keep": [
+        "'山田様'",
+        "opening greeting",
+        "謙譲語/尊敬語 (お送りいただけますでしょうか)",
+        "11月10日",
+        "closing よろしくお願い…"
+      ]
+    },
+    {
+      "id": "N06",
+      "category": "ja prose · over-cut · exception",
+      "rules": [
+        "M1"
+      ],
+      "author": "assistant",
+      "prompt": "返品はできますか？",
+      "before": "基本的には、返品は購入後30日以内であれば可能です。ただし、セール品は返品できませんので、ご注意ください。",
+      "after": "返品は購入後30日以内なら可能です。ただし、セール品は返品できません。",
+      "bad_after": "返品は購入後30日以内に可能です。",
+      "why_bad": "drops the sale-item exception.",
+      "must_keep": [
+        "30日以内",
+        "セール品は返品できません",
+        "です・ます調"
+      ]
+    },
+    {
+      "id": "N07",
+      "category": "long doc · section-by-section reduction",
+      "rules": [
+        "W1",
+        "W2",
+        "W3"
+      ],
+      "prompt": "/less this README",
+      "before": "# Quillnote CLI\n\nWelcome to the Quillnote CLI README! In this document, we will walk you through everything you need to know about Quillnote, a command-line tool for turning folders of Markdown notes into a searchable static site. Whether you are a beginner or an experienced user, we hope this guide will be helpful.\n\n## Table of Contents\n\n- [Overview](#overview)\n- [Why This Matters](#why-this-matters)\n- [Requirements](#requirements)\n- [Installation](#installation)\n- [Configuration](#configuration)\n- [Troubleshooting](#troubleshooting)\n- [Summary](#summary)\n- [License](#license)\n\n## Overview\n\nIn this section, we will provide an overview of Quillnote. Essentially, Quillnote is a command-line tool that basically takes a folder of Markdown notes and turns it into a searchable static site. It is designed to be simple, fast, and easy to use. In other words, you give it notes, and it gives you a site.\n\n## Why This Matters\n\nIn today's fast-paced world, knowledge is more important than ever. Notes are a crucial part of how we think, learn, and grow. Having a reliable way to publish your notes can truly transform the way you work. By using Quillnote, you are taking an important step toward a more organized and productive future. We believe that everyone deserves tools that empower them to share their ideas with the world.\n\n## Requirements\n\nBefore we begin, it's worth noting that Quillnote has a few requirements. Please make sure your system meets the following requirements before continuing:\n\n| Requirement | Minimum version | Notes |\n|---|---|---|\n| Node.js | 20.0 | LTS recommended |\n| Git | 2.30 | Needed for `quill deploy` |\n| Disk space | 200 MB | For the search index |\n\nAs mentioned above, these are the minimum versions. Using older versions may potentially cause issues.\n\n## Installation\n\nIn this section, we will go through the installation process step by step. Don't worry, it's quite straightforward!\n\n1. First, open your terminal of choice.\n2. Next, install Quillnote globally by running the following command:\n   ```sh\n   npm install -g quillnote\n   ```\n3. Then, initialize a new project in your notes folder. This creates a `quill.config.json` file:\n   ```sh\n   quill init ./notes\n   ```\n4. After that, build the site:\n   ```sh\n   quill build\n   ```\n5. Finally, preview it locally at `http://localhost:4000`:\n   ```sh\n   quill serve\n   ```\n\nAnd that's it! You have successfully installed Quillnote. Congratulations!\n\n## Configuration\n\nIn this section, we will talk about configuration. Quillnote is configured through the `quill.config.json` file that was created in step 3. Generally speaking, the most important options are:\n\n- `title`: the site title shown in the header.\n- `baseUrl`: the URL where the site will be hosted. This must end with a slash.\n- `exclude`: a list of glob patterns for notes that should not be published.\n\n> **Warning:** Notes are published as-is. Anything not matched by `exclude` will be public after `quill deploy`, including notes that contain private information.\n\nIt's important to remember that the `baseUrl` must end with a slash, as noted above.\n\n## Troubleshooting\n\nIn this section, we will cover some common issues you might run into.\n\n- **`quill: command not found`**: This usually means the global install did not complete. Re-run step 2 and make sure your npm global bin folder is on your `PATH`.\n- **`Missing quill.config.json`**: You probably skipped step 3. Go back to step 3 and run `quill init` in your notes folder.\n- **Search returns no results**: Delete the `.quill/` cache folder and run `quill build` again.\n\nIf none of these solutions work for you, feel free to open an issue. We are always happy to help!\n\n## Summary\n\nTo summarize, in this README we covered what Quillnote is, why it matters, its requirements, how to install it, how to configure it, and how to troubleshoot common problems. We hope you found this guide useful and that you enjoy using Quillnote as much as we enjoyed building it. Happy note-taking!\n\n## License\n\nQuillnote is released under the MIT License. See the `LICENSE` file for details.\n",
+      "after": "# Quillnote CLI\n\nQuillnote turns a folder of Markdown notes into a searchable static site.\n\n## Table of Contents\n\n- [Overview](#overview)\n- [Requirements](#requirements)\n- [Installation](#installation)\n- [Configuration](#configuration)\n- [Troubleshooting](#troubleshooting)\n- [License](#license)\n\n## Overview\n\nQuillnote is a command-line tool: you give it a folder of notes, and it builds a site.\n\n## Requirements\n\n| Requirement | Minimum version | Notes |\n|---|---|---|\n| Node.js | 20.0 | LTS recommended |\n| Git | 2.30 | Needed for `quill deploy` |\n| Disk space | 200 MB | For the search index |\n\nOlder versions may cause issues.\n\n## Installation\n\n1. Open a terminal.\n2. Install Quillnote globally:\n   ```sh\n   npm install -g quillnote\n   ```\n3. Initialize a project in your notes folder. This creates `quill.config.json`:\n   ```sh\n   quill init ./notes\n   ```\n4. Build the site:\n   ```sh\n   quill build\n   ```\n5. Preview it at `http://localhost:4000`:\n   ```sh\n   quill serve\n   ```\n\n## Configuration\n\nQuillnote reads `quill.config.json`, created in step 3. The main options:\n\n- `title`: the site title shown in the header.\n- `baseUrl`: the URL where the site will be hosted. This must end with a slash.\n- `exclude`: a list of glob patterns for notes that should not be published.\n\n> **Warning:** Notes are published as-is. Anything not matched by `exclude` will be public after `quill deploy`, including notes that contain private information.\n\n## Troubleshooting\n\n- **`quill: command not found`**: The global install did not complete. Re-run step 2 and make sure your npm global bin folder is on your `PATH`.\n- **`Missing quill.config.json`**: You skipped step 3. Run `quill init` in your notes folder.\n- **Search returns no results**: Delete the `.quill/` cache folder and run `quill build` again.\n\nIf none of these work, open an issue.\n\n## License\n\nQuillnote is released under the MIT License. See the `LICENSE` file for details.\n",
+      "must_keep": [
+        "headings: Overview, Requirements, Installation, Configuration, Troubleshooting, License",
+        "TOC lists exactly the remaining headings with anchors (#overview, #requirements, #installation, #configuration, #troubleshooting, #license)",
+        "'Why This Matters' and 'Summary' removed from body and TOC",
+        "Requirements table rows: Node.js | 20.0 | LTS recommended; Git | 2.30 | Needed for `quill deploy`; Disk space | 200 MB | For the search index",
+        "installation steps numbered 1–5, same order",
+        "step 3 = `quill init ./notes` and creates `quill.config.json`",
+        "cross-references: Configuration 'created in step 3'; Troubleshooting 'Re-run step 2' and 'skipped step 3'",
+        "commands: `npm install -g quillnote`, `quill init ./notes`, `quill build`, `quill serve`",
+        "`http://localhost:4000`",
+        "`baseUrl` must end with a slash (stated once)",
+        "Warning: notes not matched by `exclude` become public after `quill deploy`",
+        "all three troubleshooting items, including deleting `.quill/`",
+        "MIT License line"
+      ]
+    },
+    {
+      "id": "N08",
+      "category": "long doc · over-cut · structure",
+      "rules": [
+        "M3"
+      ],
+      "prompt": "/less this guide",
+      "before": "# Harborline Restore Guide\n\nThank you for choosing Harborline! In this guide, we will explain how to restore a database from a Harborline backup snapshot. Restoring data can feel stressful, but don't worry: we will go through it together, one step at a time.\n\n## Table of Contents\n\n- [1. Before You Begin](#1-before-you-begin)\n- [2. Restore Steps](#2-restore-steps)\n- [3. Verify the Restore](#3-verify-the-restore)\n- [4. Roll Back a Failed Restore](#4-roll-back-a-failed-restore)\n- [5. The Importance of Backups](#5-the-importance-of-backups)\n- [6. Snapshot Retention](#6-snapshot-retention)\n\n## 1. Before You Begin\n\nIn this section, we will cover what you need before you begin. It's generally a good idea to prepare in advance. Basically, you will need:\n\n- Admin access to the Harborline console.\n- The `harbor` CLI, version 3.2 or later.\n- The ID of the snapshot you want to restore.\n\n> **Warning:** A restore overwrites the target database. Any writes made after the snapshot was taken will be lost unless you complete step 2.3.\n\n## 2. Restore Steps\n\nNow that you have everything ready, let's go through the restore steps. Please follow them carefully and in order.\n\n2.1. Log in to the CLI:\n```sh\nharbor login\n```\n\n2.2. List available snapshots and note the ID you want:\n```sh\nharbor snapshots list --db orders\n```\n\n2.3. Take a safety snapshot of the current state, so you can roll back if needed:\n```sh\nharbor snapshots create --db orders --tag pre-restore\n```\n\n2.4. Put the database in maintenance mode to stop new writes:\n```sh\nharbor db maintenance on --db orders\n```\n\n2.5. Run the restore:\n```sh\nharbor restore --db orders --snapshot <SNAPSHOT_ID>\n```\n\n2.6. Turn maintenance mode off:\n```sh\nharbor db maintenance off --db orders\n```\n\nGreat job! You have now completed the restore steps.\n\n## 3. Verify the Restore\n\nIn this section, we will verify the restore. Verification is an important step that you should not skip. To verify, run:\n\n```sh\nharbor db check --db orders\n```\n\nIf the check reports errors, do not turn maintenance mode back on manually. Instead, go to section 4 and roll back using the safety snapshot from step 2.3.\n\n## 4. Roll Back a Failed Restore\n\nIf something went wrong, don't panic! You can roll back to the safety snapshot you took in step 2.3:\n\n```sh\nharbor restore --db orders --snapshot-tag pre-restore\n```\n\nThen repeat step 2.6 to turn maintenance mode off.\n\n## 5. The Importance of Backups\n\nBackups are one of the most important parts of any data strategy. Without backups, organizations risk losing valuable information. With Harborline, you can have peace of mind knowing that your data is safe and recoverable. We truly believe that reliable backups are the foundation of a resilient business.\n\n## 6. Snapshot Retention\n\nSnapshots are kept according to your plan. As a quick reference:\n\n| Plan | Retention | Safety snapshots |\n|---|---|---|\n| Starter | 7 days | Deleted after 24 hours |\n| Team | 30 days | Deleted after 7 days |\n| Enterprise | 90 days | Kept until deleted manually |\n\nIn summary, this guide showed you how to prepare, restore, verify, roll back, and understand retention. We hope it was helpful!\n",
+      "after": "# Harborline Restore Guide\n\nHow to restore a database from a Harborline backup snapshot.\n\n## Table of Contents\n\n- [1. Before You Begin](#1-before-you-begin)\n- [2. Restore Steps](#2-restore-steps)\n- [3. Verify the Restore](#3-verify-the-restore)\n- [4. Roll Back a Failed Restore](#4-roll-back-a-failed-restore)\n- [6. Snapshot Retention](#6-snapshot-retention)\n\n## 1. Before You Begin\n\nYou need:\n\n- Admin access to the Harborline console.\n- The `harbor` CLI, version 3.2 or later.\n- The ID of the snapshot you want to restore.\n\n> **Warning:** A restore overwrites the target database. Any writes made after the snapshot was taken will be lost unless you complete step 2.3.\n\n## 2. Restore Steps\n\nFollow these in order.\n\n2.1. Log in to the CLI:\n```sh\nharbor login\n```\n\n2.2. List available snapshots and note the ID you want:\n```sh\nharbor snapshots list --db orders\n```\n\n2.3. Take a safety snapshot of the current state, so you can roll back if needed:\n```sh\nharbor snapshots create --db orders --tag pre-restore\n```\n\n2.4. Put the database in maintenance mode to stop new writes:\n```sh\nharbor db maintenance on --db orders\n```\n\n2.5. Run the restore:\n```sh\nharbor restore --db orders --snapshot <SNAPSHOT_ID>\n```\n\n2.6. Turn maintenance mode off:\n```sh\nharbor db maintenance off --db orders\n```\n\n## 3. Verify the Restore\n\nDon't skip this. Run:\n\n```sh\nharbor db check --db orders\n```\n\nIf the check reports errors, do not turn maintenance mode back on manually. Go to section 4 and roll back using the safety snapshot from step 2.3.\n\n## 4. Roll Back a Failed Restore\n\nRoll back to the safety snapshot from step 2.3:\n\n```sh\nharbor restore --db orders --snapshot-tag pre-restore\n```\n\nThen repeat step 2.6 to turn maintenance mode off.\n\n## 6. Snapshot Retention\n\n| Plan | Retention | Safety snapshots |\n|---|---|---|\n| Starter | 7 days | Deleted after 24 hours |\n| Team | 30 days | Deleted after 7 days |\n| Enterprise | 90 days | Kept until deleted manually |\n",
+      "must_keep": [
+        "headings: 1. Before You Begin, 2. Restore Steps, 3. Verify the Restore, 4. Roll Back a Failed Restore, 6. Snapshot Retention (renumbering 6 to 5 is acceptable; nothing references it)",
+        "TOC matches the remaining headings; '5. The Importance of Backups' removed from body and TOC",
+        "steps 2.1–2.6 keep their numbers and order",
+        "step 2.3 safety snapshot: `harbor snapshots create --db orders --tag pre-restore`",
+        "cross-references: Warning 'unless you complete step 2.3'; section 3 'go to section 4' and 'step 2.3'; section 4 'step 2.3' and 'repeat step 2.6'",
+        "Warning: a restore overwrites the target database; writes after the snapshot are lost",
+        "'do not turn maintenance mode back on manually'",
+        "commands: `harbor login`, `harbor snapshots list --db orders`, `harbor db maintenance on --db orders`, `harbor restore --db orders --snapshot <SNAPSHOT_ID>`, `harbor db maintenance off --db orders`, `harbor db check --db orders`, `harbor restore --db orders --snapshot-tag pre-restore`",
+        "retention table rows: Starter | 7 days | Deleted after 24 hours; Team | 30 days | Deleted after 7 days; Enterprise | 90 days | Kept until deleted manually"
+      ],
+      "bad_after": "# Harborline Restore Guide\n\nYou need admin access, the `harbor` CLI 3.2+, and a snapshot ID. A restore overwrites the target database.\n\n1. Log in: `harbor login`\n2. List snapshots: `harbor snapshots list --db orders`\n3. Enable maintenance mode: `harbor db maintenance on --db orders`\n4. Restore: `harbor restore --db orders --snapshot <SNAPSHOT_ID>`\n5. Disable maintenance mode: `harbor db maintenance off --db orders`\n6. Verify: `harbor db check --db orders`. If it reports errors, roll back using the safety snapshot from step 2.3 (see section 4).\n\nRetention: Starter 7 days, Team 30 days, Enterprise 90 days.\n",
+      "why_bad": "Removes all headings and the TOC, so readers can't navigate. Drops step 2.3 (the safety snapshot) while the text still says 'step 2.3', so the rollback has nothing to roll back to. Renumbers steps 2.1–2.6 to 1–6, breaking 'step 2.3' and 'step 2.6'. Merges section 4 away, so 'see section 4' points nowhere. Weakens the warning (drops lost writes) and the 'do not turn maintenance mode back on manually' instruction. Flattens the retention table and loses the safety-snapshot column."
+    },
+    {
+      "id": "N09",
+      "category": "PR description · padding",
+      "rules": [
+        "W1",
+        "W2",
+        "W3"
+      ],
+      "prompt": "tighten this PR description",
+      "before": "## Summary\nThis PR is a really important change that I think will help a lot. It basically fixes the bug where the editor loses the cursor position after save.\n\n## Changes\n- Store cursor position before save\n- Restore it after save\n\n## Testing\nI tested it manually and it seems to work fine.\n\nFixes #42\n\nLet me know if you have any feedback!",
+      "after": "## Summary\nFixes the editor losing the cursor position after save.\n\n## Changes\n- Store cursor position before save\n- Restore it after save\n\n## Testing\nTested manually.\n\nFixes #42",
+      "must_keep": [
+        "'Fixes #42'",
+        "both changes",
+        "Testing section",
+        "section headers (repo template)"
+      ]
+    },
+    {
+      "id": "N10",
+      "category": "PR description · over-cut · breaking change",
+      "rules": [
+        "M3"
+      ],
+      "prompt": "make this shorter",
+      "before": "This PR renames the config key `timeout` to `timeout_ms` to make the unit clear. **Breaking change:** existing configs using `timeout` will be ignored; users must rename the key. I added a warning log when `timeout` is found. Hope this makes sense!",
+      "after": "Renames config key `timeout` to `timeout_ms` to make the unit clear. **Breaking change:** configs using `timeout` are ignored; rename the key. Logs a warning when `timeout` is found.",
+      "bad_after": "Renames `timeout` to `timeout_ms`.",
+      "why_bad": "drops the breaking-change notice and the migration step.",
+      "must_keep": [
+        "Breaking change notice",
+        "users must rename the key",
+        "warning log"
+      ]
+    },
+    {
+      "id": "N11",
+      "category": "commit message · padding",
+      "rules": [
+        "W2",
+        "W3"
+      ],
+      "prompt": "clean up this AI-written commit message",
+      "before": "fix(reader): restore scroll position when returning from Reader\n\nThis commit carefully and thoughtfully fixes an issue where, when the user returned from Reader mode, the scroll position was not restored, which was frustrating. Now we save the offset on exit because the view is recreated.\n\nCloses #13",
+      "after": "fix(reader): restore scroll position when returning from Reader\n\nSave the offset on exit, because the view is recreated.\n\nCloses #13",
+      "must_keep": [
+        "'fix(reader):' prefix",
+        "'Closes #13'",
+        "the why: view is recreated"
+      ]
+    },
+    {
+      "id": "N12",
+      "category": "commit message · over-cut · why and ref",
+      "rules": [
+        "M3",
+        "M6"
+      ],
+      "prompt": "shorten",
+      "before": "chore(deps): pin sqlite to 3.45.1\n\n3.46.0 changes the default of `PRAGMA trusted_schema`, which breaks our migrations. Pin until #88 lands.\n\nRefs #88",
+      "after": "unchanged",
+      "bad_after": "chore(deps): pin sqlite",
+      "why_bad": "drops the version, the why, and the issue ref; a later reader can't tell when to unpin.",
+      "must_keep": [
+        "'chore(deps):' prefix",
+        "3.45.1",
+        "why (trusted_schema breaks migrations)",
+        "'Refs #88'"
+      ]
+    },
+    {
+      "id": "N13",
+      "category": "code · over-cut · boundary error check",
+      "rules": [
+        "S4",
+        "M10"
+      ],
+      "prompt": "simplify this",
+      "before": "def fetch_user(session, uid):\n    resp = session.get(f\"/users/{uid}\", timeout=5)\n    if resp.status_code == 404:\n        return None\n    resp.raise_for_status()\n    return resp.json()\n",
+      "after": "unchanged",
+      "bad_after": "def fetch_user(session, uid):\n    return session.get(f\"/users/{uid}\").json()\n",
+      "why_bad": "removes the network timeout, 404 handling, and status check at a real boundary; behavior changes.",
+      "must_keep": [
+        "timeout=5",
+        "404 -> None",
+        "raise_for_status()"
+      ]
+    },
+    {
+      "id": "N14",
+      "category": "code · over-cut · why comment",
+      "rules": [
+        "S1",
+        "M10"
+      ],
+      "prompt": "remove unnecessary comments",
+      "before": "// i is the index\nfor (let i = items.length - 1; i >= 0; i--) {\n  // Iterate backwards: splice() shifts later indices.\n  if (items[i].done) items.splice(i, 1);\n}\n",
+      "after": "for (let i = items.length - 1; i >= 0; i--) {\n  // Iterate backwards: splice() shifts later indices.\n  if (items[i].done) items.splice(i, 1);\n}\n",
+      "bad_after": "for (let i = items.length - 1; i >= 0; i--) {\n  if (items[i].done) items.splice(i, 1);\n}\n",
+      "why_bad": "removes the why comment; a later edit to a forward loop reintroduces the bug.",
+      "must_keep": [
+        "backwards-iteration comment",
+        "loop direction"
+      ]
+    },
+    {
+      "id": "N15",
+      "category": "code · over-cut · public signature",
+      "rules": [
+        "S3",
+        "M10"
+      ],
+      "prompt": "simplify this module",
+      "before": "__all__ = [\"parse\"]\n\ndef parse(text, *, strict=False):\n    \"\"\"Public. strict raises on unknown keys.\"\"\"\n    return _parse(text, strict)\n",
+      "after": "unchanged (strict is public API; _parse may be shared)",
+      "bad_after": "def parse(text):\n    return _parse(text, False)\n",
+      "why_bad": "removes a public keyword argument; callers passing strict=True break.",
+      "must_keep": [
+        "parse(text, *, strict=False) signature",
+        "__all__",
+        "docstring"
+      ]
+    },
+    {
+      "id": "N16",
+      "category": "code · over-cut · test-only hook",
+      "rules": [
+        "S2",
+        "M10"
+      ],
+      "prompt": "remove dead code",
+      "before": "class Clock:\n    def __init__(self, now=time.time):\n        self._now = now  # injectable for tests\n\n    def elapsed(self, start):\n        return self._now() - start\n",
+      "after": "unchanged",
+      "bad_after": "class Clock:\n    def elapsed(self, start):\n        return time.time() - start\n",
+      "why_bad": "removes the test seam; tests that inject a fake clock fail.",
+      "must_keep": [
+        "now parameter",
+        "injectable comment"
+      ]
+    },
+    {
+      "id": "N17",
+      "category": "code · over-cut · type annotation",
+      "rules": [
+        "M10"
+      ],
+      "prompt": "clean this up",
+      "before": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: float\n    y: float\n",
+      "after": "unchanged",
+      "bad_after": "class Point:\n    pass\n",
+      "why_bad": "in a dataclass the annotations define the fields; removing them changes behavior.",
+      "must_keep": [
+        "x: float",
+        "y: float",
+        "@dataclass"
+      ]
+    },
+    {
+      "id": "N18",
+      "category": "code · positive · AI bloat",
+      "rules": [
+        "S1",
+        "S2"
+      ],
+      "prompt": "this AI-written code is bloated, cut it down",
+      "before": "from typing import List\n\nclass SumStrategy:\n    def apply(self, values: List[int]) -> int:\n        # sum the values\n        total = 0\n        for v in values:\n            total += v\n        return total\n\ndef total(values: List[int]) -> int:\n    return SumStrategy().apply(values)\n",
+      "after": "from typing import List\n\ndef total(values: List[int]) -> int:\n    total = 0\n    for v in values:\n        total += v\n    return total\n",
+      "must_keep": [
+        "total(values) name and signature",
+        "same results incl. empty list -> 0"
+      ]
+    },
+    {
+      "id": "D01",
+      "category": "design · cards in cards",
+      "rules": [
+        "C2",
+        "C3"
+      ],
+      "format": "html",
+      "prompt": "Clean up this pricing card; it looks AI-generated.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>.card{border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:16px}</style></head><body><main><div class=\"card\"><div class=\"card\"><h2>Pro</h2><p data-testid=\"price\">$12/mo</p><button>Start trial</button></div></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>.card{border:1px solid #ddd;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:16px}</style></head><body><main><div class=\"card\"><h2>Pro</h2><p data-testid=\"price\">$12/mo</p><button>Start trial</button></div></main></body></html>",
+      "must_keep": [
+        "plan name 'Pro'",
+        "price '$12/mo'",
+        "'Start trial' button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Pro"
+        ],
+        [
+          "button",
+          "Start trial"
+        ]
+      ],
+      "must_keep_selectors": [
+        "[data-testid=price]"
+      ],
+      "must_remove_hint": [
+        "nested .card"
+      ],
+      "must_remove_selectors": [
+        ".card .card"
+      ],
+      "must_remove_nested_surfaces": true
+    },
+    {
+      "id": "D02",
+      "category": "design · gradient and glow hero",
+      "rules": [
+        "C1"
+      ],
+      "format": "html",
+      "prompt": "This hero is too busy. Simplify it.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Home</title><style>body{margin:0;color:#111}.hero{padding:48px 16px;background:linear-gradient(135deg,#f5f0ff,#e0f2ff)}.orb{position:absolute;width:300px;height:300px;border-radius:50%;background:#c4b5fd;filter:blur(64px);opacity:.5}h1{font-size:40px}@media (max-width:600px){h1{font-size:28px}}</style></head><body><main><section class=\"hero\"><div class=\"orb\" aria-hidden=\"true\"></div><h1>Track every shipment</h1><a href=\"/signup\">Get started</a></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Home</title><style>body{margin:0;color:#111}.hero{padding:48px 16px}h1{font-size:40px}@media (max-width:600px){h1{font-size:28px}}</style></head><body><main><section class=\"hero\"><h1>Track every shipment</h1><a href=\"/signup\">Get started</a></section></main></body></html>",
+      "must_keep": [
+        "headline",
+        "'Get started' link to /signup",
+        "mobile font-size breakpoint"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Track every shipment"
+        ],
+        [
+          "link",
+          "Get started"
+        ]
+      ],
+      "must_keep_selectors": [
+        "a[href='/signup']",
+        "@media (max-width:600px)"
+      ],
+      "must_remove_hint": [
+        "linear-gradient",
+        ".orb"
+      ],
+      "must_remove_selectors": [
+        ".orb"
+      ],
+      "must_remove_text": [
+        "linear-gradient"
+      ],
+      "must_remove_computed_background": true
+    },
+    {
+      "id": "D03",
+      "category": "design · eyebrows + emoji icons",
+      "rules": [
+        "C4",
+        "C6"
+      ],
+      "format": "html",
+      "prompt": "Declutter this features section.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:#555}</style></head><body><main><section><span class=\"eyebrow\">Features</span><h2>Features</h2><ul><li>🚀 Fast sync across devices</li><li>🔒 End-to-end encryption</li><li>✨ Offline mode</li></ul></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:12px;color:#555}</style></head><body><main><section><h2>Features</h2><ul><li>Fast sync across devices</li><li>End-to-end encryption</li><li>Offline mode</li></ul></section></main></body></html>",
+      "must_keep": [
+        "heading 'Features'",
+        "all three features as a list"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Features"
+        ],
+        [
+          "list",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "ul > li:nth-child(3)"
+      ],
+      "must_remove_hint": [
+        "eyebrow span",
+        "emoji"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow"
+      ],
+      "must_remove_rendered_text": [
+        "🚀",
+        "🔒",
+        "✨"
+      ]
+    },
+    {
+      "id": "D04",
+      "category": "design · unrequested logo strip and testimonials",
+      "rules": [
+        "C7"
+      ],
+      "format": "html",
+      "prompt": "I only asked for a signup form. Clean this up.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sign up</title><style></style></head><body><main><h1>Sign up</h1><form><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required><button type=\"submit\">Sign up</button></form><section><h2>Trusted by</h2><img src=\"data:,\" alt=\"Logo\"><img src=\"data:,\" alt=\"Logo\"></section><section><blockquote>\"Best tool ever!\" — Happy Customer</blockquote></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Sign up</title><style></style></head><body><main><h1>Sign up</h1><form><label for=\"email\">Email</label><input id=\"email\" name=\"email\" type=\"email\" required><button type=\"submit\">Sign up</button></form></main></body></html>",
+      "must_keep": [
+        "Email label and input",
+        "required email field",
+        "'Sign up' submit button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Sign up"
+        ],
+        [
+          "textbox",
+          "Email"
+        ],
+        [
+          "button",
+          "Sign up"
+        ]
+      ],
+      "must_keep_selectors": [
+        "input[name=email][type=email][required]",
+        "button[type=submit]"
+      ],
+      "must_remove_hint": [
+        "Trusted by section",
+        "testimonial"
+      ],
+      "must_remove_rendered_text": [
+        "Trusted by",
+        "\"Best tool ever!\" — Happy Customer"
+      ],
+      "must_remove_selectors": [
+        "img[alt=\"Logo\"]"
+      ]
+    },
+    {
+      "id": "D05",
+      "category": "design · filler copy in a form",
+      "rules": [
+        "C8"
+      ],
+      "format": "html",
+      "prompt": "Trim this contact page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Contact</title><style></style></head><body><main><h1>Contact us</h1><p>Empower your team to connect, collaborate, and create. We're here for you, every step of the way.</p><form><label for=\"msg\">Message</label><textarea id=\"msg\" name=\"message\"></textarea><p>We reply within 2 business days.</p><button type=\"submit\">Send</button></form></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Contact</title><style></style></head><body><main><h1>Contact us</h1><form><label for=\"msg\">Message</label><textarea id=\"msg\" name=\"message\"></textarea><p>We reply within 2 business days.</p><button type=\"submit\">Send</button></form></main></body></html>",
+      "must_keep": [
+        "Message label and textarea",
+        "'We reply within 2 business days.'",
+        "'Send' button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Contact us"
+        ],
+        [
+          "textbox",
+          "Message"
+        ],
+        [
+          "button",
+          "Send"
+        ]
+      ],
+      "must_keep_selectors": [
+        "textarea[name=message]"
+      ],
+      "must_remove_hint": [
+        "slogan paragraph"
+      ],
+      "must_remove_rendered_text": [
+        "Empower your team to connect, collaborate, and create. We're here for you, every step of the way."
+      ]
+    },
+    {
+      "id": "D06",
+      "category": "design · animation everywhere, reduced-motion present",
+      "rules": [
+        "C9",
+        "K6"
+      ],
+      "format": "html",
+      "prompt": "There's too much motion here. Simplify.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1}}section{animation:up .6s}.card{transition:all .3s}.card:hover{transform:scale(1.03)}button{transition:background-color .15s}button:hover{background:#1e40af;color:#fff}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}</style></head><body><main><section><h2>Plans</h2><div class=\"card\"><h3>Basic</h3><button>Choose Basic</button></div></section><section><h2>FAQ</h2><p>Cancel anytime.</p></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>button{transition:background-color .15s}button:hover{background:#1e40af;color:#fff}@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}</style></head><body><main><section><h2>Plans</h2><div class=\"card\"><h3>Basic</h3><button>Choose Basic</button></div></section><section><h2>FAQ</h2><p>Cancel anytime.</p></section></main></body></html>",
+      "must_keep": [
+        "button hover feedback",
+        "prefers-reduced-motion block",
+        "both sections"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Plans"
+        ],
+        [
+          "heading",
+          "FAQ"
+        ],
+        [
+          "button",
+          "Choose Basic"
+        ]
+      ],
+      "must_keep_selectors": [
+        "@media (prefers-reduced-motion: reduce)",
+        "button:hover"
+      ],
+      "must_remove_hint": [
+        "@keyframes up",
+        "transition:all",
+        ".card:hover"
+      ],
+      "must_remove_text": [
+        "@keyframes up",
+        "transition:all",
+        ".card:hover"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "body *",
+          "properties": {
+            "animation-name": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "category": "design · over-cut · only boundary",
+      "rules": [
+        "C2",
+        "K4"
+      ],
+      "format": "html",
+      "prompt": "Remove the extra borders and shadows.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}input{background:#fff;border:1px solid #767676;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px}input{background:#fff;border:1px solid #767676;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>body{background:#fff}.panel{padding:16px}input{background:#fff;border:none;padding:8px}</style></head><body><main><form class=\"panel\"><label for=\"q\">Search orders</label><input id=\"q\" name=\"q\" type=\"search\"><button type=\"submit\">Search</button></form></main></body></html>",
+      "why_bad": "The input's border is its only boundary on a white page; removing it fails WCAG 1.4.11 (research-design.md §3). axe does not test 1.4.11, so the selector check on the border declaration catches it.",
+      "must_keep": [
+        "input border 1px solid #767676",
+        "Search orders label",
+        "Search button"
+      ],
+      "must_keep_roles": [
+        [
+          "searchbox",
+          "Search orders"
+        ],
+        [
+          "button",
+          "Search"
+        ]
+      ],
+      "must_keep_selectors": [
+        "input{background:#fff;border:1px solid #767676"
+      ],
+      "must_remove_hint": [
+        ".panel box-shadow",
+        ".panel border"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "form",
+          "properties": {
+            "border-top-width": "0px",
+            "border-right-width": "0px",
+            "border-bottom-width": "0px",
+            "border-left-width": "0px",
+            "box-shadow": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "category": "design · over-cut · requested element",
+      "rules": [
+        "C1",
+        "K10",
+        "K11"
+      ],
+      "format": "html",
+      "prompt": "Simplify this hero. Keep the brand gradient.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Brightside</title><style>body{margin:0}.hero{padding:48px 16px;color:#111;background:linear-gradient(90deg,#ffd6a5,#fdffb6)}</style></head><body><main><section class=\"hero\"><h1>Brightside Café</h1><a href=\"/menu\">See the menu</a></section></main></body></html>",
+      "after": "unchanged",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Brightside</title><style>body{margin:0}.hero{padding:48px 16px;color:#111}</style></head><body><main><section class=\"hero\"><h1>Brightside Café</h1><a href=\"/menu\">See the menu</a></section></main></body></html>",
+      "why_bad": "The user asked to keep the gradient; nothing else fails the test, so the correct output is unchanged.",
+      "must_keep": [
+        "unchanged",
+        "brand gradient"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Brightside Café"
+        ],
+        [
+          "link",
+          "See the menu"
+        ]
+      ],
+      "must_keep_selectors": [
+        "linear-gradient(90deg,#ffd6a5,#fdffb6)"
+      ]
+    },
+    {
+      "id": "D09",
+      "category": "design · over-cut · accessible name and focus",
+      "rules": [
+        "C4",
+        "K1",
+        "K5"
+      ],
+      "format": "html",
+      "prompt": "Declutter this dialog.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>button:focus-visible{outline:2px solid #1a56db;outline-offset:2px}.icon{width:32px;height:32px}.eyebrow{text-transform:uppercase;font-size:12px}</style></head><body><main><div role=\"dialog\" aria-labelledby=\"t\"><span class=\"eyebrow\">✨ Heads up</span><h2 id=\"t\">Delete project?</h2><p>This can't be undone.</p><button class=\"icon\" aria-label=\"Close dialog\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>button:focus-visible{outline:2px solid #1a56db;outline-offset:2px}.icon{width:32px;height:32px}</style></head><body><main><div role=\"dialog\" aria-labelledby=\"t\"><h2 id=\"t\">Delete project?</h2><p>This can't be undone.</p><button class=\"icon\" aria-label=\"Close dialog\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Dialog</title><style>.icon{width:32px;height:32px}</style></head><body><main><div role=\"dialog\"><h2>Delete project?</h2><button class=\"icon\"><svg aria-hidden=\"true\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M2 2l12 12M14 2L2 14\" stroke=\"currentColor\"/></svg></button><button>Delete</button></div></main></body></html>",
+      "why_bad": "Drops aria-label (new axe button-name violation), the focus-visible style (K5), the dialog's name, and the irreversibility warning.",
+      "must_keep": [
+        "'This can't be undone.'",
+        "Close button's accessible name",
+        "focus-visible outline",
+        "dialog labelled by heading"
+      ],
+      "must_keep_roles": [
+        [
+          "dialog",
+          "Delete project?"
+        ],
+        [
+          "button",
+          "Close dialog"
+        ],
+        [
+          "button",
+          "Delete"
+        ]
+      ],
+      "must_keep_selectors": [
+        "button:focus-visible",
+        "[aria-label='Close dialog']"
+      ],
+      "must_remove_hint": [
+        "eyebrow span"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow"
+      ],
+      "must_remove_rendered_text": [
+        "Heads up"
+      ]
+    },
+    {
+      "id": "D10",
+      "category": "design · over-cut · state branches",
+      "rules": [
+        "C4",
+        "K8"
+      ],
+      "format": "html",
+      "prompt": "Remove anything unused from this orders panel.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style>.badge{background:#eef;border-radius:999px;padding:2px 8px;font-size:12px}</style></head><body><main><section><span class=\"badge\">New</span><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul><p id=\"loading\" role=\"status\" hidden>Loading orders…</p><p id=\"empty\" hidden>No orders yet.</p><p id=\"error\" role=\"alert\" hidden>Couldn't load orders. Try again.</p></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style></style></head><body><main><section><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul><p id=\"loading\" role=\"status\" hidden>Loading orders…</p><p id=\"empty\" hidden>No orders yet.</p><p id=\"error\" role=\"alert\" hidden>Couldn't load orders. Try again.</p></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Orders</title><style></style></head><body><main><section><h2>Orders</h2><ul id=\"list\"><li>#1042 · Shipped</li></ul></section></main></body></html>",
+      "why_bad": "Hidden loading, empty and error states look unused in static markup but are shown by app code; deleting them removes state handling (research-design.md §3, WCAG 3.3.1, 4.1.3).",
+      "must_keep": [
+        "loading, empty and error states",
+        "error text 'Couldn't load orders. Try again.'"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Orders"
+        ],
+        [
+          "list",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "#loading[role=status]",
+        "#empty",
+        "#error[role=alert]"
+      ],
+      "must_remove_hint": [
+        "'New' badge"
+      ],
+      "must_remove_selectors": [
+        ".badge"
+      ],
+      "must_remove_rendered_text": [
+        "New"
+      ]
+    },
+    {
+      "id": "D11",
+      "category": "design · JSX + Tailwind · cards in cards, eyebrow",
+      "rules": [
+        "C3",
+        "C4",
+        "K1"
+      ],
+      "format": "jsx",
+      "prompt": "This profile form looks AI-generated. Strip it down.",
+      "before": "export function ProfileForm({ onSave }) {\n  return (\n    <main className=\"p-4\">\n      <div className=\"rounded-xl border border-gray-200 p-4 shadow-md\">\n        <div className=\"rounded-xl border border-gray-200 p-4 shadow-md\">\n          <span className=\"text-xs tracking-widest text-gray-700 uppercase\">✨ Profile</span>\n          <h2 className=\"text-xl font-semibold\">Display name</h2>\n          <form onSubmit={onSave}>\n            <label htmlFor=\"name\" className=\"block text-sm\">Name</label>\n            <input id=\"name\" name=\"displayName\" className=\"rounded border border-gray-500 px-2 py-1\" />\n            <button type=\"submit\" className=\"mt-2 rounded bg-blue-700 px-3 py-2 text-white\">Save</button>\n          </form>\n        </div>\n      </div>\n    </main>\n  );\n}\n",
+      "after": "export function ProfileForm({ onSave }) {\n  return (\n    <main className=\"p-4\">\n      <div className=\"rounded-xl border border-gray-200 p-4 shadow-md\">\n        <h2 className=\"text-xl font-semibold\">Display name</h2>\n        <form onSubmit={onSave}>\n          <label htmlFor=\"name\" className=\"block text-sm\">Name</label>\n          <input id=\"name\" name=\"displayName\" className=\"rounded border border-gray-500 px-2 py-1\" />\n          <button type=\"submit\" className=\"mt-2 rounded bg-blue-700 px-3 py-2 text-white\">Save</button>\n        </form>\n      </div>\n    </main>\n  );\n}\n",
+      "bad_after": "export function ProfileForm({ onSave }) {\n  return (\n    <main className=\"p-4\">\n      <h2 className=\"text-xl font-semibold\">Display name</h2>\n      <form>\n        <input id=\"name\" className=\"px-2 py-1\" />\n        <button className=\"mt-2 bg-blue-700 px-3 py-2 text-white\">Save</button>\n      </form>\n    </main>\n  );\n}\n",
+      "why_bad": "Drops the label (K1), the submit handler and form field name (behavior), and the input's only boundary (K4).",
+      "must_keep": [
+        "'Display name' heading",
+        "Name label tied to the input",
+        "onSubmit handler and name=\"displayName\"",
+        "Save submit button"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Display name"
+        ],
+        [
+          "textbox",
+          "Name"
+        ],
+        [
+          "button",
+          "Save"
+        ]
+      ],
+      "must_keep_selectors": [
+        "input[name=displayName]",
+        "button[type=submit]",
+        "onSubmit={onSave}",
+        "input.border.border-gray-500"
+      ],
+      "must_remove_hint": [
+        "nested card div",
+        "eyebrow span"
+      ],
+      "must_remove_rendered_text": [
+        "✨ Profile"
+      ],
+      "must_remove_nested_surfaces": true
+    },
+    {
+      "id": "D12",
+      "category": "design · JSX + Tailwind · over-cut · focus ring",
+      "rules": [
+        "C1",
+        "C2",
+        "C9",
+        "K5"
+      ],
+      "format": "jsx",
+      "prompt": "Remove the extra effects from this toolbar.",
+      "before": "export function Toolbar() {\n  return (\n    <main className=\"p-4\">\n      <nav aria-label=\"Editor\" className=\"flex gap-2 p-2 bg-gradient-to-r from-indigo-50 to-sky-50\">\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-700 shadow-lg transition-all hover:scale-105\">Bold</button>\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-700 shadow-lg transition-all hover:scale-105\">Italic</button>\n      </nav>\n    </main>\n  );\n}\n",
+      "after": "export function Toolbar() {\n  return (\n    <main className=\"p-4\">\n      <nav aria-label=\"Editor\" className=\"flex gap-2 p-2\">\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-700\">Bold</button>\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-blue-700\">Italic</button>\n      </nav>\n    </main>\n  );\n}\n",
+      "bad_after": "export function Toolbar() {\n  return (\n    <main className=\"p-4\">\n      <nav aria-label=\"Editor\" className=\"flex gap-2 p-2\">\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none\">Bold</button>\n        <button type=\"button\" className=\"rounded px-3 py-2 outline-none\">Italic</button>\n      </nav>\n    </main>\n  );\n}\n",
+      "why_bad": "outline-none stays but the focus-visible ring is gone, so keyboard focus is invisible (K5, WCAG 2.4.7).",
+      "must_keep": [
+        "Bold and Italic buttons",
+        "outline-none paired with focus-visible ring",
+        "nav landmark named Editor"
+      ],
+      "must_keep_roles": [
+        [
+          "navigation",
+          "Editor"
+        ],
+        [
+          "button",
+          "Bold"
+        ],
+        [
+          "button",
+          "Italic"
+        ]
+      ],
+      "must_keep_selectors": [
+        "focus-visible:ring-2"
+      ],
+      "must_remove_hint": [
+        "shadow-lg",
+        "transition-all",
+        "hover:scale-105",
+        "bg-gradient-to-r"
+      ],
+      "must_remove_text": [
+        "shadow-lg",
+        "transition-all",
+        "hover:scale-105",
+        "bg-gradient-to-r"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "nav",
+          "properties": {
+            "background-image": "none"
+          }
+        },
+        {
+          "selector": "button",
+          "properties": {
+            "box-shadow": "none",
+            "transition-duration": "0s",
+            "transform": "none",
+            "scale": "none"
+          },
+          "hover": false
+        },
+        {
+          "selector": "button",
+          "properties": {
+            "box-shadow": "none",
+            "transition-duration": "0s",
+            "transform": "none",
+            "scale": "none"
+          },
+          "hover": true
+        }
+      ]
+    },
+    {
+      "id": "D13",
+      "category": "design · translucent sticky header over content, plus real decoration",
+      "rules": [
+        "C1",
+        "C4",
+        "C6",
+        "K12"
+      ],
+      "format": "html",
+      "prompt": "This landing page looks cluttered. Clean it up.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}.blob{position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%%;background:radial-gradient(#c4b5fd,transparent);filter:blur(60px);z-index:-1}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:12px;text-transform:uppercase;letter-spacing:.1em}.card{border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.1)}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><div class=\"blob\"></div><section><span class=\"pill\">✨ New</span><h2><span aria-hidden=\"true\">✨</span> Invoices in one place</h2><div class=\"card\"><p>Send, track, and reconcile invoices.</p></div></section><section><h2><span aria-hidden=\"true\">🚀</span> Reports</h2><div class=\"card\"><p>Monthly totals by client.</p></div></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><section><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><section><h2>Reports</h2><p>Monthly totals by client.</p></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Ledgerly</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}header{position:sticky;top:0;display:flex;gap:1rem;align-items:center;padding:.75rem 1rem;background:rgba(255,255,255,.88);}header a{color:#111}main{padding:1rem}section{min-height:90vh}h2{font-size:2rem}</style></head><body><header><strong>Ledgerly</strong><nav aria-label=\"Main\"><a href=\"/pricing\">Pricing</a> <a href=\"/docs\">Docs</a></nav></header><main><section><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><section><h2>Reports</h2><p>Monthly totals by client.</p></section></main></body></html>",
+      "why_bad": "Drops the header's backdrop-filter as decoration but keeps the 88% fill, so section headings show through the header while scrolling.",
+      "must_keep": [
+        "header text stays legible while scrolling: keep the backdrop blur, or make the header background opaque",
+        "sticky header with logo and nav links",
+        "both sections and their copy"
+      ],
+      "must_keep_roles": [
+        [
+          "navigation",
+          "Main"
+        ],
+        [
+          "link",
+          "Pricing"
+        ],
+        [
+          "link",
+          "Docs"
+        ],
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "heading",
+          "Reports"
+        ]
+      ],
+      "must_keep_selectors": [
+        "header",
+        "header nav a[href='/pricing']"
+      ],
+      "must_remove_hint": [
+        ".blob",
+        ".pill",
+        "box-shadow:0 10px 30px",
+        "emoji in headings"
+      ],
+      "must_remove_rendered_text": [
+        "✨",
+        "🚀",
+        "New"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "main *",
+          "properties": {
+            "filter": "none",
+            "box-shadow": "none"
+          }
+        },
+        {
+          "selector": "header",
+          "properties": {
+            "position": "sticky"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D14",
+      "category": "design · fake sequence markers + keep list semantics",
+      "rules": [
+        "C5",
+        "K2"
+      ],
+      "format": "html",
+      "prompt": "Clean up this features block.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.num{font-weight:700;color:#6b7280;margin-right:.5rem}</style></head><body><main><h2>Why Ledgerly</h2><ul><li><span class=\"num\">01</span> Send invoices</li><li><span class=\"num\">02</span> Track payments</li><li><span class=\"num\">03</span> Export reports</li></ul></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Why Ledgerly</h2><ul><li>Send invoices</li><li>Track payments</li><li>Export reports</li></ul></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Why Ledgerly</h2><div><div>Send invoices</div><div>Track payments</div><div>Export reports</div></div></main></body></html>",
+      "why_bad": "Drops the markers but flattens the list into divs, so screen readers lose the list and its item count (K2, WCAG 1.3.1).",
+      "must_keep": [
+        "heading 'Why Ledgerly'",
+        "the three features as list items"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Why Ledgerly"
+        ],
+        [
+          "list",
+          ""
+        ],
+        [
+          "listitem",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "ul li"
+      ],
+      "must_remove_hint": [
+        "01/02/03 markers: the features have no order"
+      ],
+      "must_remove_selectors": [
+        ".num"
+      ],
+      "must_remove_rendered_text": [
+        "01",
+        "02",
+        "03"
+      ]
+    },
+    {
+      "id": "D15",
+      "category": "design · over-cut · real sequence",
+      "rules": [
+        "C5",
+        "K2"
+      ],
+      "format": "html",
+      "prompt": "Remove any clutter from this setup page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Setup</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Set up sync</h2><ol><li>Install the CLI</li><li>Run ledgerly login</li><li>Run ledgerly sync</li></ol></main></body></html>",
+      "after": "unchanged",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Setup</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><h2>Set up sync</h2><ul><li>Install the CLI</li><li>Run ledgerly login</li><li>Run ledgerly sync</li></ul></main></body></html>",
+      "why_bad": "The steps must run in order; turning the ordered list into bullets drops the numbering readers follow (C5 is for fake sequences only).",
+      "must_keep": [
+        "ordered list with the three steps in order"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Set up sync"
+        ],
+        [
+          "list",
+          ""
+        ]
+      ],
+      "must_keep_selectors": [
+        "ol li"
+      ],
+      "must_remove_hint": []
+    },
+    {
+      "id": "D16",
+      "category": "design · duplicate labels",
+      "rules": [
+        "C10",
+        "C4"
+      ],
+      "format": "html",
+      "prompt": "This pricing card feels busy. Simplify it.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:#4b5563;margin:0}</style></head><body><main><section><p class=\"eyebrow\">Pricing</p><h2>Pricing</h2><p>$12 per user per month.</p><button title=\"Download price list\">Download price list</button></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><section><h2>Pricing</h2><p>$12 per user per month.</p><button>Download price list</button></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><section><h2>Pricing</h2><p>$12 per user per month.</p></section></main></body></html>",
+      "why_bad": "Removes the button itself, not just its duplicate tooltip.",
+      "must_keep": [
+        "heading 'Pricing'",
+        "price text",
+        "button 'Download price list'"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Pricing"
+        ],
+        [
+          "button",
+          "Download price list"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "eyebrow repeating the heading",
+        "title repeating the button text"
+      ],
+      "must_remove_selectors": [
+        ".eyebrow",
+        "[title]"
+      ]
+    },
+    {
+      "id": "D17",
+      "category": "design · over-cut · icon button name",
+      "rules": [
+        "C10",
+        "K1"
+      ],
+      "format": "html",
+      "prompt": "Remove anything redundant from this invoice row.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoice</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font-size:20px;min-width:44px;min-height:44px}</style></head><body><main><p>Invoice #1042 · $240</p><button aria-label=\"Delete invoice 1042\" title=\"Delete invoice 1042\">🗑</button></main></body></html>",
+      "after": "unchanged",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoice</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}button{font-size:20px;min-width:44px;min-height:44px}</style></head><body><main><p>Invoice #1042 · $240</p><button>🗑</button></main></body></html>",
+      "why_bad": "The icon has no visible text, so the label and tooltip are the button's only name; removing them leaves an unlabeled delete button (K1, WCAG 4.1.2).",
+      "must_keep": [
+        "button named 'Delete invoice 1042'",
+        "invoice number and amount ('#1042 · $240' is data, not chrome)"
+      ],
+      "must_keep_roles": [
+        [
+          "button",
+          "Delete invoice 1042"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": []
+    },
+    {
+      "id": "D18",
+      "category": "design · appended arrows + route arrow + link cue",
+      "rules": [
+        "C11",
+        "K7"
+      ],
+      "format": "html",
+      "prompt": "Clean up this trips page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Trips</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}a{color:#1d4ed8;text-decoration:underline}p{color:#111}</style></head><body><main><h2>Trips</h2><p>Your trip: Tokyo → Osaka, Friday 9:40.</p><p>Need to change it? See <a href=\"/policy\">the change policy</a> before you book.</p><ul><li><a href=\"/trips/1\">Tokyo trip details →</a></li><li><a href=\"/trips/2\">Kyoto trip details →</a></li></ul></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Trips</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}a{color:#1d4ed8;text-decoration:underline}p{color:#111}</style></head><body><main><h2>Trips</h2><p>Your trip: Tokyo → Osaka, Friday 9:40.</p><p>Need to change it? See <a href=\"/policy\">the change policy</a> before you book.</p><ul><li><a href=\"/trips/1\">Tokyo trip details</a></li><li><a href=\"/trips/2\">Kyoto trip details</a></li></ul></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Trips</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}a{color:#1d4ed8;text-decoration:none}p{color:#111}</style></head><body><main><h2>Trips</h2><p>Your trip: Tokyo → Osaka, Friday 9:40.</p><p>Need to change it? See <a href=\"/policy\">the change policy</a> before you book.</p><ul><li><a href=\"/trips/1\">Tokyo trip details</a></li><li><a href=\"/trips/2\">Kyoto trip details</a></li></ul></main></body></html>",
+      "why_bad": "Removes the arrows but also the underline, so the inline link differs from body text by color alone (K7, WCAG 1.4.1).",
+      "must_keep": [
+        "'Tokyo → Osaka' (the arrow is the route)",
+        "inline link to the change policy, visibly a link",
+        "both trip links"
+      ],
+      "must_keep_roles": [
+        [
+          "link",
+          "the change policy"
+        ]
+      ],
+      "must_keep_selectors": [
+        "a[href='/trips/1']",
+        "a[href='/trips/2']"
+      ],
+      "must_remove_hint": [
+        "arrows appended to the 'Tokyo trip details →' and 'Kyoto trip details →' links"
+      ],
+      "must_remove_text": [
+        "details →"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "p a",
+          "properties": {
+            "text-decoration-line": "underline"
+          }
+        }
+      ],
+      "must_keep_rendered_text": [
+        "Tokyo → Osaka"
+      ]
+    },
+    {
+      "id": "D19",
+      "category": "design · overridden CSS + responsive rule",
+      "rules": [
+        "C12",
+        "K9"
+      ],
+      "format": "html",
+      "prompt": "Tidy up the CSS on this plans page.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.row{display:flex;gap:16px}.row>div{flex:0 0 200px}.price{font-weight:400}.price{font-weight:700}@media (max-width:600px){.row{flex-direction:column}}</style></head><body><main><h2>Plans</h2><div class=\"row\"><div><h3>Solo</h3><p class=\"price\">$8</p></div><div><h3>Team</h3><p class=\"price\">$12</p></div><div><h3>Business</h3><p class=\"price\">$20</p></div></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.row{display:flex;gap:16px}.row>div{flex:0 0 200px}.price{font-weight:700}@media (max-width:600px){.row{flex-direction:column}}</style></head><body><main><h2>Plans</h2><div class=\"row\"><div><h3>Solo</h3><p class=\"price\">$8</p></div><div><h3>Team</h3><p class=\"price\">$12</p></div><div><h3>Business</h3><p class=\"price\">$20</p></div></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Plans</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.row{display:flex;gap:16px}.row>div{flex:0 0 200px}.price{font-weight:700}</style></head><body><main><h2>Plans</h2><div class=\"row\"><div><h3>Solo</h3><p class=\"price\">$8</p></div><div><h3>Team</h3><p class=\"price\">$12</p></div><div><h3>Business</h3><p class=\"price\">$20</p></div></div></main></body></html>",
+      "why_bad": "Treats the media query as a repeat of .row and deletes it; at 320px the three 200px plans overflow sideways (K9, WCAG 1.4.10).",
+      "must_keep": [
+        "the max-width:600px media query that stacks the plans",
+        "bold prices"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Plans"
+        ],
+        [
+          "heading",
+          "Solo"
+        ],
+        [
+          "heading",
+          "Team"
+        ],
+        [
+          "heading",
+          "Business"
+        ]
+      ],
+      "must_keep_selectors": [
+        "@media (max-width:600px)"
+      ],
+      "must_remove_hint": [
+        ".price{font-weight:400}, overridden by the next rule"
+      ],
+      "must_remove_text": [
+        "font-weight:400"
+      ],
+      "must_have_styles": [
+        {
+          "selector": ".price",
+          "properties": {
+            "font-weight": "700"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D20",
+      "category": "design · gradient wash under white text",
+      "rules": [
+        "C1",
+        "K3"
+      ],
+      "format": "html",
+      "prompt": "Remove the decorative gradient from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.hero{padding:2rem;color:#eef2ff;background:linear-gradient(135deg,#1e3a8a,#312e81)}.hero a{color:#eef2ff}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p><a href=\"/signup\">Start free</a></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.hero{padding:2rem;color:#eef2ff;background:#1e3a8a}.hero a{color:#eef2ff}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p><a href=\"/signup\">Start free</a></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.hero{padding:2rem;color:#eef2ff}.hero a{color:#eef2ff}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p><a href=\"/signup\">Start free</a></section></main></body></html>",
+      "why_bad": "Deletes the background along with the gradient, leaving white text on a white page (K3, WCAG 1.4.3).",
+      "must_keep": [
+        "hero text readable: replace the gradient with a solid fill (for example its first stop) or dark text",
+        "heading, copy, and signup link"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "link",
+          "Start free"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "linear-gradient wash"
+      ],
+      "must_remove_computed_background": true
+    },
+    {
+      "id": "P01",
+      "category": "paired preservation · certainty",
+      "rules": [
+        "W3"
+      ],
+      "pair_id": "certainty",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "분명히 말하자면, 배포는 금요일입니다.",
+      "after": "배포는 금요일입니다.",
+      "must_keep": [
+        "배포는 금요일입니다."
+      ],
+      "protected_spans": [
+        "배포는 금요일입니다."
+      ],
+      "must_remove_spans": [
+        "분명히 말하자면,"
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P02",
+      "category": "paired preservation · certainty",
+      "rules": [
+        "W3",
+        "M2"
+      ],
+      "pair_id": "certainty",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "배포는 아마 금요일일 것입니다.",
+      "after": "배포는 아마 금요일일 것입니다.",
+      "must_keep": [
+        "배포는 아마 금요일일 것입니다."
+      ],
+      "protected_spans": [
+        "배포는 아마 금요일일 것입니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "배포는 금요일입니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P03",
+      "category": "paired preservation · scope",
+      "rules": [
+        "W3"
+      ],
+      "pair_id": "scope",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "참고로 말씀드리면, 일부 환경에서 약 50%의 요청이 실패할 수 있습니다.",
+      "after": "일부 환경에서 약 50%의 요청이 실패할 수 있습니다.",
+      "must_keep": [
+        "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
+      ],
+      "protected_spans": [
+        "일부 환경에서 약 50%의 요청이 실패할 수 있습니다."
+      ],
+      "must_remove_spans": [
+        "참고로 말씀드리면,"
+      ],
+      "exact_noop": false,
+      "bad_after": "50%의 요청이 실패합니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P04",
+      "category": "paired preservation · scope",
+      "rules": [
+        "M2"
+      ],
+      "pair_id": "scope",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "이 결과는 시험 환경에만 해당합니다. 약 50%의 요청이 실패했습니다. 재시도는 최대 3회 허용됩니다.",
+      "after": "이 결과는 시험 환경에만 해당합니다. 약 50%의 요청이 실패했습니다. 재시도는 최대 3회 허용됩니다.",
+      "must_keep": [
+        "이 결과는 시험 환경에만 해당합니다.",
+        "약 50%의 요청이 실패했습니다.",
+        "재시도는 최대 3회 허용됩니다."
+      ],
+      "protected_spans": [
+        "이 결과는 시험 환경에만 해당합니다.",
+        "약 50%의 요청이 실패했습니다.",
+        "재시도는 최대 3회 허용됩니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "50%의 요청이 실패했습니다. 재시도는 3회 허용됩니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P05",
+      "category": "paired preservation · ending",
+      "rules": [
+        "W2",
+        "W4"
+      ],
+      "pair_id": "ending",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "캐시는 60초 후 만료됩니다. 여기까지 읽으셨다면 이제 캐시가 60초 후 만료된다는 점을 이해하셨을 것입니다.",
+      "after": "캐시는 60초 후 만료됩니다.",
+      "must_keep": [
+        "캐시는 60초 후 만료됩니다."
+      ],
+      "protected_spans": [
+        "캐시는 60초 후 만료됩니다."
+      ],
+      "must_remove_spans": [
+        "여기까지 읽으셨다면 이제 캐시가 60초 후 만료된다는 점을 이해하셨을 것입니다."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P06",
+      "category": "paired preservation · ending",
+      "rules": [
+        "W2",
+        "W4",
+        "M3"
+      ],
+      "pair_id": "ending",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "캐시는 60초 후 만료됩니다. 따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요.",
+      "after": "캐시는 60초 후 만료됩니다. 따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요.",
+      "must_keep": [
+        "캐시는 60초 후 만료됩니다.",
+        "따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요."
+      ],
+      "protected_spans": [
+        "캐시는 60초 후 만료됩니다.",
+        "따라서 갱신 직후 확인하려면 캐시를 먼저 비우세요."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "캐시는 60초 후 만료됩니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P07",
+      "category": "paired preservation · causality",
+      "rules": [
+        "W3"
+      ],
+      "pair_id": "causality",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "이 대목에서 잠시 시야를 넓혀 볼 필요가 있습니다. 지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "after": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "must_keep": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "protected_spans": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "must_remove_spans": [
+        "이 대목에서 잠시 시야를 넓혀 볼 필요가 있습니다."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P08",
+      "category": "paired preservation · causality",
+      "rules": [
+        "M2"
+      ],
+      "pair_id": "causality",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "after": "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다.",
+      "must_keep": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "protected_spans": [
+        "지연 증가는 재시도 증가와 관련이 있지만 인과관계는 확인되지 않았습니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "지연 증가가 재시도 증가의 원인입니다.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P09",
+      "category": "paired preservation · obligation",
+      "rules": [
+        "W3"
+      ],
+      "pair_id": "obligation",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "For completeness: All inputs must be validated. Secrets must never appear in logs.",
+      "after": "All inputs must be validated. Secrets must never appear in logs.",
+      "must_keep": [
+        "Secrets must never appear in logs.",
+        "all inputs must be validated: preserve universal scope and obligation"
+      ],
+      "protected_spans": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "must_remove_spans": [
+        "For completeness:"
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P10",
+      "category": "paired preservation · obligation",
+      "rules": [
+        "M2"
+      ],
+      "pair_id": "obligation",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "All inputs must be validated. Secrets must never appear in logs.",
+      "after": "All inputs must be validated. Secrets must never appear in logs.",
+      "must_keep": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "protected_spans": [
+        "All inputs must be validated.",
+        "Secrets must never appear in logs."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Inputs should be validated. Secrets should not appear in logs.",
+      "why_bad": "Drops or changes load-bearing scope, uncertainty, causal meaning, obligation, or a required next action."
+    },
+    {
+      "id": "P11",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W3",
+        "W7"
+      ],
+      "pair_id": "compression",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "Just so you know, the parser rejects a bad date, exits with code 2, and writes nothing.",
+      "after": "The parser rejects a bad date, exits with code 2, and writes nothing.",
+      "must_keep": [
+        "parser rejects a bad date, exits with code 2, and writes nothing: one complete sentence"
+      ],
+      "protected_spans": [
+        "parser rejects a bad date, exits with code 2, and writes nothing."
+      ],
+      "must_remove_spans": [
+        "Just so you know,"
+      ],
+      "exact_noop": false,
+      "bad_after": "Parser rejects bad date → exit 2, no write.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P12",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W7"
+      ],
+      "pair_id": "compression",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "The parser rejects a bad date, exits with code 2, and writes nothing.",
+      "after": "The parser rejects a bad date, exits with code 2, and writes nothing.",
+      "must_keep": [
+        "The parser rejects a bad date, exits with code 2, and writes nothing."
+      ],
+      "protected_spans": [
+        "The parser rejects a bad date, exits with code 2, and writes nothing."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Parser: bad date → exit 2, no write.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P13",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W3",
+        "W7"
+      ],
+      "pair_id": "compression-ko",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "참고로, 날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "after": "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "must_keep": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다: 완결된 문장"
+      ],
+      "protected_spans": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다."
+      ],
+      "must_remove_spans": [
+        "참고로,"
+      ],
+      "exact_noop": false,
+      "bad_after": "날짜 오류 → 종료 코드 2, 기록 없음.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P14",
+      "category": "paired preservation · compression",
+      "rules": [
+        "W7"
+      ],
+      "pair_id": "compression-ko",
+      "split": "tune",
+      "prompt": "Trim unnecessary material from this draft; preserve its meaning and voice.",
+      "before": "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "after": "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다.",
+      "must_keep": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다."
+      ],
+      "protected_spans": [
+        "날짜 형식이 잘못되면 파서는 종료 코드 2로 끝나고 아무것도 기록하지 않습니다."
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "날짜 오류 시 종료 코드 2, 기록 없음.",
+      "why_bad": "Compresses complete sentences into arrows, fragments, or dropped articles, so the reader has to decode instead of read."
+    },
+    {
+      "id": "P15",
+      "category": "paired preservation · redundant heading",
+      "rules": [
+        "W4"
+      ],
+      "pair_id": "headings",
+      "split": "tune",
+      "note": "Measures #34 section 4: the current rule keeps every heading or opt-out, so this case may fail until a narrower rule is measured. Do not change the rule from this case alone.",
+      "prompt": "Trim this doc; keep anything readers navigate by.",
+      "before": "# Deploying\n\n## Deploying\n\nRun `make deploy` from the main branch. Deploys take about ten minutes.\n",
+      "after": "# Deploying\n\nRun `make deploy` from the main branch. Deploys take about ten minutes.\n",
+      "must_keep": [
+        "# Deploying",
+        "Run `make deploy` from the main branch. Deploys take about ten minutes."
+      ],
+      "protected_spans": [
+        "# Deploying",
+        "Run `make deploy` from the main branch. Deploys take about ten minutes."
+      ],
+      "must_remove_spans": [
+        "## Deploying"
+      ],
+      "exact_noop": false,
+      "bad_after": "Run `make deploy` from the main branch.",
+      "why_bad": "Drops the document title and the duration along with the duplicate heading."
+    },
+    {
+      "id": "P16",
+      "category": "paired preservation · headings a TOC links to",
+      "rules": [
+        "W4",
+        "M3"
+      ],
+      "pair_id": "headings",
+      "split": "tune",
+      "prompt": "Trim this doc; keep anything readers navigate by.",
+      "before": "## Contents\n\n- [Setup](#setup)\n- [Usage](#usage)\n\n## Setup\n\nRun `make setup`.\n\n## Usage\n\nRun `make run`.\n",
+      "after": "## Contents\n\n- [Setup](#setup)\n- [Usage](#usage)\n\n## Setup\n\nRun `make setup`.\n\n## Usage\n\nRun `make run`.\n",
+      "must_keep": [
+        "## Setup",
+        "## Usage",
+        "- [Setup](#setup)",
+        "- [Usage](#usage)"
+      ],
+      "protected_spans": [
+        "## Setup",
+        "## Usage",
+        "- [Setup](#setup)",
+        "- [Usage](#usage)"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "Run `make setup`, then `make run`.\n",
+      "why_bad": "Merges the sections and drops the headings the contents links point to, breaking #setup and #usage."
+    },
+    {
+      "id": "D21",
+      "category": "design · orphaned reduced-motion rule",
+      "rules": [
+        "C9",
+        "K6"
+      ],
+      "format": "html",
+      "note": "Measures #34 section 4: the current rule keeps every heading or opt-out, so this case may fail until a narrower rule is measured. Do not change the rule from this case alone.",
+      "prompt": "Remove the entrance animation from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{animation:rise .6s ease-out}@media (prefers-reduced-motion:reduce){.hero{animation:none}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@media (prefers-reduced-motion:reduce){.hero{animation:none}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section></main></body></html>",
+      "why_bad": "Keeps a prefers-reduced-motion rule that no longer turns anything off.",
+      "must_keep": [
+        "heading and copy"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the rise animation, its keyframes, and the opt-out that only covered it"
+      ],
+      "must_remove_text": [
+        "@keyframes rise",
+        "prefers-reduced-motion"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "section",
+          "properties": {
+            "animation-name": "none"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D22",
+      "category": "design · over-cut · opt-out still covers a spinner",
+      "rules": [
+        "C9",
+        "K6"
+      ],
+      "format": "html",
+      "prompt": "Remove the entrance animation from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.hero{animation:rise .6s ease-out}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class=\"spinner\" role=\"status\" aria-label=\"Loading invoices\"></div></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class=\"spinner\" role=\"status\" aria-label=\"Loading invoices\"></div></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}@keyframes spin{to{transform:rotate(360deg)}}.spinner{width:24px;height:24px;border:3px solid #ccc;border-top-color:#1d4ed8;border-radius:50%;animation:spin 1s linear infinite}</style></head><body><main><section class=\"hero\"><h2>Invoices in one place</h2><p>Send, track, and reconcile invoices.</p></section><div class=\"spinner\" role=\"status\" aria-label=\"Loading invoices\"></div></main></body></html>",
+      "why_bad": "Removes the reduced-motion opt-out while the loading spinner still animates (K6, WCAG 2.3.3).",
+      "must_keep": [
+        "loading spinner and its animation",
+        "the prefers-reduced-motion opt-out, which still covers the spinner"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "status",
+          "Loading invoices"
+        ]
+      ],
+      "must_keep_selectors": [
+        "@media (prefers-reduced-motion:reduce)",
+        "@keyframes spin"
+      ],
+      "must_remove_hint": [
+        "the hero's rise animation and its keyframes"
+      ],
+      "must_remove_text": [
+        "@keyframes rise"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "section",
+          "properties": {
+            "animation-name": "none"
+          }
+        },
+        {
+          "selector": ".spinner",
+          "properties": {
+            "animation-name": "spin"
+          }
+        },
+        {
+          "selector": ".spinner",
+          "properties": {
+            "animation-name": "none"
+          },
+          "reduced_motion": true
+        }
+      ]
+    },
+    {
+      "id": "P17",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "W1",
+        "W2",
+        "M3"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "Good question! Run `python --version`. A successful response looks like Python 3.12.8. Happy to help!",
+      "after": "Run `python --version`. A successful response looks like Python 3.12.8.",
+      "must_keep": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "protected_spans": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P18",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "M3"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "Run `python --version`. A successful response looks like Python 3.12.8.",
+      "after": "Run `python --version`. A successful response looks like Python 3.12.8.",
+      "must_keep": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "protected_spans": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "exact_noop": true
+    },
+    {
+      "id": "P19",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "M9"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "must_keep": [
+        "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+      ],
+      "protected_spans": [
+        "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+      ],
+      "exact_noop": true
+    },
+    {
+      "id": "P20",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "W3",
+        "M9"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "田中様、念のため申し添えますが、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "田中様、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "must_keep": [
+        "田中様、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+      ],
+      "protected_spans": [
+        "田中様、資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P21",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "S2",
+        "M10"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "after": "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "must_keep": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "protected_spans": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "exact_noop": true
+    },
+    {
+      "id": "P22",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "S1",
+        "S2",
+        "M10"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "def retries(env):\n    # read retries\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "after": "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "must_keep": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "protected_spans": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "exact_noop": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+```python
+from typing import List
+
+def total(values: List[int]) -> int:
+    total = 0
+    for v in values:
+        total += v
+    return total
+```

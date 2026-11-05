@@ -1985,7 +1985,7 @@
       ],
       "must_have_styles": [
         {
-          "selector": ".hero",
+          "selector": "section",
           "properties": {
             "animation-name": "none"
           }
@@ -2031,7 +2031,7 @@
       ],
       "must_have_styles": [
         {
-          "selector": ".hero",
+          "selector": "section",
           "properties": {
             "animation-name": "none"
           }
@@ -2050,6 +2050,125 @@
           "reduced_motion": true
         }
       ]
+    },
+    {
+      "id": "P17",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "W1",
+        "W2",
+        "M3"
+      ],
+      "author": "assistant",
+      "prompt": "How do I check which Python version is installed?",
+      "before": "Good question! Run `python --version`. A successful response looks like Python 3.12.8. Happy to help!",
+      "after": "Run `python --version`. A successful response looks like Python 3.12.8.",
+      "must_keep": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "protected_spans": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P18",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "M3"
+      ],
+      "author": "assistant",
+      "prompt": "How do I check which Python version is installed?",
+      "before": "Run `python --version`. A successful response looks like Python 3.12.8.",
+      "after": "Run `python --version`. A successful response looks like Python 3.12.8.",
+      "must_keep": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "protected_spans": [
+        "Run `python --version`. A successful response looks like Python 3.12.8."
+      ],
+      "exact_noop": true
+    },
+    {
+      "id": "P19",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "M9"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "must_keep": [
+        "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+      ],
+      "protected_spans": [
+        "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。"
+      ],
+      "exact_noop": true
+    },
+    {
+      "id": "P20",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "W4",
+        "M9"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。金曜までに資料をお送りいただけますでしょうか。よろしくお願いいたします。",
+      "after": "田中様、お世話になっております。資料を金曜までにお送りいただけますでしょうか。よろしくお願いいたします。",
+      "must_keep": [
+        "the request in its original register (いただけますでしょうか)",
+        "the greeting and sign-off"
+      ],
+      "protected_spans": [
+        "田中様、お世話になっております。",
+        "お送りいただけますでしょうか",
+        "よろしくお願いいたします。"
+      ],
+      "exact_noop": false
+    },
+    {
+      "id": "P21",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "S2",
+        "M10"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "after": "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "must_keep": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "protected_spans": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "exact_noop": true
+    },
+    {
+      "id": "P22",
+      "category": "paired preservation · held-out lesson",
+      "split": "tune",
+      "rules": [
+        "S1",
+        "S2",
+        "M10"
+      ],
+      "prompt": "Remove unnecessary material; keep meaning and voice.",
+      "before": "def retries(env):\n    # read retries\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "after": "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n",
+      "must_keep": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "protected_spans": [
+        "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
+      ],
+      "exact_noop": false
     }
   ]
 }

@@ -105,13 +105,21 @@ beyond what is stated above. Each future results directory includes a
 `run.json` (written by `run.py prompts`) with input and prompt hashes, the
 model, sampling, session setup, grader, and every attempt.
 
-The current suite adds 14 paired preservation cases and 8 cases that cover
-every remaining rule ID (72 total). See the
+The current regression suite has 82 cases, including preservation pairs,
+rule-coverage examples, and the newly encoded over-editing lessons. See the
 [evaluation guide](evals/README.md) for separate removal, preservation, damage,
-and exact no-op checks. No updated model performance result is claimed.
-The next measurement follows the held-out protocol in the evaluation guide:
-unseen cases, two or more model families, and blind grading by a model from
-another family.
+and exact no-op checks. The completed v0.3.4 measurement above used ten distinct
+cases, repeated three times per family; repetitions are not independent cases.
+A [protocol-v2 candidate experiment](evals/results/followups-v2.md) is also
+complete, with failed absolute gates; its rule changes were not adopted. The
+[lesson cases](evals/results/followups-lessons.md) reproduce two of the three
+v0.3.4 misses with the shipping rules. A candidate sentence for one of them
+passes on Claude but has not run on codex, so it is not adopted. The Claude
+runs in all three measurements loaded the account's MCP servers and memory;
+`measure.json` now isolates them. The next optimization claim requires fresh
+cases and frozen execution provenance. Organic installed-skill and always-on
+measurements remain outstanding. Historical v0.3.3 figures use a different
+protocol.
 
 ## License
 

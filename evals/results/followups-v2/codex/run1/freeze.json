@@ -1,0 +1,432 @@
+{
+  "inputs": {
+    "skills/less/SKILL.md": "c404c12f5c841e7cb7315158b2a509ff6123679191899013983da79e5ca14dda",
+    "skills/less/references/design.md": "64fe6cda220c04fdd2c806d7f154966b4008053be88642f48ed249c612a7aeae",
+    "evals/run.py": "18e6bea79ceffd28109d931db6d9f29dba7580db25f996af882799cc0fe2b5e3",
+    "evals/protocol.py": "14e0f37c782d6a3fb969fddae1ad54c8b29742f47de12f89a5d4b477d2325b2f",
+    "evals/protocol.json": "245e3f58b9b0d0fc451117827c27d1d42b408d9734994f6b2fb07cc19fe69836",
+    "evals/heldout.json": "b7b493e60ca93e2ce5d2cab08d36b7dd2584a8afca57213298a473f2e45290ee",
+    "evals/measure.py": "1650d905f84c90fe32a06cf637051247b25afcceb49c12ea579ab44655ba5ac6",
+    "evals/measure.json": "7ee1f2cef4f50215c751bca7e4f9a6ffe3c662703f691e6d2451ae16157c7248"
+  },
+  "prompts": {
+    "V01.with.md": "f74c5395dd0a7c3ea80b817b906912104e4c4dedbae5219600ba9eb4d8e7f843",
+    "V01.without.md": "aaeb7882ed4b39a65c2b73401db8fb83a945c18b21671f70126a270c13d384fb",
+    "V02.with.md": "dd61b2e46bb6a11d237c206f53d6780919db3549a1c9329b3fbbfb83ac80723d",
+    "V02.without.md": "d2f6b13f89f247f236c2c53e95f3fade3f989868095c6c4dec34d70220eb2fc6",
+    "V03.with.md": "5b5242fd7921385025120aab85dc9fe567c0e9ae1d4362b9a34f7772b1fb2c84",
+    "V03.without.md": "7964e13046da259ff1101201a677c08b30e8ba1ebaea8c5b9acaaa7593490e6c",
+    "V04.with.md": "d17403e9feb72ca49dd863c8ae2c65c49daca21fa526f691f8a7d06a936dbb1e",
+    "V04.without.md": "14248c462cb4f7011d40330adbd75e805dcc90982be1f3207178c1113773e64f",
+    "V05.with.md": "3c492e19a381e516d345bfee8ae2a6eb987565d1c1012e7b5c497a68b34142ce",
+    "V05.without.md": "e7732eedca5e1ae63aaa6f493b6cecf533fd97f6806c8e019cfdf28730f7ab4d",
+    "V06.with.md": "1d5541e1f890a718cafd5182487a75c63fb926122366b80002f66b3a8357c882",
+    "V06.without.md": "0eeed48b12df766e3add24fa6bdfeb204f7572b5e3b3ed49817d994620f0bcbf",
+    "V07.with.md": "6bc77df86d3b34a321b05f3db5f6f6f5682c0fe1f1609fcceaefa80e5e6842e3",
+    "V07.without.md": "e497616ce88a082f84e7b3b747e85996052558a17c2469ac51ee1707f99fe9b3",
+    "V08.with.md": "4b20b353208df658f6f1f2bc70f44905e068d3b126b91f4feebbf8cc0f6083f8",
+    "V08.without.md": "d8dfcd6ba7551033b29fa06b99f1c4573d4506921f9716131f04ea34f9f25c22",
+    "V09.with.md": "d37cf1e9890c879c9bedca88c755499b752185bfe3a8a323b2ecad5527dfa11b",
+    "V09.without.md": "c16929f27182f6103024615846f008723b0f1642d7b34acae1f2dfd1eb497ba2",
+    "V10.with.md": "13bd320a60b3c4a110ae59831d7e4a9e58ddcb547763af0f973aa1ac6f306333",
+    "V10.without.md": "437fa3664cffe907d75b6eac738532f91a512a7b2a89a2bb6c27e2dd83232143"
+  },
+  "family": "codex",
+  "model": "gpt-6.1-sol",
+  "sampling": "CLI default",
+  "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+  "execution": {
+    "config": {
+      "instructions": "Local CLIs that measure.py drives. Each command reads the prompt on stdin and runs in a fresh empty directory. {out} is a file path the CLI writes its last message to; without it, stdout is the reply. 'json': true means stdout is Claude Code's --output-format json. Each family's outputs are graded by grader_for[family].",
+      "families": {
+        "claude": {
+          "generate": [
+            "claude",
+            "-p",
+            "--output-format",
+            "json",
+            "--disable-slash-commands",
+            "--tools",
+            "",
+            "--no-session-persistence"
+          ],
+          "json": true,
+          "version": [
+            "claude",
+            "--version"
+          ],
+          "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling"
+        },
+        "codex": {
+          "generate": [
+            "codex",
+            "exec",
+            "--ephemeral",
+            "--ignore-user-config",
+            "--ignore-rules",
+            "-s",
+            "read-only",
+            "--skip-git-repo-check",
+            "-o",
+            "{out}",
+            "-"
+          ],
+          "version": [
+            "codex",
+            "--version"
+          ],
+          "model_from": "^model: (.+)$",
+          "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling"
+        }
+      },
+      "grader_for": {
+        "claude": "codex",
+        "codex": "claude"
+      },
+      "timeout_seconds": 600
+    },
+    "grader_prompt": "You are grading two edits of the same input for an evaluation. The editor was asked to remove\nunnecessary material while preserving meaning, behavior, and requested constraints.\n\nRequest: {request}\n\nInput:\n<input>\n{input}\n</input>\n\nMaterial that must survive: {must_keep}\n\nOutput A:\n<output_a>\n{a}\n</output_a>\n\nOutput B:\n<output_b>\n{b}\n</output_b>\n\nFor each output decide:\n- meaning_preserved: true if it keeps every fact, number, condition, qualifier, warning, and requested\n  constraint of the input; false otherwise.\n- damage: true if it lost, changed, or weakened good material (including the material that must survive),\n  or added claims; false otherwise.\n- removal_quality: \"good\" if it removed the unnecessary material, \"partial\" if some remains, \"none\" if it\n  removed nothing that should go, \"n/a\" if the input had nothing to remove and the output left it unchanged.\n\nReply with JSON only, no prose and no code fence:\n{{\"A\": {{\"meaning_preserved\": true, \"damage\": false, \"removal_quality\": \"good\"}}, \"B\": {{...}}}}\n",
+    "implementation": "1650d905f84c90fe32a06cf637051247b25afcceb49c12ea579ab44655ba5ac6"
+  },
+  "cli": "codex-cli 0.160.0",
+  "runner": {
+    "evals/measure.py": "1650d905f84c90fe32a06cf637051247b25afcceb49c12ea579ab44655ba5ac6",
+    "evals/measure.json": "7ee1f2cef4f50215c751bca7e4f9a6ffe3c662703f691e6d2451ae16157c7248"
+  },
+  "models": {
+    "codex": "gpt-6.1-sol",
+    "claude": "claude-opus-5-5"
+  },
+  "calls": {
+    "V01.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "f74c5395dd0a7c3ea80b817b906912104e4c4dedbae5219600ba9eb4d8e7f843",
+        "output_sha256": "74971341da7db42178f8d4d86a19e4b608c7ca6a23bb0d1654fc01031f0e80f2",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V03.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "7964e13046da259ff1101201a677c08b30e8ba1ebaea8c5b9acaaa7593490e6c",
+        "output_sha256": "10080087614d5af4ead609260fe1a0c8e2b3b61d34e534f7aaa2a9a9efef3bba",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V02.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "d2f6b13f89f247f236c2c53e95f3fade3f989868095c6c4dec34d70220eb2fc6",
+        "output_sha256": "e37fb49379649cb79deea9aa2ebec5f9fd5ba892223a63cc57c49326347b34eb",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V03.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "5b5242fd7921385025120aab85dc9fe567c0e9ae1d4362b9a34f7772b1fb2c84",
+        "output_sha256": "10080087614d5af4ead609260fe1a0c8e2b3b61d34e534f7aaa2a9a9efef3bba",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V02.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "dd61b2e46bb6a11d237c206f53d6780919db3549a1c9329b3fbbfb83ac80723d",
+        "output_sha256": "b7dc6d2457ea387ebf261b85014869746e6eef09626202c4dc0230fe43dc3102",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V01.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "aaeb7882ed4b39a65c2b73401db8fb83a945c18b21671f70126a270c13d384fb",
+        "output_sha256": "74971341da7db42178f8d4d86a19e4b608c7ca6a23bb0d1654fc01031f0e80f2",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V04.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "14248c462cb4f7011d40330adbd75e805dcc90982be1f3207178c1113773e64f",
+        "output_sha256": "fa77f19759632c465671b024a1d5459c7722b8372a2ef6444cdb50fe10b613f7",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V04.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "d17403e9feb72ca49dd863c8ae2c65c49daca21fa526f691f8a7d06a936dbb1e",
+        "output_sha256": "397940aa4a071674d25721c34d25a3b65e5f2da8f19619f421231e8514d4e3c1",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V06.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "0eeed48b12df766e3add24fa6bdfeb204f7572b5e3b3ed49817d994620f0bcbf",
+        "output_sha256": "fb06eca65117cc43265663d40c9dc4151af7f7aa07e61c4bac13f9bff5f18bec",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V05.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "3c492e19a381e516d345bfee8ae2a6eb987565d1c1012e7b5c497a68b34142ce",
+        "output_sha256": "bf5c50a48238c84c8f77eb0613f6535345a9151243f129097efa380404db4af1",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V05.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "e7732eedca5e1ae63aaa6f493b6cecf533fd97f6806c8e019cfdf28730f7ab4d",
+        "output_sha256": "bf5c50a48238c84c8f77eb0613f6535345a9151243f129097efa380404db4af1",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V06.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "1d5541e1f890a718cafd5182487a75c63fb926122366b80002f66b3a8357c882",
+        "output_sha256": "fb06eca65117cc43265663d40c9dc4151af7f7aa07e61c4bac13f9bff5f18bec",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V08.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "4b20b353208df658f6f1f2bc70f44905e068d3b126b91f4feebbf8cc0f6083f8",
+        "output_sha256": "1030254dba93a6424d8fa52abe06b7a3e3cee134c2d9464675917cf301bc25d3",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V08.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "d8dfcd6ba7551033b29fa06b99f1c4573d4506921f9716131f04ea34f9f25c22",
+        "output_sha256": "87f1471e1b257224104efcb68011ee0a24577879f89d3c313ab2c4b57f134233",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V07.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "6bc77df86d3b34a321b05f3db5f6f6f5682c0fe1f1609fcceaefa80e5e6842e3",
+        "output_sha256": "5e7af03a3abaa1f50062fde31249f61abc633e363b2f1aa15c94cce36f00b8ad",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V07.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "e497616ce88a082f84e7b3b747e85996052558a17c2469ac51ee1707f99fe9b3",
+        "output_sha256": "9fbf8526c8451cfbe167296cb45f5218311deda9fd877a73b459988bb8e3bae8",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V09.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "d37cf1e9890c879c9bedca88c755499b752185bfe3a8a323b2ecad5527dfa11b",
+        "output_sha256": "631d485755ba804629bbf31282ff584cb15a896306e588935dd23714453b70d2",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V09.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "c16929f27182f6103024615846f008723b0f1642d7b34acae1f2dfd1eb497ba2",
+        "output_sha256": "631d485755ba804629bbf31282ff584cb15a896306e588935dd23714453b70d2",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V10.with.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "13bd320a60b3c4a110ae59831d7e4a9e58ddcb547763af0f973aa1ac6f306333",
+        "output_sha256": "d319377b033f86d6ec6a96132c1b6dbfe48a45849f9642970f1c639cd380846f",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "V10.without.md": [
+      {
+        "family": "codex",
+        "model": "gpt-6.1-sol",
+        "prompt_sha256": "437fa3664cffe907d75b6eac738532f91a512a7b2a89a2bb6c27e2dd83232143",
+        "output_sha256": "6c03915f27285e1be91c5e768a91ed3c184cc2ae981ebd43ff77894d94c35ffc",
+        "cli": "codex-cli 0.160.0",
+        "session": "codex exec in an empty temp dir per prompt: ephemeral, user config and rules ignored, read-only sandbox, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V01": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "a14848f024c6e364eaf5fe8683031f43fb32eb530543a1b1bb5e0cbbebf304de",
+        "output_sha256": "bed6dad4eb8321e21a73e956dfa0615f71bb05e0451e18918e281b8a88c1c599",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V02": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "7eda9d21eeaec1436fd2238183348b7bc09cf5b5f2c1158f91fd622a2501fe05",
+        "output_sha256": "f0f2127321541aa768289965aa673d88ad1d8018aa17334b2edea64f1fc0c412",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V03": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "be217895e20ded04bd17736f9a8a5625ba50d74625262e708b8e6a9a532ec040",
+        "output_sha256": "bed6dad4eb8321e21a73e956dfa0615f71bb05e0451e18918e281b8a88c1c599",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V04": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "0072cd7af7acbb003578001e016ceef043eb6ad80661ad59ca72346042de3e16",
+        "output_sha256": "b3a8b38383a07240cd76834d6358dbccba501454e45075de30567af44bd9be59",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V05": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "6b989c6430b262325f74aae06e7670237068375187e2cf31d0c04e7302c7792c",
+        "output_sha256": "bed6dad4eb8321e21a73e956dfa0615f71bb05e0451e18918e281b8a88c1c599",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V07": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "ca8f229c190d06efa0f332118f0ca1a8d50772adf28397aef31b140da9ba8794",
+        "output_sha256": "ddf546231134bcaa5ec0eebda63a74190b6158fce07bddfa5260194dbe73ea25",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V06": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "5af25626d73403cb803d58769ee267de074c9e3468056b74d17c41d784989883",
+        "output_sha256": "9a08aac8fc8b10573667513723499dea58845faf11f61a049fcb11a97700d6fb",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V08": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "727d595c48c3f8245d7aecc77fd6e0d5ae1cba21f06a22df00947b25dbb244ca",
+        "output_sha256": "1060a1329360fcd43dfc78f352eb5c4f6090724a385c46bfb4f4d49133af3aff",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V09": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "6629cc060e625eaf940f5bd0286e89b18ad836ff082313de84d3a840c049fe6f",
+        "output_sha256": "bed6dad4eb8321e21a73e956dfa0615f71bb05e0451e18918e281b8a88c1c599",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ],
+    "grade:V10": [
+      {
+        "family": "claude",
+        "model": "claude-opus-5-5",
+        "prompt_sha256": "7d0274236e3f30507cedce41860934b88b35cf8dbaad8eac02c7346ac17a3987",
+        "output_sha256": "c1e58c61e4a0d2dae4d7ca0eb2195e139c27cebed04069b023af700d961e67a7",
+        "cli": "2.1.287 (Claude Code)",
+        "session": "claude -p in an empty temp dir per prompt: no tools, skills and slash commands disabled, no session persistence, CLI default model and sampling",
+        "accepted": true
+      }
+    ]
+  }
+}

@@ -35,7 +35,8 @@ ROOT = run.ROOT
 PROTOCOL = json.loads((ROOT / "evals/protocol.json").read_bytes().decode("utf-8"))
 CASES = json.loads((ROOT / "evals/heldout.json").read_bytes().decode("utf-8"))["evals"]
 FROZEN = ["skills/less/SKILL.md", "skills/less/references/design.md", "evals/run.py",
-          "evals/protocol.py", "evals/protocol.json", "evals/heldout.json"]
+          "evals/protocol.py", "evals/protocol.json", "evals/heldout.json",
+          "evals/measure.py", "evals/measure.json"]
 ARMS = ("with", "without")
 GRADE_FIELDS = ("meaning_preserved", "damage", "removal_quality")
 
@@ -103,6 +104,21 @@ def valid(grade):
             and grade.get("removal_quality") in ("good", "partial", "none", "n/a"))
 
 
+def presentation(source, output):
+    """Ignore only a transport final LF and one optional code wrapper.
+
+    Preserve spaces, blank lines, indentation, and Markdown hard breaks.
+    """
+    import re
+    if output is None:
+        return None
+    if not source.startswith("```"):
+        match = re.fullmatch(r"```[^\n`]*\n([\s\S]*?)\n```\n?", output)
+        if match:
+            output = match.group(1)
+    return output[:-1] if output.endswith("\n") else output
+
+
 def checks(case, output):
     return {
         "missing": output is None,
@@ -110,6 +126,7 @@ def checks(case, output):
         "removed": (output is not None and not any(s in output for s in case["must_remove_spans"]))
         if case["must_remove_spans"] else None,
         "exact_noop": output == case["before"] if case["exact_noop"] else None,
+        "presentation_noop": presentation(case["before"], output) == presentation(case["before"], case["before"]) if case["exact_noop"] else None,
     }
 
 
@@ -127,6 +144,15 @@ def run_report(out, family):
               if not (out / n).exists() or digest((out / n).read_bytes()) != d]
     if edited:
         raise SystemExit(f"{out}: prompt files differ from freeze.json: {', '.join(edited)}")
+    if freeze.get("execution"):
+        import measure
+        measure.validate_execution(out)
+        for case in CASES:
+            for arm in ARMS:
+                name = f"{case['id']}.{arm}.md"
+                text = reply(out, case, arm)
+                if text is not None:
+                    measure.validate_reply(out, name, text, load(out / name))
     graded = {}
     if (out / "blind/grades.json").exists() and (out / "key.json").exists():
         sheet = json.loads(load(out / "blind/grades.json"))
@@ -139,6 +165,20 @@ def run_report(out, family):
                      or load(out / "blind" / f"{label}.out.md") != reply(out, {"id": label.split(".")[0]}, arm)]
             if stale:
                 raise SystemExit(f"{out}: replies changed after blinding: {', '.join(stale)}")
+            if freeze.get("execution"):
+                blind_cases = json.loads(load(out / "blind/cases.json"))
+                for case in CASES:
+                    cid = case["id"]
+                    bc = blind_cases[cid]
+                    prompt = measure.GRADER_PROMPT.format(
+                        request=bc["request"] or "(none)", input=bc["input"],
+                        must_keep="; ".join(bc["must_keep"]),
+                        a=load(out / f"blind/{cid}.A.out.md"),
+                        b=load(out / f"blind/{cid}.B.out.md"))
+                    raw = load(out / f"grade-{cid}.json")
+                    measure.validate_reply(out, "grade:" + cid, raw, prompt)
+                    if measure.parse_grade(raw) != {label: sheet["grades"][f"{cid}.{label}"] for label in "AB"}:
+                        raise RuntimeError("grades differ from recorded response")
             graded = {(label.split(".")[0], key[label]): g for label, g in sheet["grades"].items()}
             grader = sheet["grader"].get("family")
             if not grader or grader == family:
@@ -150,13 +190,13 @@ def run_report(out, family):
             row = {"id": case["id"], **checks(case, reply(out, case, arm))}
             row.update(graded.get((case["id"], arm), {}))
             rows.append(row)
-        arms[arm] = {"summary": {m: score(rows, m) for m in ("preserved", "removed", "exact_noop", "meaning_preserved")}
+        arms[arm] = {"summary": {m: score(rows, m) for m in ("preserved", "removed", "exact_noop", "presentation_noop", "meaning_preserved")}
                      | {"damage": {"cases": sum(bool(r.get("damage")) for r in rows), "graded": bool(graded)}},
                      "cases": rows}
     s = arms["with"]["summary"]
     arms["gates"] = {
         "preserved": s["preserved"]["passed"] == s["preserved"]["total"],
-        "exact_noop": s["exact_noop"]["passed"] == s["exact_noop"]["total"],
+        "presentation_noop": s["presentation_noop"]["passed"] == s["presentation_noop"]["total"],
         "damage": None if not graded else s["damage"]["cases"] == 0,
     }
     return arms

@@ -1,0 +1,5 @@
+# Raw evaluation evidence preserves transport newlines; do not "fix" it.
+evals/results/followups-tune/*.md -whitespace
+evals/results/followups-v2/claude/**/*.md -whitespace
+evals/results/followups-v2/codex/**/*.md -whitespace
+evals/results/followups-lessons/**/*.md -whitespace
