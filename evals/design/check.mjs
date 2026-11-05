@@ -95,6 +95,17 @@ async function measure(page, src, c) {
     }
     sels.push(kept);
   }
+  // Grid tracks (R7 scope): each match is still a grid with this many columns, so a section the request
+  // didn't name can't be collapsed by overriding its columns while display and gap stay.
+  for (const { selector, columns } of c.must_keep_tracks || []) {
+    sels.push(await page.evaluate(([selector, columns]) => {
+      const els = [...document.querySelectorAll(selector)];
+      return els.length > 0 && els.every(e => {
+        const s = getComputedStyle(e);
+        return s.display.includes('grid') && s.gridTemplateColumns.trim().split(/\s+/).length === columns;
+      });
+    }, [selector, columns]));
+  }
   const axe = (await new AxeBuilder({ page }).withTags(TAGS).analyze()).violations
     .flatMap(v => v.nodes.map(n => v.id + ' ' + n.target.join(' ')));
   const nodes = (await page.locator('body').ariaSnapshot()).split('\n')
@@ -310,7 +321,7 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8']) res[k] = (res[k] ?? true) && g[k];
       why.push(...g.why.map(w => `${vp.width}: ${w}`));
       if (!a.roles.every(Boolean)) why.push(`${vp.width}: roles ${JSON.stringify(c.must_keep_roles.filter((_, i) => !a.roles[i]))}`);
-      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || []), ...(c.must_keep_order ? ['order: ' + c.must_keep_order.map(t => t.join(' ')).join(' > ')] : []), ...(c.must_keep_focus_order ? ['focus order: ' + c.must_keep_focus_order.map(t => t.join(' ')).join(' > ')] : [])].filter((_, i) => !a.sels[i]))}`);
+      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || []), ...(c.must_keep_order ? ['order: ' + c.must_keep_order.map(t => t.join(' ')).join(' > ')] : []), ...(c.must_keep_focus_order ? ['focus order: ' + c.must_keep_focus_order.map(t => t.join(' ')).join(' > ')] : []), ...(c.must_keep_tracks || []).map(t => `${t.selector}: ${t.columns} columns`)].filter((_, i) => !a.sels[i]))}`);
       info.push(`${vp.width}px elements ${b.info.elements}->${a.info.elements} decls ${b.info.decls}->${a.info.decls} axe(before) ${b.axe.length}`);
       await ctx.close();
     }
