@@ -60,7 +60,9 @@ gap, margin, or padding. `must_share` (`{selector, properties}`, C14): all
 matches have one computed value per property; the edit picks which. `must_span`
 (`{selector, min_ratio}`, C15): each match fills at least that share of
 `main`'s content width. These three count toward G8. `must_keep_order` (K15):
-its texts appear in that order in the visible text; it counts toward G2.
+its texts appear in that order in the visible text, and `must_keep_focus_order`
+(K15): pressing Tab from the top reaches those names (aria-label, label, or
+text) in that order. Both count toward G2.
 `npm test` includes passing and failing alternatives for each.
 
 Use `must_remove_rendered_text` for visible content (body innerText, with HTML

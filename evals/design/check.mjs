@@ -59,6 +59,27 @@ async function measure(page, src, c) {
     const at = c.must_keep_order.map(s => shown.indexOf(norm(s).toLowerCase()));
     sels.push(at.every((i, n) => i >= 0 && (n === 0 || i > at[n - 1])));
   }
+  // Focus order (K15): pressing Tab from the top reaches these names in this order, so a tabindex or other
+  // change that reorders focus fails even when the visible text keeps its order. Names are aria-label,
+  // label text, or text content.
+  if (c.must_keep_focus_order) {
+    await page.evaluate(() => document.activeElement?.blur());
+    const reached = [];
+    for (let n = 0; n < 50; n++) {
+      await page.keyboard.press('Tab');
+      const name = await page.evaluate(() => {
+        const e = document.activeElement;
+        if (!e || e === document.body) return null;
+        return norm(e.getAttribute('aria-label') || e.labels?.[0]?.textContent || e.textContent || '');
+        function norm(s) { return s.replace(/\s+/g, ' ').trim(); }
+      });
+      if (name === null || reached.includes(name)) break;
+      reached.push(name);
+    }
+    const at = c.must_keep_focus_order.map(s => reached.indexOf(s));
+    sels.push(at.every((i, n) => i >= 0 && (n === 0 || i > at[n - 1])));
+    await page.evaluate(() => document.activeElement?.blur());
+  }
   const axe = (await new AxeBuilder({ page }).withTags(TAGS).analyze()).violations
     .flatMap(v => v.nodes.map(n => v.id + ' ' + n.target.join(' ')));
   const nodes = (await page.locator('body').ariaSnapshot()).split('\n')
@@ -274,7 +295,7 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8']) res[k] = (res[k] ?? true) && g[k];
       why.push(...g.why.map(w => `${vp.width}: ${w}`));
       if (!a.roles.every(Boolean)) why.push(`${vp.width}: roles ${JSON.stringify(c.must_keep_roles.filter((_, i) => !a.roles[i]))}`);
-      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || []), ...(c.must_keep_order ? ['order: ' + c.must_keep_order.join(' > ')] : [])].filter((_, i) => !a.sels[i]))}`);
+      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || []), ...(c.must_keep_order ? ['order: ' + c.must_keep_order.join(' > ')] : []), ...(c.must_keep_focus_order ? ['focus order: ' + c.must_keep_focus_order.join(' > ')] : [])].filter((_, i) => !a.sels[i]))}`);
       info.push(`${vp.width}px elements ${b.info.elements}->${a.info.elements} decls ${b.info.decls}->${a.info.decls} axe(before) ${b.axe.length}`);
       await ctx.close();
     }

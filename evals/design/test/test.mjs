@@ -89,6 +89,7 @@ const regressions = [
   [d29, 'state-tints-dropped', d29.before.replace(';background:#fef2f2', '').replace(';background:#fffbeb', '').replace(';background:#f0fdf4', ''), true],
   [d30, 'grid-dropped', d30.after.replace('.layout{display:grid;gap:2rem}', ''), true],
   [d31, 'stacked-in-order', d31.before.replace('grid-template-columns:14rem 1fr;', ''), true],
+  [d31, 'tabindex-reorder', d31.before.replace('<a href="/invoices/1042"', '<a tabindex="1" href="/invoices/1042"'), false, 'G2'],
   [d13, 'opaque-header',d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {
