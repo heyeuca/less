@@ -90,6 +90,10 @@ const regressions = [
   [d30, 'grid-dropped', d30.after.replace('.layout{display:grid;gap:2rem}', ''), true],
   [d31, 'stacked-in-order', d31.before.replace('grid-template-columns:14rem 1fr;', ''), true],
   [d31, 'tabindex-reorder', d31.before.replace('<a href="/invoices/1042"', '<a tabindex="1" href="/invoices/1042"'), false, 'G2'],
+  [d31, 'hidden-arrow-in-name', d31.before.replace('#1042</a>', '#1042<span aria-hidden="true"> →</span></a>'), true],
+  [d31, 'repeated-names-before', d31.before.replace('<div class="layout">', '<a href="/help">Help</a> <a href="/help#faq">Help</a><div class="layout">'), true],
+  [d31, 'filter-out-of-tab-order', d31.before.replace('<select id="status"', '<select tabindex="-1" id="status"').replace('<div class="layout">', '<a href="/status">Status</a><div class="layout">'), false, 'G2'],
+  [d31, 'status-text-and-moved-filter', d31.before.replace(/<form[\s\S]*<\/form>/, '').replace('</section></div>', '</section>' + d31.before.match(/<form[\s\S]*<\/form>/)[0].replace('<select id', '<select tabindex="1" id') + '</div>').replace('<li><a href="/invoices/1042">', '<li>Status changed today</li><li><a href="/invoices/1042">'), false, 'G2'],
   [d13, 'opaque-header',d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {

@@ -2482,16 +2482,34 @@
       ],
       "must_keep_selectors": [],
       "must_keep_order": [
-        "Status",
-        "Results",
-        "#1042"
+        [
+          "search",
+          "Filter invoices"
+        ],
+        [
+          "heading",
+          "Results"
+        ],
+        [
+          "link",
+          "#1042"
+        ]
       ],
       "must_remove_hint": [],
       "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Invoices</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.layout{display:grid;grid-template-columns:14rem 1fr;gap:2rem}@media (max-width:600px){.layout{grid-template-columns:1fr}}label{display:block;font-weight:600;margin-bottom:.25rem}select{font:inherit;padding:.25rem}h2{margin:0 0 .75rem}ul{margin:0;padding-left:1.25rem}</style></head><body><main><div class=\"layout\"><form role=\"search\" aria-label=\"Filter invoices\"><label for=\"status\">Status</label><select id=\"status\" name=\"status\"><option>All</option><option>Paid</option><option>Overdue</option></select></form><section><h2>Results</h2><ul><li><a href=\"/invoices/1042\">#1042</a> · Atlas · Paid</li><li><a href=\"/invoices/1043\">#1043</a> · Kite · Overdue</li></ul></section></div></main></body></html>",
       "must_keep_focus_order": [
-        "Status",
-        "#1042",
-        "#1043"
+        [
+          "combobox",
+          "Status"
+        ],
+        [
+          "link",
+          "#1042"
+        ],
+        [
+          "link",
+          "#1043"
+        ]
       ]
     },
     {
