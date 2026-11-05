@@ -7,13 +7,15 @@ The test comes first: does this element have a clear reason to exist for this
 user's request? A signal below only nominates a candidate. Check every
 candidate against "Never remove" before removing it.
 
-Removal only: no new aesthetic, fonts, or palette. Change markup and styles
-only; keep handlers, form `name`/`type`, `href`, test ids, and component APIs.
+Reduce only: remove, consolidate, and restructure what is there. No new
+colors, fonts, spacing values, components, or sections; reuse values already
+in the code. Change markup and styles only; keep handlers, form `name`/`type`,
+`href`, test ids, and component APIs.
 
 Figma files, screenshots, and other visual inputs: return them unchanged plus
 one line: "less edits code or text it can return."
 
-## Removal order
+## Order
 
 1. **R1 Decoration:** gradient washes, glows, blobs (C1); the same border,
    shadow, and radius stacked on every surface (C2).
@@ -29,7 +31,11 @@ one line: "less edits code or text it can return."
 5. **R5 Motion:** entrance and hover animation that answers no user action;
    `transition: all` (C9).
 6. **R6 Cleanup:** utility classes or selectors that cancel or repeat each
-   other (C12).
+   other (C12), or match nothing (C13).
+7. **R7 Restructure:** collapse a grid, column, or sidebar left without a job,
+   so the remaining content uses its space (C15).
+8. **R8 Consolidate:** values that serve one role become one value the code
+   already uses for it (C14).
 
 ## Signals
 
@@ -47,6 +53,9 @@ one line: "less edits code or text it can return."
 | C10 | Duplicate labels | eyebrow repeating the heading; tooltip repeating visible text |
 | C11 | Arrows and middle-dot meta as chrome | `→` on every link or button; `A · B · C` |
 | C12 | Classes that cancel or repeat each other | conflicting padding/margin selectors |
+| C13 | Selectors that match nothing | classes no markup or script uses; not state selectors |
+| C14 | Many values for one role | body text in `#333`, `#2f2f2f`, `#383838`; 15px and 16px body; two families. Brand, state, emphasis, and heading levels are separate roles |
+| C15 | Layout left without a job | a column or sidebar emptied by removals; a multi-column grid holding one item |
 
 ## Never remove
 
@@ -76,5 +85,12 @@ one line: "less edits code or text it can return."
   keeps their text readable is not decoration. If you remove it, make the
   element's background opaque (1.4.3).
 
-K1–K12 protect the named items only, not everything near them. When unsure
+- **K13 Emphasis:** styling that sets the primary action or the current or
+  selected item (`aria-current`, `aria-selected`) apart from its siblings.
+- **K14 Separation:** when a removed border, shadow, card, or background kept
+  items apart, keep them apart with spacing the code already uses.
+- **K15 Order:** restructuring keeps the reading and focus order of the
+  content (1.3.2, 2.4.3).
+
+K1–K15 protect the named items only, not everything near them. When unsure
 whether a removal breaks one, keep it.

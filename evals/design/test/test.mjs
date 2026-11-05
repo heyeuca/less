@@ -42,6 +42,7 @@ const get = id => design.find(row => row.id === id);
 const d03 = get('D03'), d04 = get('D04'), d05 = get('D05'), d07 = get('D07'), d11 = get('D11'), d13 = get('D13');
 const d01 = get('D01'), d02 = get('D02'), d06 = get('D06'), d09 = get('D09'), d10 = get('D10'), d12 = get('D12');
 const d18 = get('D18'), d14 = get('D14'), d22 = get('D22');
+const d27 = get('D27'), d28 = get('D28'), d29 = get('D29'), d30 = get('D30'), d31 = get('D31');
 // Custom CSS keeps alternate effects real even when their utility classes are
 // absent from the precompiled Tailwind fixture.
 const toolbarHTML = src => `<html lang="en"><head><title>Toolbar</title><meta name="viewport" content="width=device-width"><style>${readFileSync('fixtures/tailwind.css', 'utf8')}</style></head><body>${src.slice(src.indexOf('return (') + 8, src.lastIndexOf(');')).replaceAll('className=', 'class=')}</body></html>`;
@@ -80,7 +81,20 @@ const regressions = [
   [d03, 'glued-emoji', d03.after.replace('Fast sync', '🚀Fast sync'), false],
   [d10, 'split-word', d10.after.replace('<h2>Orders</h2>', '<h2>Orders</h2><p>Ships from our <b>New</b>ark office.</p>'), true],
   [d10, 'renew-copy', d10.after.replace('<h2>Orders</h2>', '<h2>Orders</h2><p>Renew your plan. See the news.</p>'), true],
-  [d13, 'opaque-header', d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
+  // K14, C14, C15, K15 accept any way of meeting them, and reject a partial one.
+  [d27, 'separation-by-gap', d27.after.replace('.plan{margin-bottom:1rem}', 'main{display:grid;gap:1rem}'), true],
+  [d27, 'separation-too-small', d27.after.replace('.plan{margin-bottom:1rem}', '.plan{margin-bottom:4px}'), false],
+  [d28, 'other-existing-color', d28.after.replace('p{color:#333', 'p{color:#2f2f2f'), true],
+  [d28, 'one-size-left', d28.after.replace('</style>', '.detail{font-size:15px}</style>'), false],
+  [d29, 'state-tints-dropped', d29.before.replace(';background:#fef2f2', '').replace(';background:#fffbeb', '').replace(';background:#f0fdf4', ''), true],
+  [d30, 'grid-dropped', d30.after.replace('.layout{display:grid;gap:2rem}', ''), true],
+  [d31, 'stacked-in-order', d31.before.replace('grid-template-columns:14rem 1fr;', ''), true],
+  [d31, 'tabindex-reorder', d31.before.replace('<a href="/invoices/1042"', '<a tabindex="1" href="/invoices/1042"'), false, 'G2'],
+  [d31, 'hidden-arrow-in-name', d31.before.replace('#1042</a>', '#1042<span aria-hidden="true"> →</span></a>'), true],
+  [d31, 'repeated-names-before', d31.before.replace('<div class="layout">', '<a href="/help">Help</a> <a href="/help#faq">Help</a><div class="layout">'), true],
+  [d31, 'filter-out-of-tab-order', d31.before.replace('<select id="status"', '<select tabindex="-1" id="status"').replace('<div class="layout">', '<a href="/status">Status</a><div class="layout">'), false, 'G2'],
+  [d31, 'status-text-and-moved-filter', d31.before.replace(/<form[\s\S]*<\/form>/, '').replace('</section></div>', '</section>' + d31.before.match(/<form[\s\S]*<\/form>/)[0].replace('<select id', '<select tabindex="1" id') + '</div>').replace('<li><a href="/invoices/1042">', '<li>Status changed today</li><li><a href="/invoices/1042">'), false, 'G2'],
+  [d13, 'opaque-header',d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {
   const row = { ...base, id: name };

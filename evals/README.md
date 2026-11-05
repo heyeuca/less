@@ -49,6 +49,22 @@ candidate wording was measured but not adopted, because the fresh measurement
 failed its absolute gates. See `results/followups-v2.md` and the archived
 candidate snapshot. P16 and D22 remain protection cases.
 
+D23–D26 cover C13 and K13, taken from the "dead CSS" and "keep some
+hierarchy" points in [impeccable's distill](https://github.com/pbakaus/impeccable/blob/main/skill/reference/distill.md).
+D23 removes selectors nothing uses and keeps a `:focus-visible` rule that only
+looks unmatched. D24 keeps state rules that a script reaches by adding a class.
+D25 removes stacked nav shadows and keeps the `aria-current` fill. D26 keeps
+the red fill on a destructive primary button.
+
+D27–D31 cover the design edits that go beyond removal (see
+[DECISIONS](../docs/DECISIONS.md)). D27 flattens cards and keeps the plans
+apart (K14). D28 gives body copy one color, size, and family and keeps the
+error red (C14). D29 keeps three state colors that only look like variation.
+D30 removes a sidebar and collapses its empty column (C15). D31 keeps a filter
+sidebar that has a job, and any restructure must keep the filter before the
+results (K15). Progressive disclosure and new components are still out of
+scope. None of C13–C15 or K13–K15 has been measured yet.
+
 `prompts` also writes `OUT/run.json`. It holds SHA-256 hashes of the skill,
 runner, cases, and checker, and one for every generated prompt. It also has
 empty fields for the model and version, the sampling settings, the session

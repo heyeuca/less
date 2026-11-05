@@ -54,6 +54,47 @@ async function measure(page, src, c) {
   // Visible text that must survive, such as an arrow that is data rather than chrome.
   const shown = norm(await page.locator('body').innerText()).toLowerCase();
   for (const s of c.must_keep_rendered_text || []) sels.push(shown.includes(norm(s).toLowerCase()));
+  // K15 targets are [role, name] pairs resolved like must_keep_roles (Playwright's computed accessible name),
+  // so text elsewhere on the page or another control with the same words can't stand in for them.
+  const targets = async list => {
+    const found = [];
+    for (const [role, name] of list) {
+      const match = page.getByRole(role, { name, exact: true });
+      found.push(await match.count() ? await match.first().elementHandle() : null);
+    }
+    return found;
+  };
+  // Reading order (K15): the targets keep this order in the document.
+  if (c.must_keep_order) {
+    const els = await targets(c.must_keep_order);
+    sels.push(els.every(Boolean) && await page.evaluate(els => els.every((e, i) =>
+      i === 0 || (els[i - 1].compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING)), els));
+  }
+  // Focus order (K15): pressing Tab from the top reaches every target, in this order, so a tabindex that
+  // reorders focus or takes a control out of the sequence fails even when the visible text keeps its order.
+  // Steps are compared by element identity. Runs before the G5 loop below, which moves the focus start point.
+  if (c.must_keep_focus_order) {
+    const els = await targets(c.must_keep_focus_order);
+    let kept = els.every(Boolean);
+    if (kept) {
+      await page.evaluate(() => { document.activeElement?.blur(); window.__lessSeen = new Set(); });
+      const order = [];
+      for (let n = 0; n < 100; n++) {
+        await page.keyboard.press('Tab');
+        const step = await page.evaluate(els => {
+          const e = document.activeElement;
+          if (!e || e === document.body || window.__lessSeen.has(e)) return null;
+          window.__lessSeen.add(e);
+          return els.indexOf(e);
+        }, els);
+        if (step === null) break;
+        if (step >= 0) order.push(step);
+      }
+      kept = els.every((_, i) => order.includes(i) && (i === 0 || order.indexOf(i) > order.indexOf(i - 1)));
+      await page.evaluate(() => { document.activeElement?.blur(); delete window.__lessSeen; });
+    }
+    sels.push(kept);
+  }
   const axe = (await new AxeBuilder({ page }).withTags(TAGS).analyze()).violations
     .flatMap(v => v.nodes.map(n => v.id + ' ' + n.target.join(' ')));
   const nodes = (await page.locator('body').ariaSnapshot()).split('\n')
@@ -149,6 +190,39 @@ async function measure(page, src, c) {
     }
     if (reduced_motion) await page.emulateMedia({ reducedMotion: 'no-preference' });
   }
+  // Separation (K14): every match after the first starts at least `min` px below the nearest text above it
+  // in its column, however the space is made (gap, margin, padding), so items stay apart once borders go.
+  for (const { selector, min } of c.must_separate || []) {
+    removed.push(await page.evaluate(([selector, min]) => {
+      const els = [...document.querySelectorAll(selector)];
+      const texts = [...document.querySelectorAll('body *')].filter(u =>
+        [...u.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()));
+      return els.length > 1 && els.slice(1).every(el => {
+        const r = el.getBoundingClientRect();
+        const above = texts.filter(u => !el.contains(u) && !u.contains(el)
+          && (u.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)).map(u => u.getBoundingClientRect())
+          .filter(t => t.left < r.right && t.right > r.left);
+        return above.length > 0 && r.top - Math.max(...above.map(t => t.bottom)) >= min;
+      });
+    }, [selector, min]));
+  }
+  // Consolidation (C14): all matches share one computed value per property; which value is up to the edit.
+  for (const { selector, properties } of c.must_share || []) {
+    removed.push(await page.evaluate(([selector, properties]) => {
+      const els = [...document.querySelectorAll(selector)];
+      return els.length > 1 && properties.every(p => new Set(els.map(e => getComputedStyle(e).getPropertyValue(p))).size === 1);
+    }, [selector, properties]));
+  }
+  // Restructure (C15): each match fills at least `min_ratio` of main's content width, so content doesn't
+  // stay in a column beside an emptied track.
+  for (const { selector, min_ratio } of c.must_span || []) {
+    removed.push(await page.evaluate(([selector, ratio]) => {
+      const host = document.querySelector('main') || document.body, s = getComputedStyle(host);
+      const width = host.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight);
+      const els = [...document.querySelectorAll(selector)];
+      return els.length > 0 && els.every(e => e.getBoundingClientRect().width >= ratio * width);
+    }, [selector, min_ratio]));
+  }
   if (c.must_remove_nested_surfaces) {
     removed.push(await page.evaluate(() => {
       const surface = el => {
@@ -236,7 +310,7 @@ for (const c of cases.filter(c => !ids.length || ids.includes(c.id))) {
       for (const k of ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8']) res[k] = (res[k] ?? true) && g[k];
       why.push(...g.why.map(w => `${vp.width}: ${w}`));
       if (!a.roles.every(Boolean)) why.push(`${vp.width}: roles ${JSON.stringify(c.must_keep_roles.filter((_, i) => !a.roles[i]))}`);
-      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || [])].filter((_, i) => !a.sels[i]))}`);
+      if (!a.sels.every(Boolean)) why.push(`${vp.width}: kept ${JSON.stringify([...(c.must_keep_selectors || []), ...(c.must_keep_rendered_text || []), ...(c.must_keep_order ? ['order: ' + c.must_keep_order.map(t => t.join(' ')).join(' > ')] : []), ...(c.must_keep_focus_order ? ['focus order: ' + c.must_keep_focus_order.map(t => t.join(' ')).join(' > ')] : [])].filter((_, i) => !a.sels[i]))}`);
       info.push(`${vp.width}px elements ${b.info.elements}->${a.info.elements} decls ${b.info.decls}->${a.info.decls} axe(before) ${b.axe.length}`);
       await ctx.close();
     }
