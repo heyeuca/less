@@ -48,7 +48,8 @@ Writing:
   appear unchanged in any other document.
 - W4. Duplicate points (keep the clearest).
 - W5. Unrequested caveats and alternatives that don't change what the reader does.
-- W6. Decoration on answers under ~5 sentences: headers, bold, bullets.
+- W6. Decoration on answers under ~5 sentences: headers, bold, bullets. At any
+  length: emoji and separator lines (`───`) you added, unless they mark status.
 - W7. Merge and shorten the rest, keeping complete sentences: no arrows,
   fragments, or dropped articles. When editing the user's text, do not merge or
   rephrase sentences; only repair grammar directly affected by a deletion.

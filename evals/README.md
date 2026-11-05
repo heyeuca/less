@@ -49,6 +49,12 @@ candidate wording was measured but not adopted, because the fresh measurement
 failed its absolute gates. See `results/followups-v2.md` and the archived
 candidate snapshot. P16 and D22 remain protection cases.
 
+P23–P25 cover W6's emoji and separator lines in writing (UI emoji is C6). P23
+is a commit message the agent decorated with emoji and a `───` line. P24 is
+the user's own Slack message, whose emoji stay as their voice (M7, M8). P25 is
+an agent's CI table whose ✅/❌ marks are the results. The W6 wording was added
+with these cases and has not been measured yet.
+
 D23–D26 cover C13 and K13, taken from the "dead CSS" and "keep some
 hierarchy" points in [impeccable's distill](https://github.com/pbakaus/impeccable/blob/main/skill/reference/distill.md).
 D23 removes selectors nothing uses and keeps a `:focus-visible` rule that only

@@ -2846,6 +2846,92 @@
         "def retries(env):\n    raw = env.get(\"RETRIES\", \"4\")\n    return int(raw)\n"
       ],
       "exact_noop": false
+    },
+    {
+      "id": "P23",
+      "category": "paired preservation · emoji and separators",
+      "rules": [
+        "W6"
+      ],
+      "pair_id": "emoji",
+      "split": "tune",
+      "author": "assistant",
+      "prompt": "Write a commit message for the upload retry fix.",
+      "before": "✨ Retry failed uploads up to 3 times 🚀\n\n────────────\n\nUploads that fail with a 5xx now retry with backoff instead of failing on the first error. ✅",
+      "after": "Retry failed uploads up to 3 times\n\nUploads that fail with a 5xx now retry with backoff instead of failing on the first error.",
+      "must_keep": [
+        "Retry failed uploads up to 3 times",
+        "Uploads that fail with a 5xx now retry with backoff instead of failing on the first error."
+      ],
+      "protected_spans": [
+        "Retry failed uploads up to 3 times",
+        "Uploads that fail with a 5xx now retry with backoff instead of failing on the first error."
+      ],
+      "must_remove_spans": [
+        "✨",
+        "🚀",
+        "────────────",
+        "✅"
+      ],
+      "exact_noop": false,
+      "bad_after": "Retry failed uploads",
+      "why_bad": "Drops the retry count and the explanation along with the decoration."
+    },
+    {
+      "id": "P24",
+      "category": "paired preservation · the user's own emoji",
+      "rules": [
+        "W6",
+        "M7",
+        "M8"
+      ],
+      "pair_id": "emoji",
+      "split": "tune",
+      "prompt": "Trim this Slack message; keep my voice.",
+      "before": "Hey team 👋 The staging deploy moves to Thursday 🙏 Let me know if that breaks anything for you!",
+      "after": "Hey team 👋 The staging deploy moves to Thursday 🙏 Let me know if that breaks anything for you!",
+      "must_keep": [
+        "Hey team 👋",
+        "The staging deploy moves to Thursday 🙏",
+        "Let me know if that breaks anything for you!"
+      ],
+      "protected_spans": [
+        "Hey team 👋",
+        "The staging deploy moves to Thursday 🙏",
+        "Let me know if that breaks anything for you!"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "The staging deploy moves to Thursday. Let me know if that breaks anything for you!",
+      "why_bad": "The emoji are the user's own voice in their message, not decoration the agent added."
+    },
+    {
+      "id": "P25",
+      "category": "paired preservation · emoji that mark status",
+      "rules": [
+        "W6",
+        "M1"
+      ],
+      "pair_id": "emoji",
+      "split": "tune",
+      "author": "assistant",
+      "prompt": "Which CI checks passed?",
+      "before": "| Check | Result |\n|---|---|\n| lint | ✅ |\n| tests | ❌ 2 failing |\n| build | ✅ |",
+      "after": "| Check | Result |\n|---|---|\n| lint | ✅ |\n| tests | ❌ 2 failing |\n| build | ✅ |",
+      "must_keep": [
+        "| lint | ✅ |",
+        "| tests | ❌ 2 failing |",
+        "| build | ✅ |"
+      ],
+      "protected_spans": [
+        "| lint | ✅ |",
+        "| tests | ❌ 2 failing |",
+        "| build | ✅ |"
+      ],
+      "must_remove_spans": [],
+      "exact_noop": true,
+      "bad_after": "| Check | Result |\n|---|---|\n| lint | |\n| tests | 2 failing |\n| build | |",
+      "why_bad": "The marks are the results; removing them loses which checks passed."
     }
   ]
 }

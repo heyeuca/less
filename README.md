@@ -105,7 +105,7 @@ beyond what is stated above. Each future results directory includes a
 `run.json` (written by `run.py prompts`) with input and prompt hashes, the
 model, sampling, session setup, grader, and every attempt.
 
-The current regression suite has 82 cases, including preservation pairs,
+The current regression suite has 94 cases, including preservation pairs,
 rule-coverage examples, and the newly encoded over-editing lessons. See the
 [evaluation guide](evals/README.md) for separate removal, preservation, damage,
 and exact no-op checks. The completed v0.3.4 measurement above used ten distinct
