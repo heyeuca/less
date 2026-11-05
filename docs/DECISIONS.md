@@ -75,9 +75,10 @@ rule and still left the layout broken.
 **Decision.** C15 now names a width or height limit kept for a removed
 element. D36 encodes the failure with a reserve that gave an illustration its
 size. D37 is its protection case: a banner keeps its min-height when only a
-badge goes. The checker gains `must_hug`, which measures the gap between a
-section and the visible text and media inside it, so a reserve moved onto a
-wrapper still fails. Not measured yet.
+badge goes. The checker gains `must_hug`, which measures how much of a
+section's height visible text and media inside it leave uncovered, so a
+reserve moved onto a wrapper, or filled with hidden or out-of-box content,
+still fails. Not measured yet.
 
 **Revisit when** design cases are measured. Drop "or height" if D37 fails in
 either family.

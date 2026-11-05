@@ -105,6 +105,12 @@ const regressions = [
   [d36, 'reserve-shrunk', d36.bad_after.replace('min-height:28rem', 'min-height:20rem'), false],
   [d36, 'reserve-on-wrapper', d36.after.replace('</style>', '.hero-text{min-height:28rem;display:flex;flex-direction:column;justify-content:center}</style>'), false],
   [d37, 'banner-height-kept', d37.after, true],
+  // Content a visitor doesn't see inside the band, or text placed outside it, doesn't cover the reserve.
+  [d36, 'reserve-filled-by-hidden-text', d36.bad_after.replace('</style>', '.hero{position:relative}.ghost{position:absolute;top:0;left:0;margin:0;font-size:6rem;line-height:1;visibility:hidden}</style>').replace('</div></section>', '</div><p class="ghost">x<br>x<br>x<br>x<br>x</p></section>'), false],
+  [d36, 'reserve-filled-by-transparent-text', d36.bad_after.replace('</style>', '.hero{position:relative}.ghost{position:absolute;top:0;left:0;margin:0;font-size:6rem;line-height:1;opacity:0}</style>').replace('</div></section>', '</div><p class="ghost">x<br>x<br>x<br>x<br>x</p></section>'), false],
+  [d36, 'reserve-filled-by-clipped-text', d36.bad_after.replace('</style>', '.hero{position:relative}.clip{position:absolute;top:0;left:0;right:0;height:1px;overflow:hidden}.clip p{margin:0;font-size:6rem;line-height:1}</style>').replace('</div></section>', '</div><div class="clip"><p>x<br>x<br>x<br>x<br>x</p></div></section>'), false],
+  [d36, 'reserve-spanned-by-outside-text', d36.bad_after.replace('</style>', '.hero{position:relative}.far{position:absolute;top:-40rem}</style>').replace('</div></section>', '</div><p class="far">Fresh daily</p></section>'), false],
+  [d36, 'reserve-split-by-space-between', d36.after.replace('</style>', '.hero-text{min-height:28rem;display:flex;flex-direction:column;justify-content:space-between}</style>'), false],
   [d13, 'opaque-header',d13.after.replace('background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)', 'background:#fff'), true],
 ];
 const cases = regressions.map(([base, name, output]) => {

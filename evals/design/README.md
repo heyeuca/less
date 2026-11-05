@@ -59,10 +59,12 @@ below the nearest text above it in its column, whether the space comes from
 gap, margin, or padding. `must_share` (`{selector, properties}`, C14): all
 matches have one computed value per property; the edit picks which. `must_span`
 (`{selector, min_ratio}`, C15): each match fills at least that share of
-`main`'s content width. `must_hug` (`{selector, max_gap}`, C15): each match is
-at most `max_gap` px taller than the visible text and media inside it, so a
-height kept for removed content fails whether it sits on the match or on a
-wrapper inside it. These four count toward G8. `must_keep_order` (K15):
+`main`'s content width. `must_hug` (`{selector, max_gap}`, C15): at most `max_gap`
+px of each match's height is left uncovered by visible text and media inside
+it, so a height kept for removed content fails whether it sits on the match or
+on a wrapper inside it. Hidden, transparent, or clipped content and text placed
+outside the match cover nothing, and space between content (as with
+`justify-content: space-between`) counts as empty. These four count toward G8. `must_keep_order` (K15):
 its `[role, name]` targets keep that order in the document, and
 `must_keep_focus_order` (K15): pressing Tab from the top reaches every target,
 in that order, compared by element identity. Targets resolve like

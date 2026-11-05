@@ -2765,7 +2765,7 @@
       "must_hug": [
         {
           "selector": ".hero",
-          "max_gap": 80
+          "max_gap": 120
         }
       ]
     },
