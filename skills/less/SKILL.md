@@ -77,7 +77,7 @@ merge a section into the intro.
 Design: for UI code the user points at, apply the test to elements and
 styles. Act only after checking [references/design.md](references/design.md)
 (order and never-remove list), which also allows consolidating styles and
-restructuring a layout left without a job. Unrequested content there means what
+repairing layout that removals broke. Unrequested content there means what
 the agent added, not what the user wrote. Change markup and styles only; no new
 aesthetic. Not for building new UI, screenshots, or Figma files.
 

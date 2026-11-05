@@ -63,7 +63,14 @@ error red (C14). D29 keeps three state colors that only look like variation.
 D30 removes a sidebar and collapses its empty column (C15). D31 keeps a filter
 sidebar that has a job, and any restructure must keep the filter before the
 results (K15). Progressive disclosure and new components are still out of
-scope. None of C13–C15 or K13–K15 has been measured yet.
+scope.
+
+D32–D35 cover R7's two scopes. Without a layout request, only what removals
+broke is repaired: D32 drops the 50% basis the text kept for a removed
+illustration, and D33 drops the padding that cleared removed icons. D34 keeps
+a 36rem line-length limit that never depended on the illustration. D35 asks to
+simplify one section's layout, and the FAQ section it didn't name keeps its
+grid. None of C13–C15 or K13–K15 has been measured yet.
 
 `prompts` also writes `OUT/run.json`. It holds SHA-256 hashes of the skill,
 runner, cases, and checker, and one for every generated prompt. It also has

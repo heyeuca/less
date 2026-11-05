@@ -2513,6 +2513,222 @@
       ]
     },
     {
+      "id": "D32",
+      "category": "design · remove illustration + drop the width it reserved",
+      "rules": [
+        "C1",
+        "C15"
+      ],
+      "format": "html",
+      "prompt": "Remove the decorative illustration from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}main{max-width:48rem}h1{margin:0 0 .5rem;font-size:2rem}p{margin:0 0 1rem}.hero{display:flex;gap:2rem;align-items:center}.hero-text{flex:0 0 50%}.hero-art{flex:1;min-height:240px;border-radius:24px;background:radial-gradient(circle at 30% 30%,#c7d2fe,#e0f2fe)}</style></head><body><main><section class=\"hero\"><div class=\"hero-text\"><h1>Invoices in one place</h1><p>Send, track, and reconcile invoices without spreadsheets.</p><a href=\"/signup\">Start free trial</a></div><div class=\"hero-art\" aria-hidden=\"true\"></div></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}main{max-width:48rem}h1{margin:0 0 .5rem;font-size:2rem}p{margin:0 0 1rem}</style></head><body><main><section class=\"hero\"><div class=\"hero-text\"><h1>Invoices in one place</h1><p>Send, track, and reconcile invoices without spreadsheets.</p><a href=\"/signup\">Start free trial</a></div></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}main{max-width:48rem}h1{margin:0 0 .5rem;font-size:2rem}p{margin:0 0 1rem}.hero{display:flex;gap:2rem;align-items:center}.hero-text{flex:0 0 50%}</style></head><body><main><section class=\"hero\"><div class=\"hero-text\"><h1>Invoices in one place</h1><p>Send, track, and reconcile invoices without spreadsheets.</p><a href=\"/signup\">Start free trial</a></div></section></main></body></html>",
+      "why_bad": "Removes the illustration but keeps flex: 0 0 50% on the text, so the copy stays in half the hero beside empty space (C15).",
+      "must_keep": [
+        "heading, copy, and Start free trial link",
+        "main's 48rem measure"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "link",
+          "Start free trial"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the gradient illustration and the half-width split it needed"
+      ],
+      "must_remove_selectors": [
+        ".hero-art"
+      ],
+      "must_remove_computed_background": true,
+      "must_span": [
+        {
+          "selector": "h1",
+          "min_ratio": 0.9
+        }
+      ],
+      "must_have_styles": [
+        {
+          "selector": "main",
+          "properties": {
+            "max-width": "768px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D33",
+      "category": "design · remove icons + drop the padding they reserved",
+      "rules": [
+        "C6",
+        "C15"
+      ],
+      "format": "html",
+      "prompt": "Remove the decorative icons from this list.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.feature{position:relative;padding-bottom:1rem}h2{margin:0 0 1rem}h3{margin:0 0 .25rem}.feature p{margin:0}.feature h3,.feature p{padding-left:2.5rem}.icon{position:absolute;left:0;top:0;width:1.75rem;height:1.75rem;border-radius:50%;background:#e0e7ff}</style></head><body><main><section><h2>Features</h2><div class=\"feature\"><span class=\"icon\" aria-hidden=\"true\"></span><h3>Send invoices</h3><p>Email a PDF from any device.</p></div><div class=\"feature\"><span class=\"icon\" aria-hidden=\"true\"></span><h3>Track payments</h3><p>See who paid and who is late.</p></div><div class=\"feature\"><span class=\"icon\" aria-hidden=\"true\"></span><h3>Export reports</h3><p>Download a CSV for your accountant.</p></div></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.feature{position:relative;padding-bottom:1rem}h2{margin:0 0 1rem}h3{margin:0 0 .25rem}.feature p{margin:0}</style></head><body><main><section><h2>Features</h2><div class=\"feature\"><h3>Send invoices</h3><p>Email a PDF from any device.</p></div><div class=\"feature\"><h3>Track payments</h3><p>See who paid and who is late.</p></div><div class=\"feature\"><h3>Export reports</h3><p>Download a CSV for your accountant.</p></div></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Features</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.feature{position:relative;padding-bottom:1rem}h2{margin:0 0 1rem}h3{margin:0 0 .25rem}.feature p{margin:0}.feature h3,.feature p{padding-left:2.5rem}</style></head><body><main><section><h2>Features</h2><div class=\"feature\"><h3>Send invoices</h3><p>Email a PDF from any device.</p></div><div class=\"feature\"><h3>Track payments</h3><p>See who paid and who is late.</p></div><div class=\"feature\"><h3>Export reports</h3><p>Download a CSV for your accountant.</p></div></section></main></body></html>",
+      "why_bad": "Removes the icons but keeps the 2.5rem padding that cleared them, so every title and line sits indented from the Features heading for no reason (C15).",
+      "must_keep": [
+        "Features heading",
+        "three feature titles and descriptions"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Features"
+        ],
+        [
+          "heading",
+          "Send invoices"
+        ],
+        [
+          "heading",
+          "Track payments"
+        ],
+        [
+          "heading",
+          "Export reports"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the decorative icon dots and the space kept for them"
+      ],
+      "must_remove_selectors": [
+        ".icon"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "h3",
+          "properties": {
+            "padding-left": "0px"
+          }
+        },
+        {
+          "selector": "h3 + p",
+          "properties": {
+            "padding-left": "0px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D34",
+      "category": "design · over-cut · width limit with its own job",
+      "rules": [
+        "C1",
+        "C15"
+      ],
+      "format": "html",
+      "prompt": "Remove the decorative illustration from this hero.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h1{margin:0 0 .5rem;font-size:2rem}p{margin:0 0 1rem}.hero{display:flex;gap:2rem;align-items:center}.hero-text{max-width:36rem}.hero-art{flex:1;min-height:240px;border-radius:24px;background:radial-gradient(circle at 30% 30%,#c7d2fe,#e0f2fe)}</style></head><body><main><section class=\"hero\"><div class=\"hero-text\"><h1>Invoices in one place</h1><p>Send, track, and reconcile invoices without spreadsheets.</p><a href=\"/signup\">Start free trial</a></div><div class=\"hero-art\" aria-hidden=\"true\"></div></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h1{margin:0 0 .5rem;font-size:2rem}p{margin:0 0 1rem}.hero{display:flex;gap:2rem;align-items:center}.hero-text{max-width:36rem}</style></head><body><main><section class=\"hero\"><div class=\"hero-text\"><h1>Invoices in one place</h1><p>Send, track, and reconcile invoices without spreadsheets.</p><a href=\"/signup\">Start free trial</a></div></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Hero</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}h1{margin:0 0 .5rem;font-size:2rem}p{margin:0 0 1rem}.hero{display:flex;gap:2rem;align-items:center}</style></head><body><main><section class=\"hero\"><div class=\"hero-text\"><h1>Invoices in one place</h1><p>Send, track, and reconcile invoices without spreadsheets.</p><a href=\"/signup\">Start free trial</a></div></section></main></body></html>",
+      "why_bad": "Treats the 36rem max-width as space kept for the illustration and drops it; it sets the line length, so the copy now runs the full page width (C15 covers only limits kept for a removed element).",
+      "must_keep": [
+        "heading, copy, and Start free trial link",
+        "the 36rem line-length limit on the hero text"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Invoices in one place"
+        ],
+        [
+          "link",
+          "Start free trial"
+        ]
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        "the gradient illustration"
+      ],
+      "must_remove_selectors": [
+        ".hero-art"
+      ],
+      "must_remove_computed_background": true,
+      "must_have_styles": [
+        {
+          "selector": ".hero-text",
+          "properties": {
+            "max-width": "576px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "D35",
+      "category": "design · over-cut · layout request scoped to one section",
+      "rules": [
+        "C3",
+        "C15"
+      ],
+      "format": "html",
+      "prompt": "Simplify the layout of the pricing section.",
+      "before": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.plan{border:1px solid #6b7280;border-radius:8px;padding:1rem}h3{margin:0 0 .25rem}p{margin:0}.faq{display:grid;grid-template-columns:1fr 1fr;gap:1rem 2rem}dt{font-weight:600}dd{margin:0}</style></head><body><main><section aria-labelledby=\"pricing\"><h2 id=\"pricing\">Pricing</h2><div class=\"plans\"><div class=\"plan-wrap\"><div class=\"plan\"><h3>Starter</h3><p>¥980 per month</p></div></div><div class=\"plan-wrap\"><div class=\"plan\"><h3>Team</h3><p>¥4,800 per month</p></div></div><div class=\"plan-wrap\"><div class=\"plan\"><h3>Business</h3><p>¥12,000 per month</p></div></div></div></section><section aria-labelledby=\"faq\"><h2 id=\"faq\">FAQ</h2><dl class=\"faq\"><div><dt>Can I cancel anytime?</dt><dd>Yes, from Settings.</dd></div><div><dt>Do you offer refunds?</dt><dd>Within 14 days of payment.</dd></div></dl></section></main></body></html>",
+      "after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.plan{border:1px solid #6b7280;border-radius:8px;padding:1rem}h3{margin:0 0 .25rem}p{margin:0}.faq{display:grid;grid-template-columns:1fr 1fr;gap:1rem 2rem}dt{font-weight:600}dd{margin:0}</style></head><body><main><section aria-labelledby=\"pricing\"><h2 id=\"pricing\">Pricing</h2><div class=\"plans\"><div class=\"plan\"><h3>Starter</h3><p>¥980 per month</p></div><div class=\"plan\"><h3>Team</h3><p>¥4,800 per month</p></div><div class=\"plan\"><h3>Business</h3><p>¥12,000 per month</p></div></div></section><section aria-labelledby=\"faq\"><h2 id=\"faq\">FAQ</h2><dl class=\"faq\"><div><dt>Can I cancel anytime?</dt><dd>Yes, from Settings.</dd></div><div><dt>Do you offer refunds?</dt><dd>Within 14 days of payment.</dd></div></dl></section></main></body></html>",
+      "bad_after": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pricing</title><style>body{margin:0;font-family:system-ui,sans-serif;color:#111;background:#fff}main{padding:1rem}.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.plan{border:1px solid #6b7280;border-radius:8px;padding:1rem}h3{margin:0 0 .25rem}p{margin:0}dt{font-weight:600}dd{margin:0}</style></head><body><main><section aria-labelledby=\"pricing\"><h2 id=\"pricing\">Pricing</h2><div class=\"plans\"><div class=\"plan\"><h3>Starter</h3><p>¥980 per month</p></div><div class=\"plan\"><h3>Team</h3><p>¥4,800 per month</p></div><div class=\"plan\"><h3>Business</h3><p>¥12,000 per month</p></div></div></section><section aria-labelledby=\"faq\"><h2 id=\"faq\">FAQ</h2><dl><div><dt>Can I cancel anytime?</dt><dd>Yes, from Settings.</dd></div><div><dt>Do you offer refunds?</dt><dd>Within 14 days of payment.</dd></div></dl></section></main></body></html>",
+      "why_bad": "Also collapses the FAQ's two-column grid, which the request did not name (R7: restructure only within the sections the user names).",
+      "must_keep": [
+        "three plans with prices",
+        "the FAQ section and its two-column layout"
+      ],
+      "must_keep_roles": [
+        [
+          "heading",
+          "Pricing"
+        ],
+        [
+          "heading",
+          "FAQ"
+        ],
+        [
+          "heading",
+          "Starter"
+        ],
+        [
+          "heading",
+          "Team"
+        ],
+        [
+          "heading",
+          "Business"
+        ]
+      ],
+      "must_keep_rendered_text": [
+        "Within 14 days of payment"
+      ],
+      "must_keep_selectors": [],
+      "must_remove_hint": [
+        ".plan-wrap: a wrapper with no layout job inside the pricing section"
+      ],
+      "must_remove_selectors": [
+        ".plan-wrap"
+      ],
+      "must_have_styles": [
+        {
+          "selector": "dl",
+          "properties": {
+            "display": "grid",
+            "column-gap": "32px"
+          }
+        }
+      ],
+      "must_keep_tracks": [
+        {
+          "selector": "dl",
+          "columns": 2
+        }
+      ]
+    },
+    {
       "id": "P17",
       "category": "paired preservation · held-out lesson",
       "split": "tune",

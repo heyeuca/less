@@ -44,3 +44,22 @@ as protection cases.
 **Revisit when** the design cases run on at least two model families. Drop or
 narrow C14 or C15 if D29 or D31 fails in either family. Do the same if
 graded damage on D cases rises above the removal-only arm.
+
+## 2026-11-05: Layout repair by default, restructuring only on request
+
+**Context.** C15 first covered only a layout left without a job, such as an
+emptied column. Removals break layout in other ways too. Text keeps the half
+width it shared with a removed illustration, and padding that cleared a
+removed icon stays. Restructuring a whole page after every removal was
+considered and rejected. It makes every region an edit target, so protection
+cases can't hold, and no check can tell whether a whole re-layout is better.
+
+**Decision.** R7 is now "Repair". Without a request, fix only what removals
+broke (C15): an emptied column or track, a multi-column grid or row left with
+one item, and padding, margin, or a width limit kept for a removed element.
+Restructure further only when the user asks, within the sections they name.
+Breakpoints that served only removed elements still stay (K9, as with D21).
+Cases D32–D35 encode this; D34 and D35 are protection cases.
+
+**Revisit when** design cases are measured. Narrow C15 to the emptied-track
+case if D34 or D35 fails in either family.
