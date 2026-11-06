@@ -3,8 +3,9 @@
 A demo for the `less` skill on a page an agent built. `before.html` is a
 website for Oven Door, a made-up bakery, written by gpt-5.6-sol with no skill
 loaded. `after.html` is that page after one `/less` pass by the same model.
-Neither file was edited by hand. `before-after.png` boxes the main cuts for
-the README; the pages themselves carry no boxes.
+Neither file was edited by hand. `before-after.png` boxes the main cuts; the
+pages themselves carry no boxes. One of four topics in [demo/](../README.md);
+it led the main README until the dental demo replaced it.
 
 Oven Door, its address, and its phone number are made up.
 
@@ -35,7 +36,7 @@ sandbox so the model can save the file.
 
 ## Numbers
 
-Counts follow `demo/landing`: `setContent`, elements are `body *`, CSS
+Counts use Playwright the way `evals/design/check.mjs` does: `setContent`, elements are `body *`, CSS
 declarations are `CSSStyleDeclaration.length` on top-level style rules (the
 third row adds rules inside `@media`), and words are `document.body.innerText`
 split on whitespace.

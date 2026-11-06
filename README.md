@@ -11,9 +11,9 @@ Before: Great question! You're asking how to undo the last Git commit. To undo i
 After:  To undo the last commit and keep your changes, run `git reset --soft HEAD~1`.
 ```
 
-![A bakery website an agent built, before and after one /less pass, with the cut parts boxed](demo/bakery/before-after.png)
+![A dental clinic website an agent built, before and after one /less pass, with the cut parts boxed](demo/dental/before-after.png)
 
-gpt-5.6-sol built a bakery site from a five-line request, then ran `/less` on it. Visible words went from 222 to 71, and 8 of the 9 facts the request never gave are gone. The name, address, hours, phone, and all five prices stay. Neither page was edited by hand. The prompts and every attempt, including the runs not shown, are in [demo/bakery](demo/bakery/). An earlier landing-page demo is in [demo/landing](demo/landing/).
+gpt-5.6-sol built a dental clinic site from a five-line request, then ran `/less` on it. Visible words went from 347 to 71 and the page from 4,753px to 1,999px tall. The invented claims, a cost estimator that repeated the price list, and the decoration are gone; the name, address, hours, phone, and all five prices stay. Neither page was edited by hand. This was the biggest cut of four small-business pages built and cut the same way. All four, with prompts and every attempt, are in [demo/](demo/README.md).
 
 ```html
 <!-- Before -->

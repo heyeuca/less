@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Still Point Yoga at 9 Mill Lane. Your first class is free.">
+  <meta name="theme-color" content="#26352c">
+  <title>Still Point Yoga</title>
+  <style>
+    :root {
+      --ink: #26352c;
+      --cream: #f1ecdf;
+      --paper: #faf7ef;
+      --clay: #c86f4b;
+      --moss: #77836a;
+      --sun: #e8bf69;
+      --line: rgba(38, 53, 44, .18);
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: var(--sans);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    body.menu-open { overflow: hidden; }
+    a { color: inherit; }
+    button { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .skip-link { position: fixed; top: -5rem; left: 1rem; z-index: 100; padding: .8rem 1rem; background: var(--paper); }
+    .skip-link:focus { top: 1rem; }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1440px;
+      margin: auto;
+      padding: 1.25rem 4vw;
+    }
+    .brand { display: inline-flex; align-items: center; gap: .75rem; text-decoration: none; }
+    .brand-mark { width: 31px; height: 31px; position: relative; border: 1px solid var(--ink); border-radius: 50%; }
+    .brand-mark::before, .brand-mark::after { content: ""; position: absolute; border: 1px solid var(--ink); border-radius: 50%; }
+    .brand-mark::before { inset: 7px -5px; }
+    .brand-mark::after { inset: -5px 7px; }
+    .brand strong { font-family: var(--serif); font-size: 1.16rem; font-weight: 500; letter-spacing: -.02em; }
+    nav { display: flex; align-items: center; gap: clamp(1rem, 2.3vw, 2.5rem); }
+    nav a { position: relative; font-size: .77rem; font-weight: 700; letter-spacing: .12em; text-decoration: none; text-transform: uppercase; }
+    nav a::after { content: ""; position: absolute; right: 0; bottom: -.3rem; left: 0; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .25s; }
+    nav a:hover::after, nav a:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+    .menu-button { display: none; width: 42px; height: 42px; padding: 0; color: inherit; background: transparent; border: 1px solid var(--line); }
+
+    main { min-height: 70vh; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(340px, .96fr);
+      min-height: calc(100vh - 76px);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(4rem, 8vw, 8rem) 6vw clamp(4rem, 8vw, 7rem) max(4vw, calc((100vw - 1440px) / 2 + 4vw)); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 760px; margin-bottom: 1.5rem; font-family: var(--serif); font-size: clamp(4rem, 8vw, 8.8rem); font-weight: 400; line-height: .82; letter-spacing: -.065em; }
+    h1 em { color: var(--clay); font-weight: 400; }
+    .hero-copy > p { max-width: 510px; margin-bottom: 2.2rem; color: #526057; font-size: clamp(1rem, 1.5vw, 1.18rem); }
+    .text-link { align-self: flex-start; font-size: .76rem; font-weight: 800; letter-spacing: .12em; text-underline-offset: .35rem; text-transform: uppercase; }
+
+    .hero-art { position: relative; min-height: 620px; overflow: hidden; background: var(--moss); border-left: 1px solid var(--line); isolation: isolate; }
+    .sun { position: absolute; top: 12%; right: 10%; width: min(18vw, 260px); aspect-ratio: 1; background: var(--sun); border-radius: 50%; }
+    .arch { position: absolute; right: 12%; bottom: -12%; width: 72%; height: 82%; background: var(--paper); border-radius: 50% 50% 0 0 / 30% 30% 0 0; }
+    .arch::before { content: ""; position: absolute; inset: 13% 15% 0; background: var(--ink); border-radius: 50% 50% 0 0 / 30% 30% 0 0; }
+    .figure { position: absolute; z-index: 2; right: 23%; bottom: 10%; width: 52%; aspect-ratio: 1 / 1.25; }
+    .figure .head { position: absolute; top: 5%; left: 42%; width: 18%; aspect-ratio: 1; background: var(--clay); border-radius: 50%; }
+    .figure .body { position: absolute; top: 22%; left: 42%; width: 18%; height: 43%; background: var(--clay); border-radius: 48% 48% 25% 25%; transform: rotate(-3deg); }
+    .figure .arm, .figure .leg { position: absolute; height: 7%; background: var(--clay); border-radius: 999px; transform-origin: left center; }
+    .figure .arm.left { top: 33%; left: 48%; width: 49%; transform: rotate(-40deg); }
+    .figure .arm.right { top: 33%; left: 45%; width: 48%; transform: rotate(-140deg); }
+    .figure .leg.left { top: 60%; left: 48%; width: 47%; transform: rotate(54deg); }
+    .figure .leg.right { top: 60%; left: 48%; width: 47%; transform: rotate(126deg); }
+    .figure .hand { position: absolute; top: 11%; width: 7%; aspect-ratio: 1; background: var(--clay); border-radius: 50%; }
+    .figure .hand.left { right: -2%; }
+    .figure .hand.right { left: -2%; }
+    section { padding: clamp(5rem, 9vw, 9rem) 5vw; }
+    .section-inner { max-width: 1280px; margin: auto; }
+    .section-heading { margin-bottom: clamp(3rem, 6vw, 6rem); }
+    h2 { max-width: 760px; margin-bottom: 0; font-family: var(--serif); font-size: clamp(2.8rem, 5.7vw, 6.2rem); font-weight: 400; line-height: .95; letter-spacing: -.052em; }
+
+    .schedule { background: var(--paper); }
+    .schedule-grid { display: grid; grid-template-columns: repeat(7, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+    .day { position: relative; min-height: 220px; padding: 1.3rem 1rem; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .day.today { color: var(--paper); background: var(--ink); }
+    .day.today::after { content: "Today"; position: absolute; top: .7rem; right: .7rem; color: var(--sun); font-size: .55rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .day-name { display: block; margin-bottom: 3.5rem; font-family: var(--serif); font-size: 1.1rem; }
+    .time { padding: .65rem 0; border-top: 1px solid currentColor; }
+    .time strong { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; letter-spacing: 0; text-transform: none; }
+    .schedule-note { margin: 1.2rem 0 0; color: #687269; font-size: .78rem; }
+
+    .pricing { background: var(--cream); }
+    .pricing-list { border-top: 1px solid var(--ink); }
+    .price-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2rem; padding: 1.7rem .2rem; border-bottom: 1px solid var(--ink); }
+    .price-row h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.45rem, 2.5vw, 2.4rem); font-weight: 400; }
+    .price { min-width: 96px; font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.7rem); text-align: right; }
+    .free-banner { margin-top: 3rem; padding: clamp(1.6rem, 3vw, 2.5rem); color: var(--paper); background: var(--clay); }
+    .free-banner p { margin: 0; font-family: var(--serif); font-size: clamp(1.7rem, 3.8vw, 3.7rem); line-height: 1; }
+
+    .visit { min-height: 540px; padding: 0; background: var(--paper); }
+    .visit-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(4rem, 8vw, 8rem); }
+    .visit-copy h2 { margin-bottom: 2rem; }
+    .address { margin-bottom: 1.7rem; font-family: var(--serif); font-size: 1.7rem; line-height: 1.2; }
+    footer { display: grid; grid-template-columns: 1fr auto; gap: 3rem; padding: 3rem 5vw; color: var(--paper); background: var(--ink); }
+    .footer-brand { font-family: var(--serif); font-size: clamp(2rem, 4vw, 4rem); line-height: 1; }
+    .footer-meta { display: flex; align-items: flex-end; gap: 2rem; color: #b9c0ba; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+    .footer-meta a { text-underline-offset: .25rem; }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-copy { min-height: 70vh; }
+      .hero-art { min-height: 600px; border-top: 1px solid var(--line); border-left: 0; }
+      .schedule-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      header { padding: 1rem 5vw; }
+      .menu-button { display: block; }
+      .menu-button::before { content: "Menu"; font-size: .62rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+      nav { position: fixed; inset: 0; z-index: -1; display: flex; flex-direction: column; justify-content: center; gap: 2rem; background: var(--paper); opacity: 0; pointer-events: none; transition: opacity .2s; }
+      nav.open { z-index: 9; opacity: 1; pointer-events: auto; }
+      nav a { font-family: var(--serif); font-size: 2rem; font-weight: 400; letter-spacing: -.02em; text-transform: none; }
+      h1 { font-size: clamp(4.2rem, 22vw, 7rem); }
+      .hero-copy { min-height: auto; padding: 5rem 6vw; }
+      .hero-art { min-height: 470px; }
+      .sun { width: 180px; }
+      .arch { right: 8%; width: 84%; }
+      .figure { right: 17%; width: 62%; }
+      section { padding-right: 6vw; padding-left: 6vw; }
+      .schedule-grid { grid-template-columns: repeat(2, 1fr); }
+      .day { min-height: 195px; }
+      .price-row { gap: .5rem 1rem; }
+      .visit-copy { padding: 5rem 6vw; }
+      footer { grid-template-columns: 1fr; }
+      .footer-meta { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 430px) {
+      .brand strong { font-size: 1rem; }
+      .hero-art { min-height: 410px; }
+      .schedule-grid { grid-template-columns: 1fr; }
+      .day { min-height: auto; }
+      .day-name { margin-bottom: 2rem; }
+      .footer-meta { align-items: flex-start; flex-direction: column; gap: .8rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <a class="brand" href="#top" aria-label="Still Point Yoga home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <strong>Still Point Yoga</strong>
+    </a>
+    <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false"></button>
+    <nav aria-label="Main navigation">
+      <a href="#schedule">Schedule</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#visit">Visit</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <h1>Find the<br><em>still point.</em></h1>
+        <p>Yoga at 9 Mill Lane. Your first class is free.</p>
+        <a class="text-link" href="#schedule">See the schedule</a>
+      </div>
+      <div class="hero-art" role="img" aria-label="Abstract figure seated in a calm yoga pose beneath a golden sun">
+        <div class="sun"></div>
+        <div class="arch"></div>
+        <div class="figure" aria-hidden="true">
+          <i class="head"></i><i class="body"></i><i class="arm left"></i><i class="arm right"></i><i class="leg left"></i><i class="leg right"></i><i class="hand left"></i><i class="hand right"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="schedule" id="schedule">
+      <div class="section-inner">
+        <div class="section-heading">
+          <h2>Class schedule</h2>
+        </div>
+        <div class="schedule-grid" aria-label="Weekly class schedule">
+          <article class="day" data-day="1"><span class="day-name">Monday</span><div class="time"><strong>7am</strong></div><div class="time"><strong>6pm</strong></div></article>
+          <article class="day" data-day="2"><span class="day-name">Tuesday</span><div class="time"><strong>7am</strong></div><div class="time"><strong>6pm</strong></div></article>
+          <article class="day" data-day="3"><span class="day-name">Wednesday</span><div class="time"><strong>7am</strong></div><div class="time"><strong>6pm</strong></div></article>
+          <article class="day" data-day="4"><span class="day-name">Thursday</span><div class="time"><strong>7am</strong></div><div class="time"><strong>6pm</strong></div></article>
+          <article class="day" data-day="5"><span class="day-name">Friday</span><div class="time"><strong>7am</strong></div><div class="time"><strong>6pm</strong></div></article>
+          <article class="day" data-day="6"><span class="day-name">Saturday</span><div class="time"><strong>7am</strong></div><div class="time"><strong>6pm</strong></div></article>
+          <article class="day" data-day="0"><span class="day-name">Sunday</span><div class="time"><strong>10am</strong></div></article>
+        </div>
+        <p class="schedule-note">Questions before your first visit? Call us at (555) 014-5520.</p>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <div class="section-inner">
+        <div class="section-heading">
+          <h2>Pricing</h2>
+        </div>
+        <div class="pricing-list">
+          <article class="price-row"><h3>Drop-in class</h3><span class="price">$20</span></article>
+          <article class="price-row"><h3>5-class pass</h3><span class="price">$90</span></article>
+          <article class="price-row"><h3>Monthly unlimited</h3><span class="price">$140</span></article>
+          <article class="price-row"><h3>Private session</h3><span class="price">$75</span></article>
+        </div>
+        <div class="free-banner"><p>Your first class is free.</p></div>
+      </div>
+    </section>
+
+    <section class="visit" id="visit">
+      <div class="visit-copy">
+        <h2>Visit us</h2>
+        <p class="address">9 Mill Lane<br>Second floor</p>
+        <a class="text-link" href="tel:+15550145520">(555) 014-5520</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand">Still Point Yoga</div>
+    <div class="footer-meta"><span>9 Mill Lane, 2nd floor</span><a href="tel:+15550145520">(555) 014-5520</a></div>
+  </footer>
+
+  <script>
+    (() => {
+      const body = document.body;
+      const nav = document.querySelector('nav');
+      const menuButton = document.querySelector('.menu-button');
+
+      const today = document.querySelector(`[data-day="${new Date().getDay()}"]`);
+      if (today) today.classList.add('today');
+
+      menuButton.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        body.classList.toggle('menu-open', open);
+        menuButton.setAttribute('aria-expanded', open);
+        menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+      nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+        nav.classList.remove('open');
+        body.classList.remove('menu-open');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Open menu');
+      }));
+    })();
+  </script>
+</body>
+</html>
