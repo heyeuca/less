@@ -2,8 +2,9 @@
 
 `before.html` is a website for Still Point Yoga, a made-up studio, written by
 gpt-5.6-sol with no skill loaded. `after.html` is that page after one `/less`
-pass by the same model. Neither file was edited by hand. One of four topics in
-[demo/](../README.md).
+pass by the same model. Neither file was edited by hand. `before-after.png` boxes the main
+cuts and what the pass missed; the pages themselves carry no boxes. One of
+four topics in [demo/](../README.md).
 
 Still Point Yoga, its address, and its phone number are made up.
 
@@ -84,7 +85,12 @@ None of these are in the after page.
 | 1 | build | gpt-5.6-sol | 2026-11-06, 58 min, wrote `still-point-yoga/dist/index.html`, publish blocked | **before.html** |
 | 2 | /less | gpt-5.6-sol | skill at `414fc8b` with the request, 29 min | **after.html** |
 
-`before.png` and `after.png` are full-page screenshots at 1280 × 800, taken
-after scrolling to the bottom so every section is revealed. The bakery
-method (viewport as tall as the page) doesn't work here: the hero is sized
-in `vh` and would fill the whole shot.
+## The images
+
+`before.png`, `after.png`, and both halves of `before-after.png` are
+full-page screenshots at 1280 × 800, taken after scrolling to the bottom so
+every section is revealed. The bakery method (viewport as tall as the page)
+doesn't work here: the hero is sized in `vh` and would fill the whole shot.
+Boxes are overlays drawn at render time: red for an invented claim, gray for
+decoration or a repeat, dashed red on the after page for what the pass
+missed. The booking form isn't boxed: it stays hidden until opened.

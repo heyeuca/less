@@ -2,8 +2,8 @@
 
 Each demo is a page an agent built from a short request, then the same page
 after one `/less` pass by the same model. Neither file was edited by hand.
-Each folder has the prompts, numbers, what was cut, what was missed, and
-every attempt.
+Each folder has a `before-after.png` with the main cuts boxed, the prompts,
+numbers, what was cut, what was missed, and every attempt.
 
 ## Four small-business pages
 
@@ -34,7 +34,5 @@ Dental and yoga added promises and repeats: a cost estimator that lists the
 five prices again, a booking form that sends nothing. Plumbing mostly
 restated the request, so less had less to cut.
 
-## Earlier
-
-[Landing](landing/) is the first demo: a landing page for a made-up iPhone
-habit tracker, built and cut by grok-4.7, with screen recordings.
+An earlier landing-page demo, cut by grok-4.7 with an older version of the
+skill, was removed. It is in the git history up to `9c64aad`.

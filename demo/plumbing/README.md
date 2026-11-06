@@ -2,8 +2,10 @@
 
 `before.html` is a website for Fairline Plumbing, a made-up business, written
 by gpt-5.6-sol with no skill loaded. `after.html` is that page after one
-`/less` pass by the same model. Neither file was edited by hand. One of four
-topics in [demo/](../README.md), and the one that was cut least.
+`/less` pass by the same model. Neither file was edited by hand.
+`before-after.png` boxes the main cuts and what the pass missed; the pages
+themselves carry no boxes. One of four topics in [demo/](../README.md), and
+the one that was cut least.
 
 Fairline Plumbing and its phone number are made up.
 
@@ -81,5 +83,10 @@ flow", is gone from the after page.
 | 1 | build | gpt-5.6-sol | 2026-11-06, 55 min, wrote `fairline-plumbing/dist/index.html`, deploy blocked | **before.html** |
 | 2 | /less | gpt-5.6-sol | skill at `414fc8b` with the request, 3 min | **after.html** |
 
-`before.png` and `after.png` are full-page screenshots at 1280px wide, taken
-with the viewport as tall as the page, as in demo/bakery.
+## The images
+
+`before.png`, `after.png`, and both halves of `before-after.png` are
+full-page screenshots at 1280px wide, taken with the viewport as tall as the
+page, as in demo/bakery. Boxes are overlays drawn at render time: red for an
+invented claim, gray for decoration or a repeat, dashed red on the after page
+for what the pass missed. They mark the main cuts, not all of them.

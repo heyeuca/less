@@ -36,7 +36,7 @@ sandbox so the model can save the file.
 
 ## Numbers
 
-Counts follow `demo/landing`: `setContent`, elements are `body *`, CSS
+Counts use Playwright the way `evals/design/check.mjs` does: `setContent`, elements are `body *`, CSS
 declarations are `CSSStyleDeclaration.length` on top-level style rules (the
 third row adds rules inside `@media`), and words are `document.body.innerText`
 split on whitespace.
